@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="35dp"
+    android:paddingTop="30dp">
+
+
+    <TextView
+        android:id="@+id/txt_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_user_phone"
+        tools:ignore="MissingConstraints"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="64dp"
+        />
+
+    <EditText
+        android:id="@+id/user_phone"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:background="@drawable/form_inputs_style"
+        android:inputType="number"/>
+
+    <!--COUNTRY-DEPART LAYOUT-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_user_country"
+                tools:ignore="MissingConstraints"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="15dp"
+                />
+
+            <EditText
+                android:id="@+id/user_country"
+                android:layout_width="115dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_inputs_style"
+                android:inputType="textPersonName"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
+            <TextView
+                android:id="@+id/txt_department"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_user_department"
+                tools:ignore="MissingConstraints"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="15dp"
+                />
+
+            <EditText
+                android:id="@+id/user_department"
+                android:layout_width="115dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_inputs_style"
+                android:inputType="textEmailAddress"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!--END COUNTRY-DEPART LAYOUT-->
+
+    <!--CITY-AGE LAYOUT-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_user_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_user_city"
+                tools:ignore="MissingConstraints"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="15dp"
+                />
+
+            <EditText
+                android:id="@+id/user_city"
+                android:layout_width="115dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_inputs_style"
+                android:inputType="textPersonName"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
+            <TextView
+                android:id="@+id/txt_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_user_age"
+                tools:ignore="MissingConstraints"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="15dp"
+                />
+
+            <EditText
+                android:id="@+id/user_age"
+                android:layout_width="115dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_inputs_style"
+                android:inputType="number"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!--END CITY-AGE LAYOUT-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/register_user_accept"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_user_terms"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="16dp"
+            android:textColor="#0078B0"
+            />
+    </LinearLayout>
+</LinearLayout>

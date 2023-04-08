@@ -1,0 +1,34 @@
+<resources>
+    <!--LOGIN STRINGS-->
+    <string name="app_name">Unilocal</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email (ejemplo@gmail.com)</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Ingresar</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="title">Inicio de sesión</string>
+    <string name="not_have_account">¿No tienes una cuenta?</string>
+    <string name="register_now">Registrate ahora</string>
+
+    <!--REGISTER STRINGS-->
+    <string name="register_user_title_register">Formulario de\nregistro</string>
+    <string name="register_user_want_know_you">Queremos conocerte más</string>
+    <string name="register_user_next">Siguiente</string>
+
+    <!--REGISTER STRINGS FORM 1-->
+    <string name="register_user_name">Nombres</string>
+    <string name="register_user_last_name">Apellidos</string>
+    <string name="register_user_email">Correo</string>
+    <string name="register_user_username">Usuario</string>
+    <string name="register_user_pass">Contraseña</string>
+    <string name="register_user_phone">Télefono</string>
+    <string name="register_user_country">País</string>
+    <string name="register_user_department">Dpto</string>
+    <string name="register_user_city">Ciudad</string>
+    <string name="register_user_age">Edad</string>
+    <string name="register_user_accept">Aceptar</string>
+    <string name="register_user_terms">términos y condiciones</string>
+
+</resources>
