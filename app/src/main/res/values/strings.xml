@@ -30,5 +30,6 @@
     <string name="register_user_age">Edad</string>
     <string name="register_user_accept">Aceptar</string>
     <string name="register_user_terms">términos y condiciones</string>
+    <string name="register_user_choose_icon">Pulsa el ícono de arriba\n para agregar tú foto de\n perfil</string>
 
 </resources>
