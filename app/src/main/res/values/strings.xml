@@ -17,19 +17,27 @@
     <string name="register_user_want_know_you">Queremos conocerte más</string>
     <string name="register_user_next">Siguiente</string>
 
-    <!--REGISTER STRINGS FORM 1-->
-    <string name="register_user_name">Nombres</string>
-    <string name="register_user_last_name">Apellidos</string>
-    <string name="register_user_email">Correo</string>
-    <string name="register_user_username">Usuario</string>
-    <string name="register_user_pass">Contraseña</string>
-    <string name="register_user_phone">Télefono</string>
-    <string name="register_user_country">País</string>
-    <string name="register_user_department">Dpto</string>
-    <string name="register_user_city">Ciudad</string>
-    <string name="register_user_age">Edad</string>
-    <string name="register_user_accept">Aceptar</string>
-    <string name="register_user_terms">términos y condiciones</string>
-    <string name="register_user_choose_icon">Pulsa el ícono de arriba\n para agregar tú foto de\n perfil</string>
+        <!--REGISTER STRINGS FORM 1-->
+        <string name="register_user_name">Nombres</string>
+        <string name="register_user_last_name">Apellidos</string>
+        <string name="register_user_email">Correo</string>
+        <string name="register_user_username">Usuario</string>
+        <string name="register_user_pass">Contraseña</string>
+        <string name="register_user_phone">Télefono</string>
+        <string name="register_user_country">País</string>
+        <string name="register_user_department">Dpto</string>
+        <string name="register_user_city">Ciudad</string>
+        <string name="register_user_age">Edad</string>
+        <string name="register_user_accept">Aceptar</string>
+        <string name="register_user_terms">términos y condiciones</string>
+        <string name="register_user_choose_icon">Pulsa el ícono de arriba\n para agregar tú foto de\n perfil</string>
+
+
+    <!--FORGOT PASS STRINGS-->
+    <string name="forgot_sorry">Vaya :(</string>
+    <string name="forgot_recover_pass">Al parecer no recuerdas\ntu contraseña, ¿Quieres\nrecuperarla?</string>
+    <string name="forgot_btn_send">Enviar</string>
+    <string name="forgot_btn_return">Volver</string>
+
 
 </resources>

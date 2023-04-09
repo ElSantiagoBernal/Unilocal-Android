@@ -28,7 +28,7 @@ public class Adapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return layouts.length;
+        return 3;
     }
 
     @Override
