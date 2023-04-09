@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -17,6 +18,8 @@ import com.example.unilocal.databinding.ActivityLoginBinding
 
 import com.example.unilocal.R
 import com.example.unilocal.RegisterActivity
+import com.example.unilocal.WallActivity
+import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
@@ -37,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.forgot.setOnClickListener{goToForgotPass()}
         binding.registerNow.setOnClickListener{goToRegister()}
+        binding.login.setOnClickListener { goToWall() }
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -117,6 +121,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    fun goToWall(){
+        val intent = Intent(this, WallActivity::class.java)
+        startActivity(intent)
     }
 
     fun goToRegister(){
