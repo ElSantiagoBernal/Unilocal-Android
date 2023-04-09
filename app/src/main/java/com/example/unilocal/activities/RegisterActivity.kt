@@ -1,4 +1,4 @@
-package com.example.unilocal
+package com.example.unilocal.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.example.unilocal.Adapter
+import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityRegisterBinding
 import com.example.unilocal.databinding.ActivityRegisterFormUser1Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser2Binding

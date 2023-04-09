@@ -8,18 +8,16 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
-import com.example.unilocal.ForgotPassActivity
+import com.example.unilocal.activities.ForgotPassActivity
 import com.example.unilocal.databinding.ActivityLoginBinding
 
 import com.example.unilocal.R
-import com.example.unilocal.RegisterActivity
-import com.example.unilocal.WallActivity
-import kotlin.math.log
+import com.example.unilocal.activities.RegisterActivity
+import com.example.unilocal.activities.WallActivity
 
 class LoginActivity : AppCompatActivity() {
 
