@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.unilocal.activities.ForgotPassActivity"
     android:orientation="vertical"
-    android:layout_gravity="center"
-    android:paddingLeft="50dp">
+    android:layout_gravity="center">
 
     <TextView
         android:id="@+id/main_title"
@@ -18,7 +17,8 @@
         android:textSize="40dp"
         android:textStyle="bold"
         android:layout_marginTop="130dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:paddingLeft="50dp"/>
 
     <TextView
         android:id="@+id/we_want_know_you"
@@ -30,62 +30,34 @@
         android:layout_marginBottom="25dp"
         tools:ignore="MissingConstraints"
         android:justificationMode="inter_word"
-        app:layout_constraintTop_toBottomOf="@+id/main_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/main_title"
+        android:paddingLeft="50dp"/>
 
-    <LinearLayout
-        android:layout_width="310dp"
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/form_pager_forgot"
+        android:layout_width="320dp"
         android:layout_height="220dp"
-        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
         android:background="@drawable/form_register_style"
-        android:layout_marginTop="50dp"
-        android:padding="29dp">
+        android:elevation="30dp">
 
-        <TextView
-            android:id="@+id/txt_names"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register_user_email"
-            tools:ignore="MissingConstraints"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            />
 
-        <EditText
-            android:id="@+id/user_name"
-            android:layout_width="250dp"
-            android:layout_height="42dp"
-            android:background="@drawable/form_inputs_style"/>
+    </androidx.viewpager.widget.ViewPager>
 
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="@string/forgot_btn_send"
-            android:layout_gravity="center"
-            android:textSize="16dp"
-            android:layout_marginTop="35dp"
-            tools:ignore="MissingConstraints"
-            android:backgroundTint="@color/app_color"
-            android:background="@drawable/border_style"
-            android:textColor="@color/white"
-            />
-
-    </LinearLayout>
     <Button
         android:id="@+id/Next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/forgot_btn_return"
         android:textSize="16dp"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="140dp"
         tools:ignore="MissingConstraints"
         android:backgroundTint="@color/app_color"
         android:background="@drawable/border_style"
         android:textColor="@color/white"
         android:layout_gravity="center"
-        android:layout_marginRight="25dp"
         />
 
 </LinearLayout>

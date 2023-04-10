@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -18,6 +19,9 @@ import com.example.unilocal.databinding.ActivityLoginBinding
 import com.example.unilocal.R
 import com.example.unilocal.activities.RegisterActivity
 import com.example.unilocal.activities.WallActivity
+import com.example.unilocal.db.Users
+
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,17 +34,15 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = binding.email
-        val password = binding.password
-        val login = binding.login
-        val loading = binding.loading
+
+        //val loading = binding.loading
 
 
         binding.forgot.setOnClickListener{goToForgotPass()}
         binding.registerNow.setOnClickListener{goToRegister()}
-        binding.login.setOnClickListener { goToWall() }
+        binding.btnLogin.setOnClickListener { login() }
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+        /*loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
@@ -103,6 +105,41 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+        }*/
+
+    }
+
+    private fun filter(){
+        val filter = InputFilter { source, _, _, _, _, _ ->
+            val regex = Regex("[a-zA-Z]+")
+            if (source.toString().matches(regex)) {
+                source
+            } else {
+                ""
+            }
+        }
+    }
+
+    private fun login(){
+        var email = binding.email.text
+        var password = binding.password.text.toString()
+
+        if(email.isNotEmpty() && password.isNotEmpty()){
+
+            try {
+                val user = Users.findByEmail(email.toString())
+                if(user != null && user.password.equals(password)){
+                    Toast.makeText(this,"Bienvenido ${user.nickname}",Toast.LENGTH_LONG).show()
+                    finish()
+                    goToWall()
+                }else{
+                    Toast.makeText(this,"La contraseña no coincide",Toast.LENGTH_LONG).show()
+                }
+            }catch (e:Exception){
+                Toast.makeText(this,"No se encontró usuario registrado",Toast.LENGTH_LONG).show()
+            }
+        }else{
+            Toast.makeText(this,"Los campos son obligatorios",Toast.LENGTH_LONG).show()
         }
     }
 

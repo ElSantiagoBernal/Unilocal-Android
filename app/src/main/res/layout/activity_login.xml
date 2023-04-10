@@ -29,6 +29,7 @@
         android:layout_height="65dp"
         android:layout_marginTop="80dp"
         app:hintTextColor="@color/app_color"
+        android:textCursorDrawable="@color/black"
         >
 
         <EditText
@@ -43,8 +44,7 @@
             android:textColor="@color/black"
             android:textColorHighlight="@color/app_color"
             android:textColorLink="@color/app_color"
-            android:textCursorDrawable="@drawable/input_color"
-            app:layout_constraintTop_toBottomOf="@+id/main_title" />
+            app:layout_constraintTop_toBottomOf="@+id/main_title"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,9 +67,10 @@
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
             app:layout_constraintTop_toBottomOf="@+id/email"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/black"
             android:backgroundTint="@color/app_color"
-            android:textCursorDrawable="@drawable/input_color"/>
+            />
+            <!--android:textCursorDrawable="@color/black"-->
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -88,14 +89,12 @@
         />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/btn_login"
         android:layout_width="260dp"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/border_style"
-        android:enabled="false"
         android:text="@string/action_sign_in"
-        app:layout_constraintTop_toBottomOf="@+id/password"
         android:textColor="@color/white"
         android:backgroundTint="@color/app_color"
         android:textSize="16dp"/>

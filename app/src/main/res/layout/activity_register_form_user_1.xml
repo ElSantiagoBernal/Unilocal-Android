@@ -5,100 +5,61 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="35dp"
-    android:paddingTop="30dp">
+    android:paddingTop="15dp">
 
 
     <TextView
         android:id="@+id/txt_names"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_name"
         tools:ignore="MissingConstraints"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        style="@style/txt_views"
         />
 
     <EditText
         android:id="@+id/user_name"
-        android:layout_width="250dp"
-        android:layout_height="42dp"
-        android:background="@drawable/form_inputs_style"/>
+        style="@style/inp_texts"/>
 
     <TextView
         android:id="@+id/txt_last_names"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_last_name"
-        tools:ignore="MissingConstraints"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="15dp"
+        style="@style/txt_views"
         />
 
     <EditText
         android:id="@+id/user_last_names"
-        android:layout_width="250dp"
-        android:layout_height="42dp"
-        android:background="@drawable/form_inputs_style"
+        style="@style/inp_texts"
         android:inputType="textPersonName"/>
 
     <TextView
         android:id="@+id/txt_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_email"
-        tools:ignore="MissingConstraints"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="15dp"
+        style="@style/txt_views"
         />
 
     <EditText
         android:id="@+id/user_email"
-        android:layout_width="250dp"
-        android:layout_height="42dp"
-        android:background="@drawable/form_inputs_style"
+        style="@style/inp_texts"
         android:inputType="textEmailAddress"/>
 
     <TextView
         android:id="@+id/txt_user_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_username"
-        tools:ignore="MissingConstraints"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="15dp"
+        style="@style/txt_views"
         />
 
     <EditText
         android:id="@+id/user_username"
-        android:layout_width="250dp"
-        android:layout_height="42dp"
-        android:background="@drawable/form_inputs_style"
-        android:inputType="textPersonName"/>
+        style="@style/inp_texts"/>
 
     <TextView
         android:id="@+id/txt_pass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_pass"
-        tools:ignore="MissingConstraints"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="15dp"
+        style="@style/txt_views"
         />
 
     <EditText
         android:id="@+id/user_pass"
-        android:layout_width="250dp"
-        android:layout_height="42dp"
-        android:background="@drawable/form_inputs_style"/>
+        style="@style/inp_texts"/>
 
 
 

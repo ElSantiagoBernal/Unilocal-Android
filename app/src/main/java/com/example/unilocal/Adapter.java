@@ -4,8 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 
 public class Adapter extends PagerAdapter {
@@ -27,9 +30,7 @@ public class Adapter extends PagerAdapter {
     }
 
     @Override
-    public int getCount() {
-        return 3;
-    }
+    public int getCount() { return layouts.length; }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {

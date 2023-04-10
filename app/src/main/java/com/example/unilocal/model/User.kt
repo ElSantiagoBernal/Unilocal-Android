@@ -9,7 +9,8 @@ class User(var idUser:Int,
            var idCountry:Int,
            var idDepartment:Int,
            var idCity:Int,
-           var age:Int) {
+           var age:Int,
+           var imgUrl:String) {
 
     var tel:List<String> = ArrayList();
 }
