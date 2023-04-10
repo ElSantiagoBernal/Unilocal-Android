@@ -12,15 +12,36 @@
         android:layout_height="match_parent"
         android:background="#8BD99E"/>
 
-    <EditText
+    <LinearLayout
+        android:id="@+id/box_search_menu"
         android:layout_width="350dp"
-        android:layout_height="60dp"
-        android:hint="@string/search_bar"
-        android:imeOptions="actionSearch"
-        android:background="@drawable/fondo_busqueda"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        android:drawableRight="@drawable/ic_search"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="40dp"
+        android:background="@drawable/fondo_busqueda">
 
+        <Button
+            android:id="@+id/btn_menu"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:text="\uf0c9"/>
+
+            <EditText
+                android:id="@+id/search_text"
+                android:layout_width="290dp"
+                android:layout_height="50dp"
+                android:hint="@string/search_bar"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:paddingStart="20dp"
+                android:paddingEnd="15dp"
+                android:background="@null"
+                android:drawableEnd="@drawable/ic_search"
+                />
+    </LinearLayout>
 </RelativeLayout>
