@@ -13,12 +13,10 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
-import com.example.unilocal.activities.ForgotPassActivity
 import com.example.unilocal.databinding.ActivityLoginBinding
 
 import com.example.unilocal.R
-import com.example.unilocal.activities.RegisterActivity
-import com.example.unilocal.activities.WallActivity
+import com.example.unilocal.activities.*
 import com.example.unilocal.db.Users
 
 
@@ -131,12 +129,13 @@ class LoginActivity : AppCompatActivity() {
                 if(user != null && user.password.equals(password)){
                     Toast.makeText(this,"Bienvenido ${user.nickname}",Toast.LENGTH_LONG).show()
                     finish()
-                    goToWall()
+                    goToMap()
                 }else{
                     Toast.makeText(this,"La contraseña no coincide",Toast.LENGTH_LONG).show()
                 }
             }catch (e:Exception){
                 Toast.makeText(this,"No se encontró usuario registrado",Toast.LENGTH_LONG).show()
+                System.err.println(e.toString())
             }
         }else{
             Toast.makeText(this,"Los campos son obligatorios",Toast.LENGTH_LONG).show()
@@ -156,6 +155,16 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    fun goToMap(){
+        val intent = Intent(this, MapActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToDetailPlace(){
+        val intent = Intent(this, DetailPlaceActivity::class.java)
+        startActivity(intent)
     }
 
     fun goToWall(){

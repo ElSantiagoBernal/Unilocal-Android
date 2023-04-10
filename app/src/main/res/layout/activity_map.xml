@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MapActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8BD99E"/>
+
+    <EditText
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:hint="@string/search_bar"
+        android:imeOptions="actionSearch"
+        android:background="@drawable/fondo_busqueda"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:drawableRight="@drawable/ic_search"
+        android:layout_marginTop="40dp"/>
+
+</RelativeLayout>
