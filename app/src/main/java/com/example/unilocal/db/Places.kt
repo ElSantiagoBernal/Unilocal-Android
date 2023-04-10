@@ -35,7 +35,7 @@ object Places {
             return places.firstOrNull { p -> p.id == id }
         }
 
-        fun searchByName(name:String): ArrayList<Place> {
+        fun findByName(name:String): ArrayList<Place> {
             return places.filter { p -> p.name.lowercase().contains(name.lowercase()) && p.status == PlaceStatus.ACCEPTED }.toCollection(ArrayList())
         }
 
@@ -43,11 +43,11 @@ object Places {
             places.add( place )
         }
 
-        fun searchByCity(idCity:Int): ArrayList<Place> {
+        fun findByCity(idCity:Int): ArrayList<Place> {
             return places.filter { p -> p.idCity == idCity && p.status == PlaceStatus.ACCEPTED }.toCollection(ArrayList())
         }
 
-        fun searchByCategory(idCategory:Int): ArrayList<Place> {
+        fun findByCategory(idCategory:Int): ArrayList<Place> {
             return places.filter { p -> p.idCategory == idCategory && p.status == PlaceStatus.ACCEPTED }.toCollection(ArrayList())
         }
 
