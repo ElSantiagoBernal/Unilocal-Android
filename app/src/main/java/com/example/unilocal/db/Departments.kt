@@ -1,6 +1,6 @@
 package com.example.unilocal.db
 
-import com.example.unilocal.model.Department
+import com.example.unilocal.activities.model.Department
 
 object Departments {
 

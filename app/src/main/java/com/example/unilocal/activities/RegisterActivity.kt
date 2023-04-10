@@ -3,12 +3,17 @@ package com.example.unilocal.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -20,8 +25,9 @@ import com.example.unilocal.databinding.ActivityRegisterFormUser1Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser2Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser3Binding
 import com.example.unilocal.db.Users
-import com.example.unilocal.model.User
+import com.example.unilocal.activities.model.User
 import com.example.unilocal.ui.login.LoginActivity
+import java.text.FieldPosition
 import kotlin.properties.Delegates
 
 class RegisterActivity : AppCompatActivity() {
@@ -37,6 +43,9 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var binding_form_3: ActivityRegisterFormUser3Binding
     lateinit var imageUrl:String
     var clics:Int = 0
+    val dots = arrayOfNulls<TextView>(3)
+    var linear:LinearLayout = LinearLayout(this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,21 +65,12 @@ class RegisterActivity : AppCompatActivity() {
             R.layout.activity_register_form_user_3
 
         )
-        adapter = Adapter(this, layouts)
+        adapter = Adapter(this, layouts, binding_form_3)
         binding.formPager.adapter = adapter
 
-        binding_form_3.btnChooseImg.setOnClickListener{
-            Toast.makeText(this, "Hola", Toast.LENGTH_SHORT).show()
-
-        }
-
         binding.Next.setOnClickListener{
-            askImages()
+            //askImages()
             nextListener()
-        }
-
-        binding_form_1.userName.setOnClickListener{
-            Toast.makeText(this, "Hola", Toast.LENGTH_SHORT).show()
         }
 
         binding.Next.setOnClickListener{
@@ -81,27 +81,25 @@ class RegisterActivity : AppCompatActivity() {
                 register()
             }
             nextListener()
+            Toast.makeText(this, "Clics $clics", Toast.LENGTH_SHORT).show()
         }
 
-        /*viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                // No hacer nada
-            }
+
+         adapter.btn.setOnClickListener {
+            Toast.makeText(this, "Hola", Toast.LENGTH_SHORT).show()
+        }
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageSelected(position: Int) {
-                // Bloquear el cambio de página si se intenta avanzar
-                if (position > 0) {
-                    viewPager.setCurrentItem(0, true)
-                }
+                setUpIndicator(position)
+
             }
 
-            override fun onPageScrollStateChanged(state: Int) {
-                // No hacer nada
-            }
-        })*/
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-
-
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
 
 
 
@@ -110,22 +108,21 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun register() {
         //FORM REGISTER 1
-        var names = binding.formPager.findViewById<EditText>(R.id.user_name).text.toString()
-        var last_names = binding.formPager.findViewById<EditText>(R.id.user_last_names).text.toString()
-        var email = binding.formPager.findViewById<EditText>(R.id.user_name).text.toString()
-        var user = binding.formPager.findViewById<EditText>(R.id.user_last_names).text.toString()
-        var pass = binding.formPager.findViewById<EditText>(R.id.user_name).text.toString()
+        var names = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
+        var last_names = viewPager.findViewById<EditText>(R.id.user_last_names).text.toString()
+        var email = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
+        var user = viewPager.findViewById<EditText>(R.id.user_last_names).text.toString()
+        var pass = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
 
         //FORM REGISTER 2
 
-        var phone = binding.formPager.findViewById<EditText>(R.id.user_phone).text.toString()
-        var country = binding.formPager.findViewById<EditText>(R.id.user_country).text.toString()
-        var department = binding.formPager.findViewById<EditText>(R.id.user_department).text.toString()
-        var city = binding.formPager.findViewById<EditText>(R.id.user_city).text.toString()
-        var age = binding.formPager.findViewById<EditText>(R.id.user_age).text.toString()
+        var phone = viewPager.findViewById<EditText>(R.id.user_phone).text.toString()
+        var country = viewPager.findViewById<EditText>(R.id.user_country).text.toString()
+        var department = viewPager.findViewById<EditText>(R.id.user_department).text.toString()
+        var city = viewPager.findViewById<EditText>(R.id.user_city).text.toString()
+        var age = viewPager.findViewById<EditText>(R.id.user_age).text.toString()
 
         //FORM REGISTER 3
-
 
 
         if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
@@ -152,7 +149,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun askImages (){
-
         requestPermission()
     }
 
@@ -205,6 +201,21 @@ class RegisterActivity : AppCompatActivity() {
         startForActivityGallery.launch(intent)
     }
 
+    fun setUpIndicator (position:Int){
+        linear.removeAllViews()
+
+        for (i in 0 until dots.size) {
+            dots[i] = TextView(this)
+            dots[i]?.text ?: Html.fromHtml("&#8226")
+            dots[i]?.textSize ?: 35F
+            dots[i]?.setTextColor(resources.getColor(R.color.inactive))
+            linear.addView(dots[i])
+
+        }
+        dots[position]?.setTextColor(resources.getColor(R.color.active))
+    }
+
 
 }
+
 

@@ -1,4 +1,4 @@
-package com.example.unilocal.model
+package com.example.unilocal.activities.model
 
 class User(var idUser:Int,
            var name:String,

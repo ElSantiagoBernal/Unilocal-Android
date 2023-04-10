@@ -1,6 +1,6 @@
 package com.example.unilocal.db
 
-import com.example.unilocal.model.User
+import com.example.unilocal.activities.model.User
 import java.lang.NullPointerException
 
 object Users {
@@ -24,7 +24,7 @@ object Users {
         return users.first { u -> u.email == email }
     }
 
-    fun add (user:User){
+    fun add (user: User){
         users.add(user)
     }
 
