@@ -1,7 +1,6 @@
 package com.example.unilocal.db
 
-import com.example.unilocal.activities.model.User
-import java.lang.NullPointerException
+import com.example.unilocal.model.User
 
 object Users {
 

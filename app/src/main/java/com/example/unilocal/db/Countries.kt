@@ -1,6 +1,6 @@
 package com.example.unilocal.db
 
-import com.example.unilocal.activities.model.Country
+import com.example.unilocal.model.Country
 
 object Countries {
 

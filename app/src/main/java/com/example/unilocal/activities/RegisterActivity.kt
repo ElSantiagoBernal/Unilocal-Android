@@ -1,17 +1,12 @@
 package com.example.unilocal.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
-import android.view.View
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -25,10 +20,8 @@ import com.example.unilocal.databinding.ActivityRegisterFormUser1Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser2Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser3Binding
 import com.example.unilocal.db.Users
-import com.example.unilocal.activities.model.User
+import com.example.unilocal.model.User
 import com.example.unilocal.ui.login.LoginActivity
-import java.text.FieldPosition
-import kotlin.properties.Delegates
 
 class RegisterActivity : AppCompatActivity() {
 

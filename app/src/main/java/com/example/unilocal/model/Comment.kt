@@ -1,4 +1,4 @@
-package com.example.unilocal.activities.model
+package com.example.unilocal.model
 
 import java.time.LocalDateTime
 

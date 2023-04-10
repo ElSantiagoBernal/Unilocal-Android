@@ -1,6 +1,6 @@
 package com.example.unilocal.db
 
-import com.example.unilocal.activities.model.Category
+import com.example.unilocal.model.Category
 
 
 object Categories {
