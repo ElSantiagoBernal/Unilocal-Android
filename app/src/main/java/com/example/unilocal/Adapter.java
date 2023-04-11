@@ -16,12 +16,11 @@ import com.example.unilocal.databinding.ActivityRegisterFormUser3Binding;
 public class Adapter extends PagerAdapter {
 
     int[] layouts;
-    public ImageButton btn;
     LayoutInflater layoutInflater;
+    Context context;
 
     public Adapter(Context context, int[] layouts, ActivityRegisterFormUser3Binding act){
         this.layouts = layouts;
-        this.btn = act.btnChooseImg;
         this.layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -29,7 +28,6 @@ public class Adapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = layoutInflater.inflate(layouts[position], container, false);
-        btn = view.findViewById(R.id.btn_choose_img);
         container.addView(view);
         return view;
     }
@@ -45,5 +43,9 @@ public class Adapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
+    }
+
+    public void viewPagerAdapter(Context context){
+        this.context = context;
     }
 }

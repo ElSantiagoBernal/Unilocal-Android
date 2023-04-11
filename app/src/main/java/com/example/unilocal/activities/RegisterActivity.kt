@@ -2,15 +2,19 @@ package com.example.unilocal.activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.unilocal.Adapter
@@ -35,10 +39,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var binding_form_2: ActivityRegisterFormUser2Binding
     lateinit var binding_form_3: ActivityRegisterFormUser3Binding
     lateinit var imageUrl:String
-    var clics:Int = 0
-    val dots = arrayOfNulls<TextView>(3)
-    var linear:LinearLayout = LinearLayout(this)
-
+    val dots = mutableListOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,35 +62,40 @@ class RegisterActivity : AppCompatActivity() {
         adapter = Adapter(this, layouts, binding_form_3)
         binding.formPager.adapter = adapter
 
+        initDots()
+
+
         binding.Next.setOnClickListener{
             //askImages()
             nextListener()
         }
 
         binding.Next.setOnClickListener{
-            clics++
-            if(clics == 2){
-                binding.Next.text = "Terminar"
-            }else if( binding.Next.text == "Terminar"){
+            if( binding.Next.text == "Terminar"){
                 register()
             }
             nextListener()
-            Toast.makeText(this, "Clics $clics", Toast.LENGTH_SHORT).show()
         }
 
-
-         adapter.btn.setOnClickListener {
-            Toast.makeText(this, "Hola", Toast.LENGTH_SHORT).show()
-        }
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
-                setUpIndicator(position)
+                dots.forEachIndexed { index, dot ->
+                    dot.setTextColor(
+                        ContextCompat.getColor( this@RegisterActivity,
+                            if (index == position) R.color.active else R.color.inactive
+                        )
+                    )
+                }
+                if(position==2){
+                    binding.Next.text = "Terminar"
+                }else{
+                    binding.Next.text = "Siguiente"
 
+                }
             }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
@@ -180,9 +186,9 @@ class RegisterActivity : AppCompatActivity() {
 
         if(result.resultCode == RESULT_OK){
             val data = result.data?.data
-            //val btn = binding.formPager.findViewById<Button>(R.id.btn_choose_img)
+            val btn = binding.formPager.findViewById<ImageButton>(R.id.btn_choose_img)
             imageUrl = data.toString()
-            binding_form_3.btnChooseImg.setImageURI(data)
+            btn.setImageURI(data)
 
         }
 
@@ -194,18 +200,17 @@ class RegisterActivity : AppCompatActivity() {
         startForActivityGallery.launch(intent)
     }
 
-    fun setUpIndicator (position:Int){
-        linear.removeAllViews()
-
-        for (i in 0 until dots.size) {
-            dots[i] = TextView(this)
-            dots[i]?.text ?: Html.fromHtml("&#8226")
-            dots[i]?.textSize ?: 35F
-            dots[i]?.setTextColor(resources.getColor(R.color.inactive))
-            linear.addView(dots[i])
-
+    private fun initDots() {
+        for (i in 0 until (viewPager.adapter?.count ?: 0)) {
+            val dot = TextView(this)
+            dot.text = "•"
+            dot.textSize = 30f
+            dot.setTextColor(ContextCompat.getColor( this, R.color.inactive))
+            dot.setOnClickListener { viewPager.currentItem = i }
+            dots.add(dot)
+            binding.positionLayout.addView(dot)
         }
-        dots[position]?.setTextColor(resources.getColor(R.color.active))
+        dots.first().setTextColor(ContextCompat.getColor(this, R.color.active))
     }
 
 
