@@ -9,6 +9,7 @@ class Place(var id:Int,
             var idOwner:Int,
             var status:PlaceStatus,
             var idCategory:Int,
+            var direction:String,
             var latitude:Float,
             var longitude:Float,
             var idCountry:Int,
@@ -21,7 +22,7 @@ class Place(var id:Int,
     var schedules:ArrayList<Schedule> = ArrayList()
 
     override fun toString(): String {
-        return "Lugar(id=$id, name='$name', description='$description', idOwner=$idOwner, status=$status, idCategory=$idCategory, latitude=$latitude, longitude=$longitude, idCountry=$idCountry, idDepartment=$idDepartment, idCity=$idCity, images=$images, phoneNumbers=$phoneNumbers, date=$date, schedules=$schedules)"
+        return "Lugar(id=$id, name='$name', description='$description', idOwner=$idOwner, status=$status, idCategory=$idCategory, direction=${direction}, latitude=$latitude, longitude=$longitude, idCountry=$idCountry, idDepartment=$idDepartment, idCity=$idCity, images=$images, phoneNumbers=$phoneNumbers, date=$date, schedules=$schedules)"
     }
 
 }

@@ -1,16 +1,18 @@
 package com.example.unilocal.model
 
-class User(var idUser:Int,
-           var name:String,
-           var last_name:String,
-           var email:String,
+class User(idUser:Int,
+           name:String,
+           last_name:String,
+           email:String,
            var nickname:String,
-           var password:String,
-           var idCountry:Int,
-           var idDepartment:Int,
-           var idCity:Int,
-           var age:Int,
-           var imgUrl:String) {
+           password:String,
+           idCountry:Int,
+           idDepartment:Int,
+           idCity:Int,
+           age:Int,
+           var imgUrl:String): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age ) {
 
-    var tel:List<String> = ArrayList();
+    override fun toString(): String {
+        return "Usuario(nickname='$nickname') ${super.toString()}"
+    }
 }

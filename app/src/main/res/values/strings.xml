@@ -38,10 +38,10 @@
     <string name="forgot_recover_pass">Al parecer no recuerdas\ntu contraseña, ¿Quieres\nrecuperarla?</string>
     <string name="forgot_btn_send">Enviar</string>
     <string name="forgot_btn_return">Volver</string>
-    
+
     <!-- MAP STRINGS -->
-    <string name="search_bar">Escribe el nombre del lugar</string>
-    
+    <string name="search_bar">Busca Aquí</string>
+
     <!-- DETAIL PLACE STRINGS -->
     <string name="c"></string>
 

@@ -14,12 +14,13 @@
 
     <LinearLayout
         android:id="@+id/box_search_menu"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="30dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/fondo_busqueda">
 
         <Button
@@ -33,13 +34,13 @@
 
             <EditText
                 android:id="@+id/search_text"
-                android:layout_width="290dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="@string/search_bar"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
-                android:paddingStart="20dp"
-                android:paddingEnd="15dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="20dp"
                 android:background="@null"
                 android:drawableEnd="@drawable/ic_search"
                 />
