@@ -71,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.Next.setOnClickListener{
-            if( binding.Next.text == "Terminar"){
+            if( binding.Next.text == getString(R.string.register_user_finish)){
                 register()
             }
             nextListener()
@@ -90,10 +90,11 @@ class RegisterActivity : AppCompatActivity() {
                     )
                 }
                 if(position==2){
-                    binding.Next.text = "Terminar"
+                    binding.Next.text = getString(R.string.register_user_choose_photo)
+                }else if(imageUrl.isNotEmpty()) {
+                    binding.Next.text = getString(R.string.register_user_finish)
                 }else{
-                    binding.Next.text = "Siguiente"
-
+                    binding.Next.text = getString(R.string.register_user_next)
                 }
             }
 
@@ -127,12 +128,21 @@ class RegisterActivity : AppCompatActivity() {
         if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
             && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && age.isNotEmpty()
             /*&& imageUrl.isNotEmpty()*/){
-            val user = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee")
-            Users.add(user)
-            Toast.makeText(this, "Se registró", Toast.LENGTH_SHORT).show()
-            goToLogIn()
+
+            if(Users.findByEmail(email) == null){
+                Toast.makeText(this, getString(R.string.register_user_msg_email_exists), Toast.LENGTH_SHORT).show()
+            }else if(Users.findByUsername(user) == null){
+                Toast.makeText(this, getString(R.string.register_user_msg_username_exists), Toast.LENGTH_SHORT).show()
+            }else if(Users.findByPhone(phone) == null){
+                Toast.makeText(this, getString(R.string.register_user_msg_phone_exists), Toast.LENGTH_SHORT).show()
+            }else{
+                val user = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
+                Users.add(user)
+                Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                goToLogIn()
+            }
         }else{
-            Toast.makeText(this, "Todos los datos son obligatorios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -175,7 +185,7 @@ class RegisterActivity : AppCompatActivity() {
         if(isGranted){
             pickPhotoFromGallery()
         }else{
-            Toast.makeText(this, "Necesitas habilitar los permisos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.register_user_msg_allow_permissions), Toast.LENGTH_SHORT).show()
         }
 
     }

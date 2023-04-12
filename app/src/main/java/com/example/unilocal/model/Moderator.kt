@@ -9,7 +9,8 @@ class Moderator(idUser:Int,
                 idCountry:Int,
                 idDepartment:Int,
                 idCity:Int,
-                age:Int): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age ) {
+                age:Int,
+                phone: String): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age, phone) {
 
     override fun toString(): String {
         return super.toString()

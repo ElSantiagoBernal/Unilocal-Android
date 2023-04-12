@@ -16,6 +16,15 @@
     <string name="register_user_title_register">Formulario de\nregistro</string>
     <string name="register_user_want_know_you">Queremos conocerte más</string>
     <string name="register_user_next">Siguiente</string>
+    <string name="register_user_finish">Terminar</string>
+    <string name="register_user_choose_photo">Elegir foto</string>
+    <string name="register_user_msg_email_exists">El correo ya existe</string>
+    <string name="register_user_msg_username_exists">El nombre de usuario ya existe</string>
+    <string name="register_user_msg_phone_exists">El número teléfonico ya existe</string>
+    <string name="register_user_msg_all_inpts_obligatories">Todos los campos son obligatorios</string>
+    <string name="register_user_msg_user_registered">Se registró el usuario</string>
+    <string name="register_user_msg_allow_permissions">Necesitas habilitar los permisos</string>
+
 
     <!--REGISTER STRINGS FORM 1-->
     <string name="register_user_name">Nombres</string>
@@ -30,7 +39,7 @@
     <string name="register_user_age">Edad</string>
     <string name="register_user_accept">Aceptar</string>
     <string name="register_user_terms">términos y condiciones</string>
-    <string name="register_user_choose_icon">Pulsa el ícono de arriba\n para agregar tú foto de\n perfil</string>
+    <string name="register_user_choose_button">Pulsa el ícono de arriba\n para agregar tú foto de\n perfil</string>
 
 
     <!--FORGOT PASS STRINGS-->

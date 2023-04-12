@@ -8,5 +8,6 @@ open class Person(var id:Int,
                   var idCountry:Int,
                   var idDepartment:Int,
                   var idCity:Int,
-                  var age:Int) {
+                  var age:Int,
+                  var phone:String) {
 }

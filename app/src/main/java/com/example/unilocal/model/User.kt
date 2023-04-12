@@ -10,7 +10,8 @@ class User(idUser:Int,
            idDepartment:Int,
            idCity:Int,
            age:Int,
-           var imgUrl:String): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age ) {
+           var imgUrl:String,
+           phone: String): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age, phone) {
 
     override fun toString(): String {
         return "Usuario(nickname='$nickname') ${super.toString()}"

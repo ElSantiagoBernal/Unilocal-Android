@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/register_user_choose_icon"
+        android:text="@string/register_user_choose_button"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="bold"
