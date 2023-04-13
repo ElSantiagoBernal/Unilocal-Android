@@ -14,7 +14,8 @@
         android:src="@drawable/gallery_image"
         android:radius="10dp"
         android:layout_gravity="center"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="80dp"
+        />
 
 
     <TextView

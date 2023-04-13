@@ -2,11 +2,15 @@ package com.example.unilocal.activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
+import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -40,6 +44,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var binding_form_3: ActivityRegisterFormUser3Binding
     lateinit var imageUrl:String
     val dots = mutableListOf<TextView>()
+    lateinit var btn_next:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,18 +68,17 @@ class RegisterActivity : AppCompatActivity() {
         binding.formPager.adapter = adapter
 
         initDots()
+        imageUrl = ""
 
-
-        binding.Next.setOnClickListener{
-            //askImages()
-            nextListener()
-        }
-
-        binding.Next.setOnClickListener{
-            if( binding.Next.text == getString(R.string.register_user_finish)){
+        btn_next = binding.Next
+        btn_next.setOnClickListener{
+            if( btn_next.text == getString(R.string.register_user_finish)){
                 register()
+            }else if (btn_next.text == getString(R.string.register_user_choose_photo)){
+                askImages()
+            }else{
+                nextListener()
             }
-            nextListener()
         }
 
 
@@ -89,12 +93,10 @@ class RegisterActivity : AppCompatActivity() {
                         )
                     )
                 }
-                if(position==2){
-                    binding.Next.text = getString(R.string.register_user_choose_photo)
-                }else if(imageUrl.isNotEmpty()) {
-                    binding.Next.text = getString(R.string.register_user_finish)
+                if(position==2) {
+                    btn_next.text = getString(R.string.register_user_choose_photo)
                 }else{
-                    binding.Next.text = getString(R.string.register_user_next)
+                    btn_next.text = getString(R.string.register_user_next)
                 }
             }
 
@@ -110,9 +112,9 @@ class RegisterActivity : AppCompatActivity() {
         //FORM REGISTER 1
         var names = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
         var last_names = viewPager.findViewById<EditText>(R.id.user_last_names).text.toString()
-        var email = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
-        var user = viewPager.findViewById<EditText>(R.id.user_last_names).text.toString()
-        var pass = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
+        var email = viewPager.findViewById<EditText>(R.id.user_email).text.toString()
+        var user = viewPager.findViewById<EditText>(R.id.user_username).text.toString()
+        var pass = viewPager.findViewById<EditText>(R.id.user_pass).text.toString()
 
         //FORM REGISTER 2
 
@@ -121,26 +123,31 @@ class RegisterActivity : AppCompatActivity() {
         var department = viewPager.findViewById<EditText>(R.id.user_department).text.toString()
         var city = viewPager.findViewById<EditText>(R.id.user_city).text.toString()
         var age = viewPager.findViewById<EditText>(R.id.user_age).text.toString()
+        var terms = viewPager.findViewById<CheckBox>(R.id.user_terms)
 
         //FORM REGISTER 3
 
 
         if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
             && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && age.isNotEmpty()
-            /*&& imageUrl.isNotEmpty()*/){
+            && imageUrl != ""){
 
-            if(Users.findByEmail(email) == null){
-                Toast.makeText(this, getString(R.string.register_user_msg_email_exists), Toast.LENGTH_SHORT).show()
-            }else if(Users.findByUsername(user) == null){
-                Toast.makeText(this, getString(R.string.register_user_msg_username_exists), Toast.LENGTH_SHORT).show()
-            }else if(Users.findByPhone(phone) == null){
-                Toast.makeText(this, getString(R.string.register_user_msg_phone_exists), Toast.LENGTH_SHORT).show()
-            }else{
-                val user = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
-                Users.add(user)
-                Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
-                goToLogIn()
-            }
+                if(Users.findByEmail(email) != null){
+                    Toast.makeText(this, getString(R.string.register_user_msg_email_exists), Toast.LENGTH_SHORT).show()
+                }else if(Users.findByUsername(user) != null){
+                    Toast.makeText(this, getString(R.string.register_user_msg_username_exists), Toast.LENGTH_SHORT).show()
+                }else if(Users.findByPhone(phone) != null){
+                    Toast.makeText(this, getString(R.string.register_user_msg_phone_exists), Toast.LENGTH_SHORT).show()
+                }else if(terms.isChecked == false){
+                    Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
+                }else{
+                    val user = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
+                    Users.add(user)
+                    Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                    goToLogIn()
+                }
+
+
         }else{
             Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
         }
@@ -198,8 +205,10 @@ class RegisterActivity : AppCompatActivity() {
             val data = result.data?.data
             val btn = binding.formPager.findViewById<ImageButton>(R.id.btn_choose_img)
             imageUrl = data.toString()
+            btn_next.text = getString(R.string.register_user_finish)
             btn.setImageURI(data)
-
+            btn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            btn.scaleType = ImageView.ScaleType.FIT_CENTER
         }
 
     }

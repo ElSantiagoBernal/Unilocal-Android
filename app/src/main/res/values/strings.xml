@@ -22,6 +22,7 @@
     <string name="register_user_msg_username_exists">El nombre de usuario ya existe</string>
     <string name="register_user_msg_phone_exists">El número teléfonico ya existe</string>
     <string name="register_user_msg_all_inpts_obligatories">Todos los campos son obligatorios</string>
+    <string name="register_user_msg_terms_not_checked">Debes aceptar los términos y condiciones</string>
     <string name="register_user_msg_user_registered">Se registró el usuario</string>
     <string name="register_user_msg_allow_permissions">Necesitas habilitar los permisos</string>
 
@@ -39,7 +40,7 @@
     <string name="register_user_age">Edad</string>
     <string name="register_user_accept">Aceptar</string>
     <string name="register_user_terms">términos y condiciones</string>
-    <string name="register_user_choose_button">Pulsa el ícono de arriba\n para agregar tú foto de\n perfil</string>
+    <string name="register_user_choose_button">Pulsa el botón \"Elegir foto\"\n para agregar tú foto de\n perfil</string>
 
 
     <!--FORGOT PASS STRINGS-->

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -124,19 +125,18 @@ class LoginActivity : AppCompatActivity() {
 
         if(email.isNotEmpty() && password.isNotEmpty()){
 
-            try {
+
                 val user = Users.findByEmail(email.toString())
                 if(user != null && user.password.equals(password)){
                     Toast.makeText(this,"Bienvenido ${user.nickname}",Toast.LENGTH_LONG).show()
                     finish()
                     goToMap()
+                }else if(user == null) {
+                Toast.makeText(this,"No se encontró usuario registrado",Toast.LENGTH_LONG).show()
                 }else{
                     Toast.makeText(this,"La contraseña no coincide",Toast.LENGTH_LONG).show()
                 }
-            }catch (e:Exception){
-                Toast.makeText(this,"No se encontró usuario registrado",Toast.LENGTH_LONG).show()
-                System.err.println(e.toString())
-            }
+
         }else{
             Toast.makeText(this,"Los campos son obligatorios",Toast.LENGTH_LONG).show()
         }

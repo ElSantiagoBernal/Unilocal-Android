@@ -13,6 +13,7 @@ object Users {
         users.add(User(id, "Santiago", "Bernal", "loca2@gmail.com", "ElSantiago", "1234", 1, 1, 1, 20,"","3206340436"))
         id++
         users.add(User(id, "Luisa", "Pulido", "loca3@gmail.com", "Lu", "4321", 1, 2, 2, 22,"", "3207449924"))
+        id++
     }
 
     fun list():ArrayList<User>{
@@ -20,18 +21,34 @@ object Users {
     }
 
     fun findByEmail(email:String): User? {
-        return users.first { u -> u.email == email }
+        try {
+            var user= users.first { u -> u.email == email }
+            return user
+        }catch (e:Exception){
+            return null
+        }
     }
 
     fun findByUsername(username:String): User? {
-        return users.first { u -> u.nickname == username }
+        try {
+            var user= users.first { u -> u.nickname == username }
+            return user
+        }catch (e:Exception){
+            return null
+        }
     }
 
     fun findByPhone(phone:String): User? {
-        return users.first { u -> u.phone == phone }
+        try {
+            var user= users.first { u -> u.phone == phone }
+            return user
+        }catch (e:Exception) {
+            return null
+        }
     }
 
     fun add (user: User){
+        id++
         users.add(user)
     }
 
