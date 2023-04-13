@@ -56,10 +56,10 @@
     <string name="c"></string>
 
     <!-- ITEM PLACE STRINGS -->
-    <string name="calification">Calificación</string>
-    <string name="status">Estado</string>
-    <string name="start_time">Hora Inicio</string>
-    <string name="closing_time">Hora Cierre</string>
+    <string name="item_place_calification">Calificación</string>
+    <string name="item_place_status">Estado</string>
+    <string name="item_place_start_time">Hora Inicio</string>
+    <string name="item_place_closing_time">Hora Cierre</string>
 
 
 </resources>

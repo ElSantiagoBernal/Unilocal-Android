@@ -10,8 +10,10 @@ import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityMapBinding
 import com.example.unilocal.databinding.ActivitySearchResultBinding
 import kotlin.math.log
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MapActivity : AppCompatActivity() {
+
 
     lateinit var binding: ActivityMapBinding
 
@@ -34,6 +36,10 @@ class MapActivity : AppCompatActivity() {
             }
             true
         }
+
+
+
+
 
     }
 
