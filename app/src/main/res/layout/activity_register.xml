@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:text="@string/register_user_title_register"
         android:textColor="@color/black"
-        android:textSize="33dp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:paddingLeft="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:text="@string/register_user_next"
         android:layout_gravity="end"
         android:textSize="16dp"
-        android:layout_marginRight="47dp"
+        android:layout_marginRight="25dp"
         android:layout_marginTop="15dp"
         tools:ignore="MissingConstraints"
         android:backgroundTint="@color/app_color"

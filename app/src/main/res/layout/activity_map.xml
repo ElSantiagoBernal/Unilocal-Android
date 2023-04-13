@@ -32,17 +32,16 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:text="\uf0c9"/>
 
-            <EditText
-                android:id="@+id/search_text"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="@string/search_bar"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
-                android:paddingStart="5dp"
-                android:paddingEnd="20dp"
-                android:background="@null"
-                android:drawableEnd="@drawable/ic_search"
-                />
+        <EditText
+            android:id="@+id/search_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/search_bar"
+            android:imeOptions="actionSearch"
+            android:paddingStart="5dp"
+            android:paddingEnd="20dp"
+            android:singleLine="true" />
     </LinearLayout>
 </RelativeLayout>
