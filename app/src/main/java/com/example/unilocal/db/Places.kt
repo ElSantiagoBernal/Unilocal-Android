@@ -24,7 +24,7 @@ object Places {
         val place5 = Place(5, "Bar HUB", "Barcito", 2, PlaceStatus.ACCEPTED, 5, "Freislo 88879",45.545454f,-23.87867f,1,1,1)
         place5.schedules.add(schedule2)
         val place6 = Place(6, "Licky Liquors", "Licorera", 3, PlaceStatus.ACCEPTED, 6, "Av. Centenario B13-9",45.545454f,-23.87867f,1,1,1)
-        place6.schedules.add(schedule2)
+        place6.schedules.add(schedule3)
 
         places.add(place1)
         places.add(place2)

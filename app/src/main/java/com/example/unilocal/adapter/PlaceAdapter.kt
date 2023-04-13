@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.model.Place
+import com.example.unilocal.model.Schedule
 
 class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
 
@@ -29,8 +30,9 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
 
         val name:TextView = itemView.findViewById(R.id.place_name)
         val direction:TextView = itemView.findViewById(R.id.place_direction)
-        val schedule:TextView = itemView.findViewById(R.id.schedule_place)
-        val status:TextView = itemView.findViewById(R.id.place_rating)
+        val startTime:TextView = itemView.findViewById(R.id.start_time)
+        val closingTime:TextView = itemView.findViewById(R.id.closing_time)
+        val status:TextView = itemView.findViewById(R.id.status_place)
         val image:ImageView = itemView.findViewById(R.id.place_image)
         var codePlace:Int = 0
 
@@ -41,7 +43,8 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
         fun bind(place: Place){
             name.text = place.name
             direction.text = place.direction
-            schedule.text = "Cierra a las Ahorita"
+            startTime.text = place.schedules[0].startTime.toString() + ":00"
+            closingTime.text = place.schedules[0].closingTime.toString() + ":00"
             status.text = "Abierto"
             codePlace= place.id
         }
