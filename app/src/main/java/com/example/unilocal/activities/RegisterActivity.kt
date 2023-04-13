@@ -144,6 +144,7 @@ class RegisterActivity : AppCompatActivity() {
                     val user = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
                     Users.add(user)
                     Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                    finish()
                     goToLogIn()
                 }
 
