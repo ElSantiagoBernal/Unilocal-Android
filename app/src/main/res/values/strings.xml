@@ -55,5 +55,11 @@
     <!-- DETAIL PLACE STRINGS -->
     <string name="c"></string>
 
+    <!-- ITEM PLACE STRINGS -->
+    <string name="calification">Calificación</string>
+    <string name="status">Estado</string>
+    <string name="start_time">Hora Inicio</string>
+    <string name="closing_time">Hora Cierre</string>
+
 
 </resources>
