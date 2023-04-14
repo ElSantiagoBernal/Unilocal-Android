@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityMapBinding
 import com.example.unilocal.databinding.ActivitySearchResultBinding
+import com.example.unilocal.fragment.TopSearchMenuFragment
 import kotlin.math.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -23,23 +26,11 @@ class MapActivity : AppCompatActivity() {
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.searchText.setOnEditorActionListener { textView, i, keyEvent ->
-            if( i == EditorInfo.IME_ACTION_SEARCH)
-            {
-                val search = binding.searchText.text.toString()
-
-                if(search.isNotEmpty()){
-                    val intent = Intent(baseContext, SearchResultActivity::class.java)
-                    intent.putExtra("text", search)
-                    startActivity(intent)
-                }
-            }
-            true
+        supportFragmentManager.commit {
+            replace<TopSearchMenuFragment>(R.id.top_search_menu)
+            setReorderingAllowed(true)
+            addToBackStack("replacement")
         }
-
-
-
-
 
     }
 
