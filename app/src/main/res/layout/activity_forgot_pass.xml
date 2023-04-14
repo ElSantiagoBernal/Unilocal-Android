@@ -16,7 +16,7 @@
         android:textColor="@color/black"
         android:textSize="40dp"
         android:textStyle="bold"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="30dp"
         tools:ignore="MissingConstraints"
         android:paddingLeft="50dp"/>
 
@@ -37,7 +37,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/form_pager_forgot"
         android:layout_width="320dp"
-        android:layout_height="220dp"
+        android:layout_height="210dp"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:background="@drawable/form_register_style"
@@ -46,13 +46,22 @@
 
     </androidx.viewpager.widget.ViewPager>
 
+    <LinearLayout
+        android:id="@+id/position_layout"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:backgroundTint="@color/black"/>
+
     <Button
-        android:id="@+id/Next"
+        android:id="@+id/btn_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/forgot_btn_return"
+        android:text="@string/forgot_btn_send"
         android:textSize="16dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="100dp"
         tools:ignore="MissingConstraints"
         android:backgroundTint="@color/app_color"
         android:background="@drawable/border_style"

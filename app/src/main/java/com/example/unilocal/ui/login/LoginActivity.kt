@@ -128,17 +128,17 @@ class LoginActivity : AppCompatActivity() {
 
                 val user = Users.findByEmail(email.toString())
                 if(user != null && user.password.equals(password)){
-                    Toast.makeText(this,"Bienvenido ${user.nickname}",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,getString(R.string.login_msg_welcome)+ " ${user.nickname}",Toast.LENGTH_LONG).show()
                     finish()
                     goToMap()
                 }else if(user == null) {
-                Toast.makeText(this,"No se encontró usuario registrado",Toast.LENGTH_LONG).show()
+                Toast.makeText(this,getString(R.string.login_msg_user_do_not_exist),Toast.LENGTH_LONG).show()
                 }else{
-                    Toast.makeText(this,"La contraseña no coincide",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,getString(R.string.login_msg_pass_do_not_match),Toast.LENGTH_LONG).show()
                 }
 
         }else{
-            Toast.makeText(this,"Los campos son obligatorios",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,getString(R.string.register_user_msg_all_inpts_obligatories),Toast.LENGTH_LONG).show()
         }
     }
 
