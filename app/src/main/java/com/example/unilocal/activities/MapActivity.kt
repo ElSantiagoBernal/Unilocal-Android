@@ -42,6 +42,7 @@ class MapActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             addToBackStack("replacement")
         }
+        changeFragment(1, MENU_MAP)
 
         navigationView = findViewById(R.id.bottom_app_bar)
 
