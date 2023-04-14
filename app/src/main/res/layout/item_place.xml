@@ -70,7 +70,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calificación"
+                android:text="@string/item_place_calification"
                 android:layout_marginLeft="5dp"
                 android:textSize="10sp"
                 android:textStyle="bold"/>
@@ -92,7 +92,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estado"
+                android:text="@string/item_place_status"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:textSize="10sp"
@@ -124,7 +124,7 @@
             android:layout_height="150dp"
             android:src="@mipmap/ic_launcher_round"
             android:layout_weight="50"
-            android:background="#8BD99E"/>
+            android:background="#EFD0F4"/>
 
     </LinearLayout>
 
@@ -146,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="Hora Inicio"
+                android:text="@string/item_place_start_time"
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
@@ -174,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="Hora Cierre"
+                android:text="@string/item_place_closing_time"
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
