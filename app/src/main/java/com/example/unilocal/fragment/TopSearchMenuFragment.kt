@@ -33,7 +33,6 @@ class TopSearchMenuFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
 
         binding = FragmentTopSearchMenuBinding.inflate(inflater, container, false)
         binding.searchText.setOnEditorActionListener { textView, i, keyEvent ->

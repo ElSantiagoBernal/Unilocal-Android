@@ -39,6 +39,10 @@ object Places {
         return places.filter { p -> p.status == status }.toCollection(ArrayList())
     }
 
+    fun ListByOwner(idOwner:Int):ArrayList<Place>{
+        return places.filter { p -> p.idOwner == idOwner }.toCollection(ArrayList())
+    }
+
     fun get(id:Int): Place?{
         return places.firstOrNull { p -> p.id == id }
     }

@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".activities.MapActivity">
 
-    <View
+    <FrameLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EFD0F4" />
+        android:background="@color/black"/>
 
     <FrameLayout
         android:id="@+id/top_search_menu"
