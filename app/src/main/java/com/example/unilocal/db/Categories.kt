@@ -9,11 +9,15 @@ object Categories {
     private val categories:java.util.ArrayList<Category> = ArrayList()
 
     init {
-        categories.add(Category(id, "Categoria 1"))
+        categories.add(Category(id, "Hotel", "\uf594"))
         id++
-        categories.add(Category(id,"Categoria 2"))
+        categories.add(Category(id,"Café", "\uf7b6"))
         id++
-        categories.add(Category(id,"Categoria 3"))
+        categories.add(Category(id,"Restaurante", "\uf2e7"))
+        id++
+        categories.add(Category(id,"Parque", "\uf1bb"))
+        id++
+        categories.add(Category(id,"Bar", "\uf0fc"))
     }
 
     fun list():ArrayList<Category>{
@@ -22,5 +26,9 @@ object Categories {
 
     fun add (category: Category){
         categories.add(category)
+    }
+
+    fun get(id:Int):Category?{
+        return categories.firstOrNull { c -> c.id == id }
     }
 }

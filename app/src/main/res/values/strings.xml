@@ -79,7 +79,7 @@
     <string name="item_place_status">Estado</string>
     <string name="item_place_start_time">Hora Inicio</string>
     <string name="item_place_closing_time">Hora Cierre</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 

@@ -1,5 +1,6 @@
 package com.example.unilocal.ui.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,8 +19,11 @@ import com.example.unilocal.databinding.ActivityLoginBinding
 
 import com.example.unilocal.R
 import com.example.unilocal.activities.*
+import com.example.unilocal.db.People
 import com.example.unilocal.db.Users
-
+import com.example.unilocal.model.Administrator
+import com.example.unilocal.model.Moderator
+import com.example.unilocal.model.User
 
 
 class LoginActivity : AppCompatActivity() {
@@ -30,81 +34,31 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
 
+        val email = sp.getString("email_user", "")
+        val type = sp.getString("type_user", "")
 
-        //val loading = binding.loading
-
-
-        binding.forgot.setOnClickListener{goToForgotPass()}
-        binding.registerNow.setOnClickListener{goToRegister()}
-        binding.btnLogin.setOnClickListener { login() }
-
-        /*loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
-
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
-            val loginState = it ?: return@Observer
-
-            // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
-
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+        if(email!!.isNotEmpty() && type!!.isNotEmpty()){
+            Log.e("LoginActivity", "entro $type")
+            when(type){
+                "user" -> startActivity(Intent(this, MapActivity::class.java))
+                "moderator" -> startActivity(Intent((this), ModeratorActivity::class.java))
             }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
-            }
-        })
-
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
-            val loginResult = it ?: return@Observer
-
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(RESULT_OK)
-
-            //Complete and destroy login activity once successful
             finish()
-        })
+        } else
+        {
+            binding = ActivityLoginBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        username.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                username.text.toString(),
-                password.text.toString()
-            )
+
+            //val loading = binding.loading
+
+
+            binding.forgot.setOnClickListener{goToForgotPass()}
+            binding.registerNow.setOnClickListener{goToRegister()}
+            binding.btnLogin.setOnClickListener { login() }
         }
-
-        password.apply {
-            afterTextChanged {
-                loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-                )
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
-                }
-                false
-            }
-
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
-            }
-        }*/
 
     }
 
@@ -128,17 +82,31 @@ class LoginActivity : AppCompatActivity() {
 
         if(email.isNotEmpty() && password.isNotEmpty()){
 
+            val person = People.login(email.toString(), password.toString())
 
-                val user = Users.findByEmail(email.toString())
-                if(user != null && user.password.equals(password)){
-                    Toast.makeText(this,getString(R.string.login_msg_welcome)+ " ${user.nickname}",Toast.LENGTH_LONG).show()
-                    finish()
-                    goToMap()
-                }else if(user == null) {
-                    input_email.error = getString(R.string.login_msg_user_do_not_exist)
-                }else{
-                    Toast.makeText(this,getString(R.string.login_msg_pass_do_not_match),Toast.LENGTH_LONG).show()
+            val user = Users.findByEmail(email.toString())
+
+            if(person != null){
+                val type = if(person is User) "user" else if (person is Moderator) "moderator" else "admin"
+                val sharedPreferences = this.getSharedPreferences("sesion", Context.MODE_PRIVATE).edit()
+
+                sharedPreferences.putInt("id_user", person.id)
+                sharedPreferences.putString("email_user", person.email)
+                sharedPreferences.putString("type_user", type)
+
+                sharedPreferences.commit()
+                when(person){
+                    is User -> goToMap()
+                    is Moderator -> startActivity(Intent(this, ModeratorActivity::class.java))
+                    is Administrator -> startActivity(Intent(this, AdminActivity::class.java))
                 }
+                finish()
+
+            }else if(person == null) {
+                input_email.error = getString(R.string.login_msg_user_do_not_exist)
+            }else{
+                Toast.makeText(this,getString(R.string.login_msg_pass_do_not_match),Toast.LENGTH_LONG).show()
+            }
 
         }else{
             if(email.isEmpty()){
