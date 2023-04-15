@@ -13,6 +13,7 @@
     <string name="login_msg_welcome">Bienvenido</string>
     <string name="login_msg_user_do_not_exist">No se encontró usuario registrado</string>
     <string name="login_msg_pass_do_not_match">La contraseña no coincide</string>
+    <string name="login_msg_pass_required">Debe tener al menos 8 caracteres y contener al menos una letra mayúscula, una letra minúscula, y un número.</string>
 
 
     <!--REGISTER STRINGS-->
@@ -28,8 +29,8 @@
     <string name="register_user_msg_terms_not_checked">Debes aceptar los términos y condiciones</string>
     <string name="register_user_msg_user_registered">Se registró el usuario</string>
     <string name="register_user_msg_allow_permissions">Necesitas habilitar los permisos</string>
+    <string name="register_user_msg_invalid_age"></string>
     <string name="register_now">Registrate ahora</string>
-
 
     <!--REGISTER STRINGS FORM 1-->
     <string name="register_user_name">Nombres</string>
@@ -37,6 +38,8 @@
     <string name="register_user_email">Correo</string>
     <string name="register_user_username">Usuario</string>
     <string name="register_user_pass">Contraseña</string>
+
+    <!--REGISTER STRINGS FORM 2-->
     <string name="register_user_phone">Télefono</string>
     <string name="register_user_country">País</string>
     <string name="register_user_department">Dpto</string>
@@ -51,7 +54,7 @@
     <string name="forgot_sorry">Vaya :(</string>
     <string name="forgot_recover_pass">Al parecer no recuerdas\ntu contraseña, ¿Quieres\nrecuperarla?</string>
     <string name="forgot_btn_send">Enviar</string>
-    <string name="forgot_msg_obligatorie_email_input">El campo de corrreo es obligatorio</string>
+    <string name="forgot_msg_obligatorie_inputs">Este campo es obligatorio</string>
     <string name="forgot_msg_obligatorie_all_inputs">Todos los campos son obligatorios</string>
     <string name="forgot_msg_email_registered">El correo está registrado</string>
     <string name="forgot_msg_passwords_do_not_match">Las contraseñas no coinciden</string>
@@ -61,6 +64,7 @@
     <!--FORGOT PASS STRINGS FORM 1 -->
     <string name="forgot_new_pass">Contraseña nueva</string>
     <string name="forgot_repeat_new_pass">Confirmar contraseña</string>
+    <string name="forgot_invalid_email">Ingresa un correo válido</string>
 
 
     <!-- MAP STRINGS -->

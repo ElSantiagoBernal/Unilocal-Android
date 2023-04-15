@@ -46,6 +46,34 @@ class RegisterActivity : AppCompatActivity() {
     val dots = mutableListOf<TextView>()
     lateinit var btn_next:Button
 
+    //FORM REGISTER 1
+    lateinit var input_names:EditText
+    lateinit var input_last_names:EditText
+    lateinit var input_email:EditText
+    lateinit var input_user:EditText
+    lateinit var input_pass:EditText
+
+    lateinit var names:String
+    lateinit var last_names:String
+    lateinit var email:String
+    lateinit var user:String
+    lateinit var pass:String
+
+    //FORM REGISTER 2
+
+    lateinit var input_phone:EditText
+    lateinit var input_country:EditText
+    lateinit var input_department:EditText
+    lateinit var input_city:EditText
+    lateinit var input_age:EditText
+
+    lateinit var phone:String
+    lateinit var country:String
+    lateinit var department:String
+    lateinit var city:String
+    var age:Int = 0
+    lateinit var terms:CheckBox
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -93,65 +121,154 @@ class RegisterActivity : AppCompatActivity() {
                         )
                     )
                 }
+                if(position == 1){
+                    verifyForm1Inputs()
+                }
                 if(position==2) {
+                    verifyForm2Inputs()
                     btn_next.text = getString(R.string.register_user_choose_photo)
                 }else{
                     btn_next.text = getString(R.string.register_user_next)
                 }
             }
-
             override fun onPageScrollStateChanged(state: Int) {}
         })
-
-
 
 
     }
 
     private fun register() {
+        if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
+            && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && age == 0
+            && imageUrl != ""){
+                if(verifyRegexEmail() && verifyRegexPass()){
+                    verifyDatesWithDb()
+                }
+        }else{
+            verifyAllInputs()
+            Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun verifyRegexAge(): Boolean {
+        if(age < 0){
+            return true
+        }else{
+            input_age.error = getString(R.string.forgot_invalid_email)
+            return false
+        }
+    }
+
+    private fun verifyRegexEmail(): Boolean {
+        val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})".toRegex()
+        if(email.matches(emailRegex)){
+            return true
+        }else{
+            input_email.error = getString(R.string.forgot_invalid_email)
+            return false
+        }
+    }
+
+    private fun verifyRegexPass(): Boolean {
+        val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}\$".toRegex()
+        if(pass.matches(passwordRegex)){
+            return true
+        }else{
+            input_email.error = getString(R.string.login_msg_pass_required)
+            return false
+        }
+    }
+
+    private fun verifyDatesWithDb() {
+        if(Users.findByEmail(email) != null){
+            input_email.error = getString(R.string.register_user_msg_email_exists)
+        }else if(Users.findByUsername(user) != null){
+            input_user.error = getString(R.string.register_user_msg_username_exists)
+        }else if(Users.findByPhone(phone) != null){
+            input_phone.error = getString(R.string.register_user_msg_phone_exists)
+        }else if(terms.isChecked == false){
+            Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
+        }else{
+            val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
+            Users.add(userRegister)
+            Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+            finish()
+            goToLogIn()
+        }
+    }
+
+    private fun verifyAllInputs() {
+        verifyForm1Inputs()
+        verifyForm2Inputs()
+    }
+
+    private fun verifyForm1Inputs() {
+        initVars()
+        if(names.isEmpty()){
+            input_names.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(last_names.isEmpty()){
+            input_last_names.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(email.isEmpty()){
+            input_email.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(user.isEmpty()){
+            input_user.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(pass.isEmpty()){
+            input_pass.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+    }
+
+    private fun verifyForm2Inputs() {
+        if(phone.isEmpty()){
+            input_phone.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(country.isEmpty()){
+            input_country.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(department.isEmpty()){
+            input_department.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(city.isEmpty()){
+            input_city.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+        if(age == 0){
+            input_age.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
+    }
+
+
+
+    private fun initVars() {
         //FORM REGISTER 1
-        var names = viewPager.findViewById<EditText>(R.id.user_name).text.toString()
-        var last_names = viewPager.findViewById<EditText>(R.id.user_last_names).text.toString()
-        var email = viewPager.findViewById<EditText>(R.id.user_email).text.toString()
-        var user = viewPager.findViewById<EditText>(R.id.user_username).text.toString()
-        var pass = viewPager.findViewById<EditText>(R.id.user_pass).text.toString()
+        input_names = viewPager.findViewById(R.id.user_name)
+        input_last_names = viewPager.findViewById(R.id.user_last_names)
+        input_email = viewPager.findViewById(R.id.user_email)
+        input_user = viewPager.findViewById(R.id.user_username)
+        input_pass = viewPager.findViewById(R.id.user_pass)
+
+        names = input_names.text.toString()
+        last_names = input_last_names.text.toString()
+        email = input_email.text.toString()
+        user = input_user.text.toString()
+        pass = input_pass.text.toString()
 
         //FORM REGISTER 2
 
-        var phone = viewPager.findViewById<EditText>(R.id.user_phone).text.toString()
-        var country = viewPager.findViewById<EditText>(R.id.user_country).text.toString()
-        var department = viewPager.findViewById<EditText>(R.id.user_department).text.toString()
-        var city = viewPager.findViewById<EditText>(R.id.user_city).text.toString()
-        var age = viewPager.findViewById<EditText>(R.id.user_age).text.toString()
-        var terms = viewPager.findViewById<CheckBox>(R.id.user_terms)
+        input_phone = viewPager.findViewById(R.id.user_phone)
+        input_country = viewPager.findViewById(R.id.user_country)
+        input_department = viewPager.findViewById(R.id.user_department)
+        input_city = viewPager.findViewById(R.id.user_city)
+        input_age = viewPager.findViewById(R.id.user_age)
 
-        //FORM REGISTER 3
-
-
-        if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
-            && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && age.isNotEmpty()
-            && imageUrl != ""){
-
-                if(Users.findByEmail(email) != null){
-                    Toast.makeText(this, getString(R.string.register_user_msg_email_exists), Toast.LENGTH_SHORT).show()
-                }else if(Users.findByUsername(user) != null){
-                    Toast.makeText(this, getString(R.string.register_user_msg_username_exists), Toast.LENGTH_SHORT).show()
-                }else if(Users.findByPhone(phone) != null){
-                    Toast.makeText(this, getString(R.string.register_user_msg_phone_exists), Toast.LENGTH_SHORT).show()
-                }else if(terms.isChecked == false){
-                    Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
-                }else{
-                    val user = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
-                    Users.add(user)
-                    Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
-                    finish()
-                    goToLogIn()
-                }
-
-
-        }else{
-            Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
-        }
+        phone = input_phone.text.toString()
+        country = input_country.text.toString()
+        department = input_department.text.toString()
+        city = input_city.text.toString()
+        age = (input_age.text.toString()).toInt()
+        terms = viewPager.findViewById(R.id.user_terms)
     }
 
     fun goToLogIn(){

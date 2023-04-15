@@ -1,5 +1,6 @@
 package com.example.unilocal.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
@@ -11,6 +12,7 @@ import com.example.unilocal.R
 import com.example.unilocal.databinding.*
 import com.example.unilocal.db.Users
 import com.example.unilocal.model.User
+import com.example.unilocal.ui.login.LoginActivity
 
 class ForgotPassActivity : AppCompatActivity() {
 
@@ -36,7 +38,6 @@ class ForgotPassActivity : AppCompatActivity() {
             R.layout.activity_forgot_pass_form_1,
             R.layout.activity_forgot_pass_form_2
         )
-        //layouts.plus(R.layout.activity_forgot_pass_form_2)
 
         adapter = Adapter(this, layouts, null)
         binding.formPagerForgot.adapter = adapter
@@ -72,50 +73,76 @@ class ForgotPassActivity : AppCompatActivity() {
     }
 
     private fun verifyAllInputs() {
-        var email = viewPager.findViewById<EditText>(R.id.user_email).text.toString()
-        var pass = viewPager.findViewById<EditText>(R.id.user_new_pass).text.toString()
-        var confirm_pass = viewPager.findViewById<EditText>(R.id.user_repeat_pass).text.toString()
+        var input_email = viewPager.findViewById<EditText>(R.id.user_email)
+        var input_pass = viewPager.findViewById<EditText>(R.id.user_new_pass)
+        var input_confirm_pass = viewPager.findViewById<EditText>(R.id.user_repeat_pass)
+
+        var email = input_email.text.toString()
+        var pass = input_pass.text.toString()
+        var confirm_pass = input_confirm_pass.text.toString()
+
+        val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}\$".toRegex()
 
         if(email.isNotEmpty() && pass.isNotEmpty() && confirm_pass.isNotEmpty()) {
-            if(pass.equals(confirm_pass)){
-                var user = Users.findByEmail(email)
-                if (user != null) {
-                    user.password = pass
-                    Toast.makeText(this, getString(R.string.forgot_msg_pass_changed), Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this,"New Pass ${user.password}", Toast.LENGTH_SHORT).show()
+            if(pass.matches(passwordRegex)){
+                if(pass.equals(confirm_pass)){
+                    var user = Users.findByEmail(email)
+                    if (user != null) {
+                        user.password = pass
+                        Toast.makeText(this, getString(R.string.forgot_msg_pass_changed), Toast.LENGTH_SHORT).show()
+                        finish()
+                        goToLogin()
+                    }else{
+                        Toast.makeText(this, getString(R.string.login_msg_user_do_not_exist), Toast.LENGTH_SHORT).show()
+                    }
+                }else{
+                    input_confirm_pass.error = getString(R.string.forgot_msg_passwords_do_not_match)
                 }
             }else{
-                Toast.makeText(this, getString(R.string.forgot_msg_passwords_do_not_match), Toast.LENGTH_SHORT).show()
+                input_pass.error = getString(R.string.login_msg_pass_required)
             }
-
         }else{
             Toast.makeText(this, getString(R.string.forgot_msg_obligatorie_all_inputs), Toast.LENGTH_SHORT).show()
+            if(email.isEmpty()){
+                input_email.error = getString(R.string.forgot_msg_obligatorie_inputs)
+            }
+            if(pass.isEmpty()){
+                input_pass.error = getString(R.string.forgot_msg_obligatorie_inputs)
+            }
+            if(confirm_pass.isEmpty()){
+                input_confirm_pass.error = getString(R.string.forgot_msg_obligatorie_inputs)
+            }
         }
     }
 
 
     private fun verifyEmailDb() {
+        val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})".toRegex()
         var email = viewPager.findViewById<EditText>(R.id.user_email).text.toString()
         if(email.isNotEmpty()){
-            var user = Users.findByEmail(email)
-            if(user == null){
-                Toast.makeText(this, getString(R.string.login_msg_user_do_not_exist), Toast.LENGTH_SHORT).show()
+            if(email.matches(emailRegex)){
+                var user = Users.findByEmail(email)
+                if(user == null){
+                    viewPager.findViewById<EditText>(R.id.user_email).error = getString(R.string.login_msg_user_do_not_exist)
+                }else{
+                    Toast.makeText(this, getString(R.string.forgot_msg_email_registered), Toast.LENGTH_SHORT).show()
+                }
             }else{
-                Toast.makeText(this, getString(R.string.forgot_msg_email_registered), Toast.LENGTH_SHORT).show()
+                viewPager.findViewById<EditText>(R.id.user_email).error = getString(R.string.forgot_invalid_email)
             }
-        }else{
-            Toast.makeText(this, getString(R.string.forgot_msg_obligatorie_email_input), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun verifyEmailInput() {
+
         var email = viewPager.findViewById<EditText>(R.id.user_email).text.toString()
         if(email.isEmpty()){
-            Toast.makeText(this, getString(R.string.forgot_msg_obligatorie_email_input), Toast.LENGTH_SHORT).show()
+            viewPager.findViewById<EditText>(R.id.user_email).error = getString(R.string.forgot_msg_obligatorie_inputs)
         }else{
             verifyEmailDb()
         }
     }
+
 
 
 
@@ -136,6 +163,11 @@ class ForgotPassActivity : AppCompatActivity() {
             binding.positionLayout.addView(dot)
         }
         dots.first().setTextColor(ContextCompat.getColor(this, R.color.active))
+    }
+
+    fun goToLogin(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
 }

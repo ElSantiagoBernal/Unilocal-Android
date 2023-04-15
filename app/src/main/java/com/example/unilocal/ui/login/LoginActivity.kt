@@ -120,8 +120,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(){
-        var email = binding.email.text
-        var password = binding.password.text.toString()
+        var input_email = binding.email
+        var input_pass = binding.password
+
+        var email = input_email.text.toString()
+        var password = input_pass.text.toString()
 
         if(email.isNotEmpty() && password.isNotEmpty()){
 
@@ -132,12 +135,15 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                     goToMap()
                 }else if(user == null) {
-                Toast.makeText(this,getString(R.string.login_msg_user_do_not_exist),Toast.LENGTH_LONG).show()
+                    input_email.error = getString(R.string.login_msg_user_do_not_exist)
                 }else{
                     Toast.makeText(this,getString(R.string.login_msg_pass_do_not_match),Toast.LENGTH_LONG).show()
                 }
 
         }else{
+            if(email.isEmpty()){
+                input_email.error = getString(R.string.forgot_invalid_email)
+            }
             Toast.makeText(this,getString(R.string.register_user_msg_all_inpts_obligatories),Toast.LENGTH_LONG).show()
         }
     }

@@ -21,35 +21,34 @@
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="127dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="@color/app_color"
         />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_email"
         android:layout_width="313dp"
         android:layout_height="65dp"
         android:layout_marginTop="80dp"
         app:hintTextColor="@color/app_color"
-        android:textCursorDrawable="@color/black"
+        android:backgroundTint="@color/app_color"
         >
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/app_color"
-            android:drawableTint="@color/app_color"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             android:textColor="@color/black"
-            android:textColorHighlight="@color/app_color"
-            android:textColorLink="@color/app_color"
-            app:layout_constraintTop_toBottomOf="@+id/main_title"/>
+            app:layout_constraintTop_toBottomOf="@+id/main_title"
+            android:backgroundTint="@color/app_color"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_pass"
         android:layout_width="313dp"
         android:layout_height="65dp"
         android:layout_marginTop="30dp"
@@ -70,7 +69,6 @@
             android:textColor="@color/black"
             android:backgroundTint="@color/app_color"
             />
-            <!--android:textCursorDrawable="@color/black"-->
     </com.google.android.material.textfield.TextInputLayout>
 
 
