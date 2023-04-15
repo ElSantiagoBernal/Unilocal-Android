@@ -59,9 +59,11 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
                 status.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
                 status.text = "Cerrado"
             }
-
+/*
             icon.text = Categories.get(place.id)!!.icon
             codePlace= place.id
+
+ */
         }
 
         override fun onClick(p0: View?) {

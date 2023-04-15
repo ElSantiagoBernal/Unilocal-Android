@@ -7,36 +7,24 @@
     android:orientation="vertical"
     tools:context=".activities.DetailPlaceActivity">
 
-    <View
+    <ImageView
+        android:id="@+id/place_image"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="#8BD99E"/>
+        android:layout_height="230dp"
+        android:background="#6A6A6A"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre del lugar"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calificación Promedio"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categoría"/>
-
-    <RelativeLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight = "1"/>
 
-    </RelativeLayout>
 
 
 </LinearLayout>
