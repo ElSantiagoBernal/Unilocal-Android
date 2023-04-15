@@ -71,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var country:String
     lateinit var department:String
     lateinit var city:String
-    var age:Int = 0
+    lateinit var age:String
     lateinit var terms:CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,30 +133,54 @@ class RegisterActivity : AppCompatActivity() {
             }
             override fun onPageScrollStateChanged(state: Int) {}
         })
-
-
     }
 
     private fun register() {
         if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
-            && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && age == 0
+            && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && verifyRegexAge()
             && imageUrl != ""){
-                if(verifyRegexEmail() && verifyRegexPass()){
-                    verifyDatesWithDb()
+                if(verifyRegexEmail() && verifyRegexPass() && verifyRegexAge() && verifyRegexPhone()){
+                    if(verifyDatesWithDb()){
+                        val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
+                        Users.add(userRegister)
+                        Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                        finish()
+                        goToLogIn()
+                    }else{
+                        if(terms.isChecked == false){
+                            Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(this, "Asegurate de que todos los campos estén diligenciados correctamente", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
                 }
         }else{
-            verifyAllInputs()
+            verifyForm1Inputs()
+            verifyForm2Inputs()
             Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun verifyRegexAge(): Boolean {
-        if(age < 0){
+    private fun verifyRegexPhone(): Boolean {
+        if(phone.length == 10){
             return true
         }else{
-            input_age.error = getString(R.string.forgot_invalid_email)
+            input_phone.error = getString(R.string.register_user_msg_invalid_phone)
             return false
         }
+    }
+
+
+    private fun verifyRegexAge(): Boolean {
+        if(age.isNotEmpty()){
+            if(age.toInt() in 18..110){
+                return true
+            }else{
+                input_age.error = getString(R.string.register_user_msg_invalid_age)
+            }
+        }
+        return false
     }
 
     private fun verifyRegexEmail(): Boolean {
@@ -174,36 +198,32 @@ class RegisterActivity : AppCompatActivity() {
         if(pass.matches(passwordRegex)){
             return true
         }else{
-            input_email.error = getString(R.string.login_msg_pass_required)
+            input_pass.error = getString(R.string.login_msg_pass_required)
             return false
         }
     }
 
-    private fun verifyDatesWithDb() {
+    private fun verifyDatesWithDb(): Boolean {
         if(Users.findByEmail(email) != null){
             input_email.error = getString(R.string.register_user_msg_email_exists)
+            return false
         }else if(Users.findByUsername(user) != null){
             input_user.error = getString(R.string.register_user_msg_username_exists)
+            return false
         }else if(Users.findByPhone(phone) != null){
             input_phone.error = getString(R.string.register_user_msg_phone_exists)
+            return false
         }else if(terms.isChecked == false){
-            Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
-        }else{
-            val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
-            Users.add(userRegister)
-            Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
-            finish()
-            goToLogIn()
+            return false
         }
-    }
-
-    private fun verifyAllInputs() {
-        verifyForm1Inputs()
-        verifyForm2Inputs()
+        return true
     }
 
     private fun verifyForm1Inputs() {
         initVars()
+        verifyRegexEmail()
+        verifyRegexPass()
+        verifyDatesWithDb()
         if(names.isEmpty()){
             input_names.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
@@ -219,9 +239,14 @@ class RegisterActivity : AppCompatActivity() {
         if(pass.isEmpty()){
             input_pass.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
+
     }
 
     private fun verifyForm2Inputs() {
+        initVars()
+        verifyRegexPhone()
+        verifyRegexAge()
+        verifyDatesWithDb()
         if(phone.isEmpty()){
             input_phone.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
@@ -234,7 +259,7 @@ class RegisterActivity : AppCompatActivity() {
         if(city.isEmpty()){
             input_city.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
-        if(age == 0){
+        if(age.isEmpty()){
             input_age.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
     }
@@ -267,7 +292,7 @@ class RegisterActivity : AppCompatActivity() {
         country = input_country.text.toString()
         department = input_department.text.toString()
         city = input_city.text.toString()
-        age = (input_age.text.toString()).toInt()
+        age = input_age.text.toString()
         terms = viewPager.findViewById(R.id.user_terms)
     }
 
