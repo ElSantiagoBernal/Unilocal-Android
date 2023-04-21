@@ -22,6 +22,7 @@ import com.example.unilocal.activities.*
 import com.example.unilocal.db.People
 import com.example.unilocal.db.Users
 import com.example.unilocal.model.Administrator
+import com.example.unilocal.model.City
 import com.example.unilocal.model.Moderator
 import com.example.unilocal.model.User
 
@@ -58,6 +59,13 @@ class LoginActivity : AppCompatActivity() {
             binding.forgot.setOnClickListener{goToForgotPass()}
             binding.registerNow.setOnClickListener{goToRegister()}
             binding.btnLogin.setOnClickListener { login() }
+
+
+            binding.registerNow.setOnClickListener{
+                val intent = Intent(this, RegisterActivity::class.java)
+                intent.putExtra("object", "(Aqui el objeto que se pasará)")
+                startActivity(intent)
+            }
         }
 
     }

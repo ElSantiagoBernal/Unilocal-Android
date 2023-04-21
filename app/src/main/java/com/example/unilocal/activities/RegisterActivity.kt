@@ -1,5 +1,6 @@
 package com.example.unilocal.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -7,6 +8,7 @@ import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Html
 import android.util.Log
 import android.widget.Button
@@ -74,6 +76,12 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var age:String
     lateinit var terms:CheckBox
 
+
+
+    lateinit var img:ImageView
+
+    var REQUEST_CODE_IMAGE_PICKER:Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -126,7 +134,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 if(position==2) {
                     verifyForm2Inputs()
-                    btn_next.text = getString(R.string.register_user_choose_photo)
+                    if(imageUrl == ""){
+                        btn_next.text = getString(R.string.register_user_choose_photo)
+                    }else{
+                        btn_next.text = getString(R.string.register_user_finish)
+                    }
                 }else{
                     btn_next.text = getString(R.string.register_user_next)
                 }
@@ -141,7 +153,7 @@ class RegisterActivity : AppCompatActivity() {
             && imageUrl != ""){
                 if(verifyRegexEmail() && verifyRegexPass() && verifyRegexAge() && verifyRegexPhone()){
                     if(verifyDatesWithDb()){
-                        val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), "aee", phone)
+                        val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), imageUrl, phone)
                         Users.add(userRegister)
                         Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
                         finish()
@@ -264,6 +276,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun verifyForm3Photo() {
+        initVars()
+    }
+
 
 
     private fun initVars() {
@@ -294,6 +310,10 @@ class RegisterActivity : AppCompatActivity() {
         city = input_city.text.toString()
         age = input_age.text.toString()
         terms = viewPager.findViewById(R.id.user_terms)
+
+        //FORM REGISTER 3
+
+        img = binding.formPager.findViewById(R.id.choose_img)
     }
 
     fun goToLogIn(){
@@ -340,26 +360,24 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private val startForActivityGallery = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ){result ->
-
-        if(result.resultCode == RESULT_OK){
-            val data = result.data?.data
-            val btn = binding.formPager.findViewById<ImageButton>(R.id.btn_choose_img)
-            imageUrl = data.toString()
-            btn_next.text = getString(R.string.register_user_finish)
-            btn.setImageURI(data)
-            btn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
-            btn.scaleType = ImageView.ScaleType.FIT_CENTER
-        }
-
-    }
 
     private fun pickPhotoFromGallery() {
-        val intent = Intent (Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
-        startForActivityGallery.launch(intent)
+        startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == Activity.RESULT_OK) {
+            btn_next.text = getString(R.string.register_user_finish)
+            var selectedImageUri = data?.data ?: return
+            imageUrl = selectedImageUri.toString()
+            img.setImageURI(selectedImageUri)
+            img.scaleType = ImageView.ScaleType.FIT_CENTER
+            img.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+        }
     }
 
     private fun initDots() {
@@ -374,6 +392,28 @@ class RegisterActivity : AppCompatActivity() {
         }
         dots.first().setTextColor(ContextCompat.getColor(this, R.color.active))
     }
+
+    /*private val startForActivityGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){result ->
+
+        if(result.resultCode == RESULT_OK){
+            val data = result.data?.data
+            imageUrl = data.toString()
+            btn_next.text = getString(R.string.register_user_finish)
+            img.setImageURI(data)
+            img.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            img.scaleType = ImageView.ScaleType.FIT_CENTER
+        }
+
+    }*/
+
+    //private fun pickPhotoFromGallery() {
+      //  val intent = Intent (Intent.ACTION_GET_CONTENT)
+        //intent.type = "image/*"
+     //   startForActivityGallery.launch(intent)
+    //}
+
 
 
 }

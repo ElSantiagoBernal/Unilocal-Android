@@ -17,6 +17,7 @@ import com.example.unilocal.fragment.HomeFragment
 import com.example.unilocal.fragment.MapFragment
 import com.example.unilocal.fragment.ProfileFragment
 import com.example.unilocal.fragment.TopSearchMenuFragment
+import com.example.unilocal.ui.login.LoginActivity
 import kotlin.math.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -25,9 +26,9 @@ class MapActivity : AppCompatActivity() {
     lateinit var binding: ActivityMapBinding
     private var MENU_MAP = "map"
     private var MENU_HOME = "home"
-    private var MENU_ADD_PLACE = "add_place"
-    private var MENU_PROFILE = "home"
-    private var MENU_SETTINGS = "home"
+    private var MENU_ADD = "add"
+    private var MENU_PROFILE = "profile"
+    private var MENU_SETTINGS = "settings"
 
     lateinit var navigationView:BottomNavigationView
 
@@ -51,12 +52,18 @@ class MapActivity : AppCompatActivity() {
                 R.id.map -> changeFragment(1, MENU_MAP)
                 R.id.home -> changeFragment(2, MENU_HOME)
                 R.id.profile -> changeFragment(4, MENU_PROFILE)
+                R.id.add ->  goToRegisterPlace()
             }
             true
         }
 
 
 
+    }
+
+    private fun goToRegisterPlace() {
+        val intent = Intent(this, RegisterPlaceActivity::class.java)
+        startActivity(intent)
     }
 
     fun changeFragment(valor:Int, nombre:String){
