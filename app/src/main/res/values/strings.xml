@@ -68,7 +68,7 @@
     <string name="forgot_invalid_email">Ingresa un correo válido</string>
 
 
-    <!-- REGISTER PLACE STRINGS -->
+    <!-- REGISTER PLACE STRINGS FORM 1-->
     <string name="register_place_title_register_place">Registrar lugar</string>
     <string name="register_place_general_text">Datos generales del lugar necesarios\npara tener...</string>
     <string name="register_place_name">Nombre del lugar</string>
@@ -77,7 +77,11 @@
     <string name="register_place_close_time">Hora cierre</string>
     <string name="register_place_phone">Número de contacto</string>
     <string name="register_place_secundary_phone">Número secundario</string>
+    <string name="register_place_adress">Dirección</string>
 
+    <!-- REGISTER PLACE STRINGS FORM 2-->
+    <string name="register_place_title_choose_place_map">Determinar ubicación</string>
+    <string name="register_place_general_text_choose_map">Determinar la ubicación de tu lugar\nservirá para que las personas lo\nidentifiquen con exactitud</string>
 
     <!-- MAP STRINGS -->
     <string name="search_bar">Busca Aquí</string>

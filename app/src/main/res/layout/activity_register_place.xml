@@ -22,7 +22,6 @@
         android:text="@string/register_user_next"
         android:layout_below="@+id/form_pager"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="50dp"
         style="@style/button_next"
         />
 
