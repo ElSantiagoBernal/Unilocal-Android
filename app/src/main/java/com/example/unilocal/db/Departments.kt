@@ -21,4 +21,13 @@ object Departments {
         departments.add(department)
     }
 
+    fun findByID(id:Int): String?{
+        try {
+            var department= Departments.departments.first { d -> d.id == id }
+            return department.name
+        } catch (e:Exception){
+            return null
+        }
+    }
+
 }

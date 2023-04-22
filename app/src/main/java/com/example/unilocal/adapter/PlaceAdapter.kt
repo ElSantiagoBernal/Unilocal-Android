@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
+import com.example.unilocal.activities.SearchResultActivity
 import com.example.unilocal.db.Categories
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.Schedule
@@ -59,9 +60,10 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
                 status.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
                 status.text = "Cerrado"
             }
+            codePlace= place.id
 /*
             icon.text = Categories.get(place.id)!!.icon
-            codePlace= place.id
+
 
  */
         }

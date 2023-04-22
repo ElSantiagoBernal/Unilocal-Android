@@ -22,4 +22,13 @@ object Cities {
         cities.add(city)
     }
 
+    fun findByID(id:Int): String?{
+        try {
+            var city= Cities.cities.first { c -> c.id == id }
+            return city.name
+        } catch (e:Exception){
+            return null
+        }
+    }
+
 }

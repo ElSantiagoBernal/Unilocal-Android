@@ -19,4 +19,13 @@ object Countries {
         countries.add(country)
     }
 
+    fun findByID(id:Int): String?{
+        try {
+            var country= Countries.countries.first { c -> c.id == id }
+            return country.name
+        } catch (e:Exception){
+            return null
+        }
+    }
+
 }
