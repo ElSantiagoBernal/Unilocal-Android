@@ -47,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var imageUrl:String
     val dots = mutableListOf<TextView>()
     lateinit var btn_next:Button
+    var init:Boolean = true
 
     //FORM REGISTER 1
     lateinit var input_names:EditText
@@ -119,7 +120,14 @@ class RegisterActivity : AppCompatActivity() {
 
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    if(init){
+                        if(position == 0){
+                            initVars()
+                            init = false
+                        }
+                    }
+                }
 
             override fun onPageSelected(position: Int) {
                 dots.forEachIndexed { index, dot ->
@@ -232,7 +240,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun verifyForm1Inputs() {
-        initVars()
+        getInputsText()
         verifyRegexEmail()
         verifyRegexPass()
         verifyDatesWithDb()
@@ -255,7 +263,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun verifyForm2Inputs() {
-        initVars()
+        getInputsText()
         verifyRegexPhone()
         verifyRegexAge()
         verifyDatesWithDb()
@@ -290,12 +298,6 @@ class RegisterActivity : AppCompatActivity() {
         input_user = viewPager.findViewById(R.id.user_username)
         input_pass = viewPager.findViewById(R.id.user_pass)
 
-        names = input_names.text.toString()
-        last_names = input_last_names.text.toString()
-        email = input_email.text.toString()
-        user = input_user.text.toString()
-        pass = input_pass.text.toString()
-
         //FORM REGISTER 2
 
         input_phone = viewPager.findViewById(R.id.user_phone)
@@ -304,6 +306,22 @@ class RegisterActivity : AppCompatActivity() {
         input_city = viewPager.findViewById(R.id.user_city)
         input_age = viewPager.findViewById(R.id.user_age)
 
+        //FORM REGISTER 3
+
+        img = binding.formPager.findViewById(R.id.choose_img)
+    }
+
+    private fun getInputsText() {
+        //FORM 1 INPUTS
+        names = input_names.text.toString()
+        last_names = input_last_names.text.toString()
+        email = input_email.text.toString()
+        user = input_user.text.toString()
+        pass = input_pass.text.toString()
+
+
+        //FORM 2 INPUTS
+
         phone = input_phone.text.toString()
         country = input_country.text.toString()
         department = input_department.text.toString()
@@ -311,9 +329,6 @@ class RegisterActivity : AppCompatActivity() {
         age = input_age.text.toString()
         terms = viewPager.findViewById(R.id.user_terms)
 
-        //FORM REGISTER 3
-
-        img = binding.formPager.findViewById(R.id.choose_img)
     }
 
     fun goToLogIn(){

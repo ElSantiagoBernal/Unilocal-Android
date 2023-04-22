@@ -15,14 +15,12 @@ class TimePickerFragment(val listener: (String) -> Unit):DialogFragment(), TimeP
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
-        val dialog = TimePickerDialog(activity as Context, R.style.timePicker,this, hour, minute, false)
+        val dialog = TimePickerDialog(activity as Context, R.style.timePicker,this, hour, minute, true)
         return dialog
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         listener("$hourOfDay:$minute")
-
-
     }
 
 }
