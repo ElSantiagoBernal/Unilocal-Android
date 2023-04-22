@@ -14,4 +14,8 @@
         <item name="android:layout_height">42dp</item>
         <item name="android:background">@drawable/form_inputs_style</item>
     </style>
+
+    <style name="circular">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
