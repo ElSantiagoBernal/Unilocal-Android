@@ -41,6 +41,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
     lateinit var input_close_hour:EditText
     lateinit var input_place_phone:EditText
     lateinit var input_place_secundary_phone:EditText
+    lateinit var input_place_adress:EditText
 
 
     lateinit var place_name:String
@@ -49,6 +50,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
     lateinit var close_hour:String
     lateinit var place_phone:String
     lateinit var place_secundary_phone:String
+    lateinit var place_adress:String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +63,8 @@ class RegisterPlaceActivity : AppCompatActivity() {
         layouts = intArrayOf(
             R.layout.activity_register_place_form_1,
             R.layout.activity_register_place_form_2,
-            R.layout.activity_register_place_form_3
+            R.layout.activity_register_place_form_3,
+            R.layout.activity_register_place_form_4
         )
 
         adapter = Adapter(this, layouts)
@@ -72,7 +75,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
         btn_next.setOnClickListener{
             if( btn_next.text == getString(R.string.register_user_finish)){
                 //register()
-            }else if (btn_next.text == getString(R.string.register_user_choose_photo)){
+            }else if (btn_next.text == getString(R.string.register_place_choose_photos)){
                 //askImages()
             }else{
                 nextListener()
@@ -103,9 +106,10 @@ class RegisterPlaceActivity : AppCompatActivity() {
                 if(position == 1){
                     verifyForm1Inputs()
                 }
-                if(position==2) {
-
+                if(position==3) {
+                    btn_next.text = getString(R.string.register_place_choose_photos)
                 }else{
+                    btn_next.text = getString(R.string.register_user_next)
                 }
             }
             override fun onPageScrollStateChanged(state: Int) {
@@ -116,7 +120,6 @@ class RegisterPlaceActivity : AppCompatActivity() {
     private fun verifyForm1Inputs(){
         getInputsText()
         verifyRegexPhone()
-
         /*verifyRegexEmail()
         verifyRegexPass()
         verifyDatesWithDb()*/
@@ -138,6 +141,9 @@ class RegisterPlaceActivity : AppCompatActivity() {
         if(place_secundary_phone.isEmpty()){
             input_place_secundary_phone.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
+        if(place_adress.isEmpty()){
+            input_place_adress.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }
     }
 
     private fun getInputsText() {
@@ -148,9 +154,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
         close_hour = input_close_hour.text.toString()
         place_phone = input_place_phone.text.toString()
         place_secundary_phone = input_place_secundary_phone.text.toString()
-
-
-
+        place_adress = input_place_adress.text.toString()
     }
 
     private fun initVars(){
@@ -161,6 +165,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
         input_close_hour = viewPager.findViewById(R.id.place_close_hour)
         input_place_phone = viewPager.findViewById(R.id.place_phone)
         input_place_secundary_phone = viewPager.findViewById(R.id.place_secundary_phone)
+        input_place_adress = viewPager.findViewById(R.id.place_adress)
 
         //FORM 2 VARS
 
