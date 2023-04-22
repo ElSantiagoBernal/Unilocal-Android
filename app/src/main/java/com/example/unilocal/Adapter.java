@@ -1,6 +1,7 @@
 package com.example.unilocal;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ public class Adapter extends PagerAdapter {
     LayoutInflater layoutInflater;
     Context context;
 
-    public Adapter(Context context, int[] layouts, ActivityRegisterFormUser3Binding act){
+    public Adapter(Context context, int[] layouts){
         this.layouts = layouts;
         this.layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
@@ -45,7 +46,7 @@ public class Adapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    public void viewPagerAdapter(Context context){
-        this.context = context;
+    public void init(){
+
     }
 }

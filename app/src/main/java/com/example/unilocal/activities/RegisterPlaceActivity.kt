@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -21,6 +22,7 @@ import com.example.unilocal.Adapter
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityRegisterPlaceBinding
 import com.example.unilocal.db.Users
+import com.example.unilocal.fragment.TimePickerFragment
 import com.example.unilocal.model.User
 
 class RegisterPlaceActivity : AppCompatActivity() {
@@ -32,6 +34,8 @@ class RegisterPlaceActivity : AppCompatActivity() {
     lateinit var userEmail:String
     private val PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
     lateinit var user:User
+    var init:Boolean = false
+    lateinit var open_hour:EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,54 +43,52 @@ class RegisterPlaceActivity : AppCompatActivity() {
         binding = ActivityRegisterPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        val sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
-        val email = sp.getString("email_user", "").toString()
-
-        user = Users.findByEmail(email)!!
-
-        if(user != null){
-            Toast.makeText(this, "uri: ${user.imgUrl}", Toast.LENGTH_SHORT).show()
-            binding.imgUser.setImageURI(Uri.parse(user.imgUrl))
-        }else{
-            Toast.makeText(this, "Es null", Toast.LENGTH_SHORT).show()
-        }
-
-
-
-
-
-        //viewPager = binding.formPager
+        viewPager = binding.formPager
 
         layouts = intArrayOf(
-
+            R.layout.activity_register_place_form_1,
+            R.layout.activity_register_place_form_2,
+            R.layout.activity_register_place_form_3
         )
 
-        /*adapter = Adapter(this, layouts, binding_form_3)
-        binding.formPager.adapter = adapter
+        adapter = Adapter(this, layouts)
+        viewPager.adapter = adapter
 
-        initDots()*/
 
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
+
+                if(position == 0){
+                    initVars()
+                }
+                if(position==2) {
+
+                }else{
+
+                }
+            }
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
     }
 
-    private val startForActivityGallery = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ){result ->
-        Toast.makeText(this, "3", Toast.LENGTH_SHORT).show()
-        if(result.resultCode == RESULT_OK){
-            var uri = Uri.parse(user.imgUrl)
-            val inputStream = contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            binding.imgUser.setImageBitmap(bitmap)
+    private fun initVars(){
+        open_hour = viewPager.findViewById(R.id.place_open_hour)
+        open_hour.setOnClickListener{
+            showTimePickerDialog()
         }
 
     }
-    private fun pickPhotoFromGallery() {
-        val intent = Intent (Intent.ACTION_OPEN_DOCUMENT)
-        Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
-        intent.type = "image/*"
-        Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
-        startForActivityGallery.launch(intent)
+
+    private fun showTimePickerDialog() {
+        val timePicker = TimePickerFragment {onTimeSelected(it)}
+        timePicker.show(supportFragmentManager, "time")
+    }
+
+    private fun onTimeSelected (time:String){
+        viewPager.findViewById<EditText>(R.id.place_open_hour).setText("$time")
     }
 
 

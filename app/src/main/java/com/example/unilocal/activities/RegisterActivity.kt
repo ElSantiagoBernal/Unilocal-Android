@@ -100,8 +100,8 @@ class RegisterActivity : AppCompatActivity() {
             R.layout.activity_register_form_user_3
 
         )
-        adapter = Adapter(this, layouts, binding_form_3)
-        binding.formPager.adapter = adapter
+        adapter = Adapter(this, layouts)
+        viewPager.adapter = adapter
 
         initDots()
         imageUrl = ""

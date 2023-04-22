@@ -39,7 +39,7 @@ class ForgotPassActivity : AppCompatActivity() {
             R.layout.activity_forgot_pass_form_2
         )
 
-        adapter = Adapter(this, layouts, null)
+        adapter = Adapter(this, layouts)
         binding.formPagerForgot.adapter = adapter
 
         btn_send = binding.btnSend

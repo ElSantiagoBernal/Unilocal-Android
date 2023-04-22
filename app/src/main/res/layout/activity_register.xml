@@ -9,26 +9,17 @@
 
     <TextView
         android:id="@+id/main_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_title_register"
-        android:textColor="@color/black"
-        android:textSize="28sp"
-        android:textStyle="bold"
         android:paddingLeft="50dp"
-        android:layout_marginTop="30dp"
+        style="@style/titles"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/we_want_know_you"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_want_know_you"
-        android:textSize="20dp"
-        android:layout_marginBottom="25dp"
-        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/main_title"
         android:paddingLeft="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/main_title"/>
+        style="@style/informative_text"/>
 
 
     <androidx.viewpager.widget.ViewPager
@@ -54,17 +45,9 @@
 
     <Button
         android:id="@+id/Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/register_user_next"
         android:layout_gravity="end"
-        android:textSize="16dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        tools:ignore="MissingConstraints"
-        android:backgroundTint="@color/app_color"
-        android:background="@drawable/border_style"
-        android:textColor="@color/white"
+        style="@style/button_next"
         />
 
 </LinearLayout>

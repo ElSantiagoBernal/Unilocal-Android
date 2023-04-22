@@ -66,6 +66,11 @@ class MapActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun goToProfile() {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
+    }
+
     fun changeFragment(valor:Int, nombre:String){
         var fragment:Fragment = when(valor){
             1 -> MapFragment()

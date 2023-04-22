@@ -68,6 +68,17 @@
     <string name="forgot_invalid_email">Ingresa un correo válido</string>
 
 
+    <!-- REGISTER PLACE STRINGS -->
+    <string name="register_place_title_register_place">Registrar lugar</string>
+    <string name="register_place_general_text">Datos generales del lugar necesarios\npara tener...</string>
+    <string name="register_place_name">Nombre del lugar</string>
+    <string name="register_place_description">Descripción del lugar</string>
+    <string name="register_place_open_time">Hora apertura</string>
+    <string name="register_place_close_time">Hora cierre</string>
+    <string name="register_place_phone">Número de contacto</string>
+    <string name="register_place_secundary_phone">Número secundario</string>
+
+
     <!-- MAP STRINGS -->
     <string name="search_bar">Busca Aquí</string>
 
@@ -81,6 +92,8 @@
     <string name="item_place_closing_time">Hora Cierre</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 
 
 </resources>

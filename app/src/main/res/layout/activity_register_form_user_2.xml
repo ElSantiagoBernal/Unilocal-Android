@@ -59,8 +59,7 @@
                 android:id="@+id/user_department"
                 android:layout_width="115dp"
                 android:layout_height="42dp"
-                android:background="@drawable/form_inputs_style"
-                android:inputType="textEmailAddress"/>
+                android:background="@drawable/form_inputs_style"/>
         </LinearLayout>
     </LinearLayout>
     <!--END COUNTRY-DEPART LAYOUT-->
