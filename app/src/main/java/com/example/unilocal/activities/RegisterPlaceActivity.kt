@@ -63,7 +63,8 @@ class RegisterPlaceActivity : AppCompatActivity() {
         layouts = intArrayOf(
             R.layout.activity_register_place_form_1,
             R.layout.activity_register_place_form_2,
-            R.layout.activity_register_place_form_3
+            R.layout.activity_register_place_form_3,
+            R.layout.activity_register_place_form_4
         )
 
         adapter = Adapter(this, layouts)
@@ -74,7 +75,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
         btn_next.setOnClickListener{
             if( btn_next.text == getString(R.string.register_user_finish)){
                 //register()
-            }else if (btn_next.text == getString(R.string.register_user_choose_photo)){
+            }else if (btn_next.text == getString(R.string.register_place_choose_photos)){
                 //askImages()
             }else{
                 nextListener()
@@ -105,9 +106,10 @@ class RegisterPlaceActivity : AppCompatActivity() {
                 if(position == 1){
                     verifyForm1Inputs()
                 }
-                if(position==2) {
-
+                if(position==3) {
+                    btn_next.text = getString(R.string.register_place_choose_photos)
                 }else{
+                    btn_next.text = getString(R.string.register_user_next)
                 }
             }
             override fun onPageScrollStateChanged(state: Int) {

@@ -7,6 +7,7 @@
     android:gravity="center_horizontal"
     >
 
+
     <TextView
         android:id="@+id/title"
         android:text="@string/register_place_title_choose_place_map"
@@ -19,8 +20,18 @@
         android:text="@string/register_place_general_text_choose_map"
         tools:ignore="MissingConstraints"
         android:layout_marginTop="12dp"
+        android:textAlignment="center"
         style="@style/informative_text"
         />
+
+    <View
+        android:id="@+id/mapa_lugar"
+        android:layout_width="match_parent"
+        android:layout_height="440dp"
+        android:layout_marginBottom="15dp"
+        android:background="#EFD0F4" />
+
+
 
 
 

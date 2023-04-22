@@ -69,6 +69,7 @@
 
 
     <!-- REGISTER PLACE STRINGS FORM 1-->
+    <string name="register_place_choose_photos">Elegir fotos</string>
     <string name="register_place_title_register_place">Registrar lugar</string>
     <string name="register_place_general_text">Datos generales del lugar necesarios\npara tener...</string>
     <string name="register_place_name">Nombre del lugar</string>
@@ -82,6 +83,16 @@
     <!-- REGISTER PLACE STRINGS FORM 2-->
     <string name="register_place_title_choose_place_map">Determinar ubicación</string>
     <string name="register_place_general_text_choose_map">Determinar la ubicación de tu lugar\nservirá para que las personas lo\nidentifiquen con exactitud</string>
+
+    <!-- REGISTER PLACE STRINGS FORM 3-->
+    <string name="register_place_title_choose_categorie">Elige la categoría</string>
+    <string name="register_place_general_text_choose_categorie">Determinar la categorías ayudara a\ndiferenciar tu lugar de otros</string>
+
+    <!-- REGISTER PLACE STRINGS FORM 4-->
+    <string name="register_place_title_choose_images">Elige las imagenes</string>
+    <string name="register_place_general_text_choose_images">Poner imagenes de tu lugar también\nayudará a que se diferencie de otros</string>
+    <string name="register_place_choose_images">Pulsa el botón \"Elegir fotos\"\npara agregar las fotos del\nlugar</string>
+
 
     <!-- MAP STRINGS -->
     <string name="search_bar">Busca Aquí</string>
