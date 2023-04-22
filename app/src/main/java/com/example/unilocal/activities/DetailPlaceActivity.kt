@@ -76,4 +76,8 @@ class DetailPlaceActivity : AppCompatActivity() {
 
         }
     }
+
+    companion object{
+
+    }
 }

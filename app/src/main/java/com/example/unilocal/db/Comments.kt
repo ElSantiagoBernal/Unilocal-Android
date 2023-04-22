@@ -16,4 +16,12 @@ object Comments {
         list.add( Comment(7, "Me pareció un lugar muy agradable para estar con la familia", 1, 5, 1))
         list.add( Comment(8, "Muy bueno, la verdad muy bueno xd", 3, 5, 2))
     }
+
+    fun listById(idPlace:Int):ArrayList<Comment>{
+        return list.filter { c -> c.id == idPlace }.toCollection(ArrayList())
+    }
+
+    fun new(comment: Comment){
+        list.add(comment)
+    }
 }
