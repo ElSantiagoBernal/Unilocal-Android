@@ -15,6 +15,7 @@ import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.activities.SearchResultActivity
 import com.example.unilocal.db.Categories
+import com.example.unilocal.db.Comments
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.Schedule
 
@@ -40,6 +41,7 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
         val status:TextView = itemView.findViewById(R.id.status_place)
         val image:ImageView = itemView.findViewById(R.id.place_image)
         val icon:TextView = itemView.findViewById(R.id.place_icon)
+        val ratingX:TextView = itemView.findViewById(R.id.place_rating)
         var codePlace:Int = 0
 
         init{
@@ -61,6 +63,10 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
                 status.text = "Cerrado"
             }
             codePlace= place.id
+
+            val rating = place.getRatingAverage(Comments.listById(place.id))
+
+            ratingX.text = rating.toString()
 /*
             icon.text = Categories.get(place.id)!!.icon
 

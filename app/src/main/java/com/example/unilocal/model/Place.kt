@@ -1,5 +1,6 @@
 package com.example.unilocal.model
 
+import com.example.unilocal.db.Comments
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -50,6 +51,19 @@ class Place(var id:Int,
             }
         }
         return message
+    }
+
+    fun getRatingAverage(comments:ArrayList<Comment>):Int{
+        var average = 0
+
+        if(comments.size > 0) {
+            val sum = comments.stream().map { c -> c.rating }
+                .reduce { sum, valor -> sum + valor }.get()
+
+            average = sum/comments.size
+        }
+
+        return average
     }
 
     override fun toString(): String {
