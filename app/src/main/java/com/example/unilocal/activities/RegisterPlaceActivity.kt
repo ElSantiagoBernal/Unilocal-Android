@@ -31,6 +31,7 @@ import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
 import com.example.unilocal.model.User
+import com.example.unilocal.ui.login.LoginActivity
 import java.sql.Time
 import java.util.*
 
@@ -108,9 +109,8 @@ class RegisterPlaceActivity : AppCompatActivity() {
 
         val sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
         idUser = sp.getInt("id_user", -1)
-        Toast.makeText(this, "user: $idUser", Toast.LENGTH_SHORT).show()
+
         btn_next.setOnClickListener{
-            Toast.makeText(this@RegisterPlaceActivity, "Entro listener", Toast.LENGTH_SHORT).show()
             if( btn_next.text == getString(R.string.register_user_finish)){
                 register()
             }else if (btn_next.text == getString(R.string.register_place_choose_photos)){
@@ -168,7 +168,9 @@ class RegisterPlaceActivity : AppCompatActivity() {
                 val schedule1 = Schedule(5, Schedules.getAll(),only_open_hour,only_close_hour)
                 placeRegister.schedules.add(schedule1)
                 Places.add(placeRegister)
-                Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Lugar registrado", Toast.LENGTH_SHORT).show()
+                finish()
+                goToMap()
             }else{
                 Toast.makeText(this, "Asegurate de que todos los campos estén diligenciados correctamente", Toast.LENGTH_SHORT).show()
             }
@@ -176,6 +178,11 @@ class RegisterPlaceActivity : AppCompatActivity() {
             verifyForm1Inputs()
             Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun goToMap() {
+        val intent = Intent(this, MapActivity::class.java)
+        startActivity(intent)
     }
 
     private fun determinHour(hour:String): Int {
