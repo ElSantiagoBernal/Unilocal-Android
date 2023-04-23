@@ -21,4 +21,62 @@
         style="@style/informative_text"
         />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:layout_marginTop="40sp"
+        android:gravity="center">
+
+    <Button
+        android:id="@+id/btn_hotel"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:text="Hotel"
+        android:layout_marginRight="30sp"
+        android:background="@drawable/button_custom"/>
+
+    <Button
+        android:id="@+id/btn_coffe"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:text="Café"
+        android:background="@drawable/button_custom"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_restaurant"
+        android:layout_width="150sp"
+        android:layout_height="40sp"
+        android:text="Restaurante"
+        android:layout_marginTop="30sp"
+        android:background="@drawable/button_custom"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:layout_marginTop="30sp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_park"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:text="Parque"
+            android:layout_marginRight="30sp"
+            android:background="@drawable/button_custom"/>
+
+        <Button
+            android:id="@+id/btn_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:text="Bar"
+            android:background="@drawable/button_custom"/>
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

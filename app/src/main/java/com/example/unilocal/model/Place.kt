@@ -1,6 +1,8 @@
 package com.example.unilocal.model
 
+import android.net.Uri
 import com.example.unilocal.db.Comments
+import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -17,10 +19,12 @@ class Place(var id:Int,
             var idDepartment:Int,
             var idCity:Int) {
 
-    var images:ArrayList<String> = ArrayList()
+    lateinit var images:MutableList<Uri>
     var phoneNumbers:ArrayList<String> = ArrayList()
     var date: Date = Date()
     var schedules:ArrayList<Schedule> = ArrayList()
+
+
 
     fun isOpen():String{
         val date = Calendar.getInstance()

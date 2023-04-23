@@ -15,6 +15,6 @@ object People {
                 result = Administrators.list().firstOrNull { u -> u.password == password && u.email == email }
             }
         }
-        return result;
+        return result
     }
 }
