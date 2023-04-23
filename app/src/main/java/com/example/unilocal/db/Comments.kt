@@ -24,4 +24,8 @@ object Comments {
     fun new(comment: Comment){
         list.add(comment)
     }
+
+    fun getSize():Int{
+        return list.size
+    }
 }

@@ -3,12 +3,16 @@ package com.example.unilocal.activities
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.animation.AnimationSet
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityDetailPlaceBinding
 import com.example.unilocal.db.*
+import com.example.unilocal.fragment.CommentsPlaceFragment
 import com.example.unilocal.model.City
 import com.example.unilocal.model.Place
 
@@ -17,6 +21,8 @@ class DetailPlaceActivity : AppCompatActivity() {
     lateinit var binding:ActivityDetailPlaceBinding
     var codePlace:Int = 0
     var place:Place? = null
+    lateinit var fragment:Fragment
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,9 +81,39 @@ class DetailPlaceActivity : AppCompatActivity() {
             binding.placeSchedules.text = schedules
 
         }
+
+        fragment= CommentsPlaceFragment.newInstance(codePlace)
+
+        binding.comments.setOnClickListener {
+            if(fragment.isVisible){
+                hideFragment()
+            } else {
+                showFragment()
+            }
+
+        }
+
     }
 
-    companion object{
+
+
+    private fun showFragment() {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.comments_view, fragment)
+        fragmentTransaction.commit()
+    }
+
+    private fun hideFragment() {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(fragment)
+        fragmentTransaction.commit()
+    }
+
+    companion object {
+
+
 
     }
 }
