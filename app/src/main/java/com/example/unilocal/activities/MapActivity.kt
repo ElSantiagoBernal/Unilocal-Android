@@ -13,10 +13,7 @@ import androidx.fragment.app.replace
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityMapBinding
 import com.example.unilocal.databinding.ActivitySearchResultBinding
-import com.example.unilocal.fragment.HomeFragment
-import com.example.unilocal.fragment.MapFragment
-import com.example.unilocal.fragment.ProfileFragment
-import com.example.unilocal.fragment.TopSearchMenuFragment
+import com.example.unilocal.fragment.*
 import com.example.unilocal.ui.login.LoginActivity
 import kotlin.math.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -52,6 +49,7 @@ class MapActivity : AppCompatActivity() {
                 R.id.map -> changeFragment(1, MENU_MAP)
                 R.id.home -> changeFragment(2, MENU_HOME)
                 R.id.profile -> changeFragment(4, MENU_PROFILE)
+                R.id.settings -> changeFragment(5, MENU_SETTINGS)
                 R.id.add ->  goToRegisterPlace()
             }
             true
@@ -75,7 +73,8 @@ class MapActivity : AppCompatActivity() {
         var fragment:Fragment = when(valor){
             1 -> MapFragment()
             2 -> HomeFragment()
-            else -> ProfileFragment()
+            4 -> ProfileFragment()
+            else -> SettingsFragment()
         }
         supportFragmentManager.beginTransaction()
             .replace(binding.mainContent.id, fragment)
@@ -92,6 +91,7 @@ class MapActivity : AppCompatActivity() {
                 MENU_MAP -> binding.bottomAppBar.menu.getItem(0).isChecked = true
                 MENU_HOME -> binding.bottomAppBar.menu.getItem(1).isChecked = true
                 MENU_PROFILE -> binding.bottomAppBar.menu.getItem(3).isChecked = true
+                MENU_SETTINGS -> binding.bottomAppBar.menu.getItem(4).isChecked = true
             }
         }
     }
