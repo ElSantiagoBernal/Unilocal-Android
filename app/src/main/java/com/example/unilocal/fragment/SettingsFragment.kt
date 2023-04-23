@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.unilocal.R
+import com.example.unilocal.activities.ForgotPassActivity
 import com.example.unilocal.activities.MapActivity
 import com.example.unilocal.databinding.FragmentSettingsBinding
 import com.example.unilocal.ui.login.LoginActivity
@@ -31,8 +32,16 @@ class SettingsFragment : Fragment() {
             goToLogin()
             requireActivity().finish()
         }
+        binding.buttonChangePass.setOnClickListener {
+            goToChangePass()
+        }
 
         return binding.root
+    }
+
+    private fun goToChangePass() {
+        val intent = Intent(context, ForgotPassActivity::class.java)
+        startActivity(intent)
     }
 
     private fun goToLogin(){

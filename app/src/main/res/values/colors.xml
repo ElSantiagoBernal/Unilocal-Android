@@ -10,6 +10,8 @@
     <color name="app_color">#8C1858</color>
     <color name="green">#23E700</color>
     <color name="red">#E70000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="orange">#FFA500</color>
 
     //onboarding colors
     <color name="background">#F0F4F3</color>

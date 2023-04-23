@@ -7,7 +7,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/purple_700" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

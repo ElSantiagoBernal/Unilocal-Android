@@ -158,7 +158,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
         if(place_name.isNotEmpty() && place_description.isNotEmpty() && open_hour.isNotEmpty() && close_hour.isNotEmpty() && place_phone.isNotEmpty()
             && place_secundary_phone.isNotEmpty() && place_adress.isNotEmpty() && categorie_string.isNotEmpty() && images.isNotEmpty() && verifyRegexPhone()){
 
-            if(verifyHours(open_hour, close_hour)){
+            if(verifyHours(open_hour, close_hour) && verifyPhones()){
                 val placeRegister = Place(Places.size()+1, place_name, place_description, idUser, PlaceStatus.PENDING, categorie_to_register, place_adress, 45.545454f, -23.87867f, 1, 1, 1)
                 placeRegister.phoneNumbers.add(place_phone)
                 placeRegister.phoneNumbers.add(place_secundary_phone)
@@ -239,6 +239,19 @@ class RegisterPlaceActivity : AppCompatActivity() {
         /*verifyRegexEmail()
         verifyRegexPass()
         verifyDatesWithDb()*/
+        if(place_phone.equals(place_secundary_phone)){
+            input_place_secundary_phone.error = "No pude ser igual al otro número"
+        }
+        if(open_hour.isEmpty()){
+            input_open_hour.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }else{
+            input_open_hour.error = null
+        }
+        if(close_hour.isEmpty()){
+            input_close_hour.error = getString(R.string.forgot_msg_obligatorie_inputs)
+        }else{
+            input_close_hour.error = null
+        }
         if(place_name.isEmpty()){
             input_place_name.error = getString(R.string.forgot_msg_obligatorie_inputs)
         }
@@ -362,6 +375,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
 
     private fun onTimeSelected (time:String, view:EditText){{}
         view.setText("$time")
+        verifyForm1Inputs()
     }
 
     private fun verifyRegexPhone(): Boolean {
@@ -375,6 +389,15 @@ class RegisterPlaceActivity : AppCompatActivity() {
                 input_place_secundary_phone.error = getString(R.string.register_user_msg_invalid_phone)
             }
             return false
+        }
+    }
+
+    private fun verifyPhones(): Boolean {
+        if(place_phone.equals(place_secundary_phone)){
+            input_place_secundary_phone.error = "No pude ser igual al otro número"
+            return false
+        }else{
+            return true
         }
     }
 
