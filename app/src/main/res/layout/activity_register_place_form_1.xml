@@ -18,7 +18,7 @@
         android:id="@+id/informative_text"
         android:text="@string/register_place_general_text"
         tools:ignore="MissingConstraints"
-        android:layout_margin="20dp"
+        android:layout_margin="20sp"
         style="@style/informative_text"
         />
 
@@ -37,8 +37,8 @@
                 android:id="@+id/txt_name"
                 android:text="@string/register_place_name"
                 tools:ignore="MissingConstraints"
-                android:layout_marginTop="0dp"
-                android:paddingLeft="45dp"
+                android:layout_marginTop="0sp"
+                android:paddingLeft="45sp"
                 style="@style/txt_views"
                 />
 
@@ -51,13 +51,13 @@
                 android:id="@+id/txt_description"
                 android:text="@string/register_place_description"
                 tools:ignore="MissingConstraints"
-                android:paddingLeft="45dp"
+                android:paddingLeft="45sp"
                 style="@style/txt_views"
                 />
 
             <EditText
                 android:id="@+id/place_description"
-                android:layout_height="150dp"
+                android:layout_height="150sp"
                 android:inputType="textMultiLine"
                 style="@style/inp_texts"
                 android:gravity="top|start"
@@ -75,15 +75,15 @@
                         android:text="@string/register_place_open_time"
                         tools:ignore="MissingConstraints"
                         style="@style/txt_views"
-                        android:layout_marginLeft="45dp"
+                        android:layout_marginLeft="45sp"
                         />
 
                     <EditText
                         android:id="@+id/place_open_hour"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginRight="45dp"
+                        android:layout_marginLeft="45sp"
+                        android:layout_marginRight="45sp"
                         android:background="@drawable/form_inputs_style"
                         android:inputType="time"
                         android:focusable="false"
@@ -107,7 +107,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/form_inputs_style"
-                        android:layout_marginRight="45dp"
+                        android:layout_marginRight="45sp"
                         android:inputType="time"
                         android:focusable="false"
                         android:clickable="false"/>
@@ -117,7 +117,7 @@
                 android:id="@+id/txt_phone"
                 android:text="@string/register_place_phone"
                 tools:ignore="MissingConstraints"
-                android:paddingLeft="45dp"
+                android:paddingLeft="45sp"
                 style="@style/txt_views"
                 />
 
@@ -131,7 +131,7 @@
                 android:id="@+id/txt_secundary_phone"
                 android:text="@string/register_place_secundary_phone"
                 tools:ignore="MissingConstraints"
-                android:paddingLeft="45dp"
+                android:paddingLeft="45sp"
                 style="@style/txt_views"
                 />
 
@@ -145,7 +145,7 @@
                 android:id="@+id/txt_adress"
                 android:text="@string/register_place_adress"
                 tools:ignore="MissingConstraints"
-                android:paddingLeft="45dp"
+                android:paddingLeft="45sp"
                 style="@style/txt_views"
                 />
 
