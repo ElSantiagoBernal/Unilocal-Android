@@ -140,6 +140,19 @@
                 style="@style/inp_texts"
                 android:inputType="number"
                 />
+
+            <TextView
+                android:id="@+id/txt_adress"
+                android:text="@string/register_place_adress"
+                tools:ignore="MissingConstraints"
+                android:paddingLeft="45dp"
+                style="@style/txt_views"
+                />
+
+            <EditText
+                android:id="@+id/place_adress"
+                style="@style/inp_texts"
+                />
         </LinearLayout>
     </ScrollView>
 
