@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="35dp"
     android:paddingTop="30dp">
 
 
     <TextView
+        android:paddingLeft="45dp"
         android:id="@+id/txt_phone"
         android:text="@string/register_user_phone"
         style="@style/txt_views"
@@ -22,32 +22,37 @@
 
     <!--COUNTRY-DEPART LAYOUT-->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/txt_country"
                 android:text="@string/register_user_country"
                 tools:ignore="MissingConstraints"
                 style="@style/txt_views"
+                android:layout_marginLeft="45sp"
                 />
 
             <EditText
                 android:id="@+id/user_country"
-                android:layout_width="115dp"
-                android:layout_height="42dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/form_inputs_style"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:layout_marginLeft="45sp"
+                android:layout_marginRight="45sp"/>
         </LinearLayout>
 
         <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp">
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/txt_department"
                 android:text="@string/register_user_department"
@@ -57,40 +62,45 @@
 
             <EditText
                 android:id="@+id/user_department"
-                android:layout_width="115dp"
-                android:layout_height="42dp"
-                android:background="@drawable/form_inputs_style"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/form_inputs_style"
+                android:layout_marginRight="45sp"/>
         </LinearLayout>
     </LinearLayout>
     <!--END COUNTRY-DEPART LAYOUT-->
 
     <!--CITY-AGE LAYOUT-->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/txt_user_city"
                 android:text="@string/register_user_city"
                 tools:ignore="MissingConstraints"
                 style="@style/txt_views"
+                android:layout_marginLeft="45sp"
                 />
 
             <EditText
                 android:id="@+id/user_city"
-                android:layout_width="115dp"
-                android:layout_height="42dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/form_inputs_style"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:layout_marginLeft="45sp"
+                android:layout_marginRight="45sp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp">
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/txt_age"
                 android:text="@string/register_user_age"
@@ -100,14 +110,16 @@
 
             <EditText
                 android:id="@+id/user_age"
-                android:layout_width="115dp"
-                android:layout_height="42dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/form_inputs_style"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:layout_marginRight="45sp"/>
         </LinearLayout>
     </LinearLayout>
     <!--END CITY-AGE LAYOUT-->
     <LinearLayout
+        android:layout_marginLeft="45sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <CheckBox
