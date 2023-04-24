@@ -24,6 +24,7 @@ import com.example.unilocal.db.Places
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceModeratorAdapter.ViewHolder>() {
 
@@ -50,8 +51,8 @@ class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<Pla
         val image:ImageView = itemView.findViewById(R.id.place_image)
         val icon:TextView = itemView.findViewById(R.id.place_icon)
         var codePlace:Int = 0
-        var btnAccept = itemView.findViewById<Button>(R.id.button_accept_place)
-        var btnReject = itemView.findViewById<Button>(R.id.button_reject_place)
+        var btnAccept = itemView.findViewById<FloatingActionButton>(R.id.button_accept_place)
+        var btnReject = itemView.findViewById<FloatingActionButton >(R.id.button_reject_place)
 
 
         init{

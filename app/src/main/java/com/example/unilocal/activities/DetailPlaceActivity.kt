@@ -79,6 +79,7 @@ class DetailPlaceActivity : AppCompatActivity() {
                 }
             }
             binding.placeSchedules.text = schedules
+            binding.placeRating.text = place!!.getRatingAverage(Comments.listById(place!!.id)).toString()
 
         }
 

@@ -43,25 +43,29 @@
                     android:layout_marginLeft="10dp"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_alignParentRight="true">
-                <Button
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="right">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/button_accept_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Acpetar"
-                    android:textSize="10sp"
                     android:layout_gravity="end"
-                    android:backgroundTint="@color/green"/>
-                <Button
+                    app:fabSize="mini"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/green"
+                    android:src="@drawable/ic_done_all"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/button_reject_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Denegar"
-                    android:textSize="10sp"
-                    android:backgroundTint="@color/red"/>
+                    android:backgroundTint="@color/red"
+                    app:fabSize="mini"
+                    android:src="@drawable/ic_block"/>
             </LinearLayout>
         </LinearLayout>
         <androidx.cardview.widget.CardView
