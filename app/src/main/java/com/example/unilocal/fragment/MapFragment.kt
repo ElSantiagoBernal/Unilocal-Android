@@ -13,12 +13,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class MapFragment : Fragment(), OnMapReadyCallback {
-    private var param1: String? = null
-    private var param2: String? = null
 
     lateinit var binding:FragmentMapBinding
     private lateinit var google_map: GoogleMap
