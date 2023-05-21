@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mis lugares"
+        android:text="@string/frofile_title_my_places"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="80dp"
         style="@style/titles"/>

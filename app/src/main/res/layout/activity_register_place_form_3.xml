@@ -31,7 +31,7 @@
         android:id="@+id/btn_hotel"
         android:layout_width="wrap_content"
         android:layout_height="40sp"
-        android:text="Hotel"
+        android:text="@string/register_place_categorie_hotel"
         android:layout_marginRight="30sp"
         android:background="@drawable/button_custom"/>
 
@@ -39,7 +39,7 @@
         android:id="@+id/btn_coffe"
         android:layout_width="wrap_content"
         android:layout_height="40sp"
-        android:text="Café"
+        android:text="@string/register_place_categorie_cafe"
         android:background="@drawable/button_custom"/>
 
 
@@ -49,7 +49,7 @@
         android:id="@+id/btn_restaurant"
         android:layout_width="150sp"
         android:layout_height="40sp"
-        android:text="Restaurante"
+        android:text="@string/register_place_categorie_restaurant"
         android:layout_marginTop="30sp"
         android:background="@drawable/button_custom"/>
 
@@ -64,7 +64,7 @@
             android:id="@+id/btn_park"
             android:layout_width="wrap_content"
             android:layout_height="40sp"
-            android:text="Parque"
+            android:text="@string/register_place_categorie_parque"
             android:layout_marginRight="30sp"
             android:background="@drawable/button_custom"/>
 
@@ -72,7 +72,7 @@
             android:id="@+id/btn_bar"
             android:layout_width="wrap_content"
             android:layout_height="40sp"
-            android:text="Bar"
+            android:text="@string/register_place_categorie_bar"
             android:background="@drawable/button_custom"/>
 
 

@@ -42,8 +42,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="NameOwner" />
+                android:textColor="@color/white" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="60dp"
@@ -69,8 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="40sp"
-                android:textColor="@color/white"
-                android:text="Nombre del Lugar"/>
+                android:textColor="@color/white"/>
 
             <LinearLayout
                 android:layout_marginLeft="15dp"
@@ -87,8 +85,7 @@
                     android:id="@+id/place_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="Texto 2" />
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -207,7 +204,6 @@
                     android:id="@+id/place_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Descripción del lugar"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -237,7 +233,6 @@
                     android:id="@+id/place_schedules"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Horarios del lugar"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -267,7 +262,6 @@
                     android:id="@+id/place_direction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dirección del lugar"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -291,7 +285,6 @@
                     android:id="@+id/place_phone_numbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Teléfono del lugar"
                     android:textSize="15sp" />
 
             </LinearLayout>

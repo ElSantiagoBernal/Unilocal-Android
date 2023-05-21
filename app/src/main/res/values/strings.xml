@@ -87,6 +87,11 @@
     <!-- REGISTER PLACE STRINGS FORM 3-->
     <string name="register_place_title_choose_categorie">Elige la categoría</string>
     <string name="register_place_general_text_choose_categorie">Determinar la categorías ayudara a\ndiferenciar tu lugar de otros</string>
+    <string name="register_place_categorie_hotel">Hotel</string>
+    <string name="register_place_categorie_cafe">Café</string>
+    <string name="register_place_categorie_restaurant">Restaurante</string>
+    <string name="register_place_categorie_parque">Parque</string>
+    <string name="register_place_categorie_bar">Bar</string>
 
     <!-- REGISTER PLACE STRINGS FORM 4-->
     <string name="register_place_title_choose_images">Elige las imagenes</string>
@@ -107,6 +112,24 @@
     <string name="item_place_closing_time">Hora Cierre</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- SETTINGS -->
+    <string name="settings_title">Configuración</string>
+
+    <string name="settings_subtitle_notify">Notificaciones</string>
+    <string name="settings_subtitle_privacity">Privacidad</string>
+    <string name="settings_subtitle_account">Cuenta</string>
+
+    <string name="settings_option_toActivate_notify">Activar notificaciones push</string>
+    <string name="settings_option_privatize_account">Cuenta privada</string>
+    <string name="settings_option_toReceive_email">Recibir correo electrónico</string>
+    <string name="settings_option_toShow_activity">Mostrar actividad del estado de la actividad</string>
+
+    <string name="settings_change_pass">Cambiar Contraseña</string>
+    <string name="settings_logout">Cerrar Sesión</string>
+
+    <!-- PROFILE -->
+    <string name="frofile_title_my_places">Mis Lugares</string>
 
 
 </resources>

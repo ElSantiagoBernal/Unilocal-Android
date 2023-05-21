@@ -11,52 +11,52 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Configuración"
+        android:text="@string/settings_title"
         android:textSize="24sp"
         android:padding="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notificaciones"
+        android:text="@string/settings_subtitle_notify"
         android:textSize="18sp"
         android:padding="16dp"/>
 
     <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Activar notificaciones push"
+        android:text="@string/settings_option_toActivate_notify"
         android:padding="16dp"/>
 
     <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recibir correo electrónico"
+        android:text="@string/settings_option_toReceive_email"
         android:padding="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Privacidad"
+        android:text="@string/settings_subtitle_privacity"
         android:textSize="18sp"
         android:padding="16dp"/>
 
     <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cuenta privada"
+        android:text="@string/settings_option_privatize_account"
         android:padding="16dp"/>
 
     <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mostrar actividad del estado de la actividad"
+        android:text="@string/settings_option_toShow_activity"
         android:padding="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cuenta"
+        android:text="@string/settings_subtitle_account"
         android:textSize="18sp"
         android:padding="16dp"/>
 
