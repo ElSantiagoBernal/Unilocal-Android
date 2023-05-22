@@ -8,6 +8,7 @@
     android:layout_marginTop="80dp"
     android:layout_marginBottom="95dp">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,12 +21,6 @@
         android:layout_height="wrap_content"
         android:text="@string/settings_subtitle_notify"
         android:textSize="18sp"
-        android:padding="16dp"/>
-
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_option_toActivate_notify"
         android:padding="16dp"/>
 
     <Switch
@@ -61,17 +56,24 @@
         android:padding="16dp"/>
 
     <Button
+        android:id="@+id/button_change_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_change_language"
+        android:padding="16dp"/>
+
+    <Button
         android:id="@+id/button_change_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cambiar contraseña"
+        android:text="@string/settings_change_pass"
         android:padding="16dp"/>
 
     <Button
         android:id="@+id/button_log_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cerrar sesión"
+        android:text="@string/settings_logout"
         android:padding="16dp"/>
 
 

@@ -54,10 +54,10 @@ class DetailPlaceActivity : AppCompatActivity() {
             val statusPlace = place!!.isOpen()
             if(statusPlace == "Open"){
                 binding.placeSchedule.setTextColor(Color.GREEN)
-                binding.placeSchedule.text = "Abierto"
+                binding.placeSchedule.text = getString(R.string.detail_place_open)
             } else {
                 binding.placeSchedule.setTextColor(Color.RED)
-                binding.placeSchedule.text = "Cerrado"
+                binding.placeSchedule.text = getString(R.string.detail_place_closed)
             }
 
             var phoneNumbers = ""

@@ -35,6 +35,9 @@ class SettingsFragment : Fragment() {
         binding.buttonChangePass.setOnClickListener {
             goToChangePass()
         }
+        binding.buttonChangeLanguage.setOnClickListener {
+
+        }
 
         return binding.root
     }

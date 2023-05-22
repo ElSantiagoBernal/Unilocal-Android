@@ -103,7 +103,11 @@
     <string name="search_bar">Busca Aquí</string>
 
     <!-- DETAIL PLACE STRINGS -->
-    <string name="c"></string>
+    <string name="detail_place_open">Abierto</string>
+    <string name="detail_place_closed">Cerrado</string>
+    <string name="detail_place_under_review">EN REVISIÓN</string>
+    <string name="detail_place_refused">DENEGADO (ADMIN)</string>
+    <string name="detail_place_rating">Sin calificación</string>
 
     <!-- ITEM PLACE STRINGS -->
     <string name="item_place_calification">Calificación</string>
@@ -125,8 +129,10 @@
     <string name="settings_option_toReceive_email">Recibir correo electrónico</string>
     <string name="settings_option_toShow_activity">Mostrar actividad del estado de la actividad</string>
 
+    <string name="settings_change_language">Cambiar Idioma</string>
     <string name="settings_change_pass">Cambiar Contraseña</string>
     <string name="settings_logout">Cerrar Sesión</string>
+
 
     <!-- PROFILE -->
     <string name="frofile_title_my_places">Mis Lugares</string>
