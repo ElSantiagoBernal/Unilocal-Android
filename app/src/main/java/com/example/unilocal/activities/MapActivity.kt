@@ -1,6 +1,7 @@
 package com.example.unilocal.activities
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.example.unilocal.databinding.ActivityMapBinding
 import com.example.unilocal.databinding.ActivitySearchResultBinding
 import com.example.unilocal.fragment.*
 import com.example.unilocal.ui.login.LoginActivity
+import com.example.unilocal.utils.language
 import kotlin.math.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -98,4 +100,10 @@ class MapActivity : AppCompatActivity() {
         sh.commit()
         finish()
     }
+
+    override fun attachBaseContext(newBase: Context?) {
+        val localeUpdatedContext: ContextWrapper? = language.changeLanguage(newBase!!)
+        super.attachBaseContext(localeUpdatedContext)
+    }
+
 }
