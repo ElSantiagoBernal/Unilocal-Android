@@ -1,17 +1,26 @@
 package com.example.unilocal.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.unilocal.R
 import com.example.unilocal.databinding.FragmentInfoPlaceBinding
 import com.example.unilocal.databinding.FragmentMapBinding
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -20,10 +29,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var google_map: GoogleMap
     private var tienePermiso = false
     private val defaultLocation = LatLng(4.550923, -75.6557201)
+    private lateinit var permissionsResultCallback:ActivityResultLauncher<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        permissionsResultCallback = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()){
+            when (it) {
+                true -> { println("Permiso aceptado") }
+                false -> { println("Permiso denegado") }
+            }
+        }
+        getLocationPermission()
     }
 
     override fun onCreateView(
@@ -40,6 +59,55 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         google_map = googleMap
+        google_map.uiSettings.isZoomControlsEnabled = true
+
+        try{
+            if(tienePermiso){
+                google_map.isMyLocationEnabled = true
+                google_map.uiSettings.isMyLocationButtonEnabled = true
+            } else {
+                google_map.isMyLocationEnabled = false
+                google_map.uiSettings.isMyLocationButtonEnabled = false
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+        getLocation()
+    }
+
+    private fun getLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            tienePermiso = true
+        } else {
+            permissionsResultCallback.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun getLocation() {
+        try {
+            if (tienePermiso) {
+                val ubicacionActual =
+                    LocationServices.getFusedLocationProviderClient(requireActivity()).lastLocation
+                ubicacionActual.addOnCompleteListener(requireActivity()) {
+                    if (it.isSuccessful) {
+                        val ubicacion = it.result
+                        if (ubicacion != null) {
+                            val latlng = LatLng(ubicacion.latitude, ubicacion.longitude)
+                            google_map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15F))
+
+                            google_map.addMarker(MarkerOptions().position(latlng).title("Marker XD"))
+                        }
+                    } else {
+                        google_map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation,
+                            15F))
+                        google_map.uiSettings.isMyLocationButtonEnabled = false
+                    }
+                }
+            }
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message, e)
+        }
     }
 
 }

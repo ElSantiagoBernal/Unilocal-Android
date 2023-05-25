@@ -159,7 +159,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
             && place_secundary_phone.isNotEmpty() && place_adress.isNotEmpty() && categorie_string.isNotEmpty() && images.isNotEmpty() && verifyRegexPhone()){
 
             if(verifyHours(open_hour, close_hour) && verifyPhones()){
-                val placeRegister = Place(Places.size()+1, place_name, place_description, idUser, PlaceStatus.PENDING, categorie_to_register, place_adress, 45.545454f, -23.87867f, 1, 1, 1)
+                val placeRegister = Place(Places.size()+1, place_name, place_description, idUser, PlaceStatus.PENDING, categorie_to_register, place_adress, 45.545454, -23.87867, 1, 1, 1)
                 placeRegister.phoneNumbers.add(place_phone)
                 placeRegister.phoneNumbers.add(place_secundary_phone)
                 placeRegister.images = images

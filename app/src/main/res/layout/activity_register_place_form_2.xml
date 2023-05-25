@@ -27,7 +27,7 @@
     <View
         android:id="@+id/mapa_lugar"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
+        android:layout_height="470dp"
         android:layout_marginBottom="15dp"
         android:background="#EFD0F4" />
 
