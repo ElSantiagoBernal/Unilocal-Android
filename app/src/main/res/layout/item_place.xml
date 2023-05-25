@@ -138,12 +138,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
-            <View
+            <com.google.android.gms.maps.MapView
                 android:id="@+id/place_point"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:src="@mipmap/ic_launcher_round"
-                android:background="#EFD0F4"/>
+                android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
             </LinearLayout>
 

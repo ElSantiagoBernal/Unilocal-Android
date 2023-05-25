@@ -158,7 +158,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/place_content"
@@ -166,7 +167,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/place_image"
             android:layout_margin="20dp"
-            android:orientation="vertical">
+            android:paddingBottom="42dp"
+            android:orientation="vertical"
+            android:clipToPadding="false">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -289,12 +292,12 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/mapa_lugar"
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/place_map_location"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="15dp"
-                android:background="#EFD0F4" />
+                android:layout_height="500dp"
+                tools:context=".activities.DetailPlaceActivity"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
 
         </LinearLayout>
 

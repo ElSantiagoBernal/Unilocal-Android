@@ -1,8 +1,14 @@
 package com.example.unilocal.activities
 
+import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
 import android.widget.TextView
@@ -15,15 +21,25 @@ import com.example.unilocal.db.*
 import com.example.unilocal.fragment.CommentsPlaceFragment
 import com.example.unilocal.model.City
 import com.example.unilocal.model.Place
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnCameraMoveStartedListener
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 
-class DetailPlaceActivity : AppCompatActivity() {
+class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var binding:ActivityDetailPlaceBinding
     var codePlace:Int = 0
     var place:Place? = null
     lateinit var fragment:Fragment
 
-
+    private lateinit var mapView: MapView
+    private lateinit var google_map: GoogleMap
+    private var tienePermiso = false
+    private var placeLocation = LatLng(4.550923, -75.6557201)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,11 +108,51 @@ class DetailPlaceActivity : AppCompatActivity() {
             } else {
                 showFragment()
             }
-
         }
+        /*
+        placeLocation = LatLng(place!!.latitude, place!!.longitude)
+        */
+
+        mapView = findViewById(R.id.place_map_location)
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync(this)
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        mapView.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mapView.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        mapView.onSaveInstanceState(outState)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
 
 
     private fun showFragment() {
@@ -116,6 +172,14 @@ class DetailPlaceActivity : AppCompatActivity() {
     companion object {
 
 
+
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        google_map = googleMap
+        google_map.moveCamera( CameraUpdateFactory.newLatLngZoom(placeLocation, 17f))
+
+        google_map.uiSettings.isZoomControlsEnabled = true
 
     }
 }

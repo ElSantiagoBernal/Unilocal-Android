@@ -32,6 +32,7 @@
     <string name="register_user_msg_allow_permissions">You need to enable the permissions </string>
     <string name="register_user_msg_invalid_age">Age over 18 and under 110</string>
     <string name="register_user_msg_invalid_phone">10 digit phone number</string>
+    <string name="register_user_msg_invalid_category">Only choose a category</string>
     <string name="register_now">register now</string>
 
     <!--REGISTER STRINGS FORM 1-->

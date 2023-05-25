@@ -353,7 +353,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
             selected_categorie--
         } else {
             if(selected_categorie == 1){
-                Toast.makeText(this,"Solo puedes escoger una categoría",Toast.LENGTH_LONG).show()
+                Toast.makeText(this,getString(R.string.register_user_msg_invalid_category),Toast.LENGTH_LONG).show()
             }else{
                 btn.setTextColor(resources.getColor(R.color.white))
                 btn.isSelected = true

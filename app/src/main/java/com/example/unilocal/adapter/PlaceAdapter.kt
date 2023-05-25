@@ -12,6 +12,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
@@ -21,11 +23,28 @@ import com.example.unilocal.db.Comments
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 
-class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
+class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter.ViewHolder>(),
+    OnMapReadyCallback {
+
+    private lateinit var mapView: MapView
+    private lateinit var google_map: GoogleMap
+    private var tienePermiso = false
+    private val defaultLocation = LatLng(4.550923, -75.6557201)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_place, parent, false)
+
+        mapView = v.findViewById(R.id.place_point)
+        mapView.onCreate(null)
+        mapView.getMapAsync(this)
+
         return ViewHolder(v)
     }
 
@@ -98,5 +117,10 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
             name.context.startActivity(intent)
         }
 
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        google_map = googleMap
+        google_map.moveCamera( CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
     }
 }
