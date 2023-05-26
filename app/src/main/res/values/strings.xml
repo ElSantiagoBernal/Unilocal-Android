@@ -91,7 +91,7 @@
     <string name="register_place_categorie_hotel">Hotel</string>
     <string name="register_place_categorie_cafe">Café</string>
     <string name="register_place_categorie_restaurant">Restaurante</string>
-    <string name="register_place_categorie_parque">Parque</string>
+    <string name="register_place_categorie_park">Parque</string>
     <string name="register_place_categorie_bar">Bar</string>
 
     <!-- REGISTER PLACE STRINGS FORM 4-->
@@ -99,9 +99,17 @@
     <string name="register_place_general_text_choose_images">Poner imagenes de tu lugar también\nayudará a que se diferencie de otros</string>
     <string name="register_place_choose_images">Pulsa el botón \"Elegir fotos\"\npara agregar las fotos del\nlugar</string>
 
+    <!-- REGISTER PLACE ALERTS -->
+    <string name="register_place_alerts_registered">Lugar Registrado</string>
+    <string name="register_place_alerts_fields_filled">Asegurate de que todos los campos estén diligenciados correctamente</string>
+    <string name="register_place_alerts_same_numbers">Debe ser un número de contacto diferente</string>
+    <string name="register_place_alerts_opening_larger">La hora de apertura no puede ser mayor a la del cierre</string>
+
+
 
     <!-- MAP STRINGS -->
     <string name="search_bar">Busca Aquí</string>
+    <string name="right_here">Justo Aquí</string>
 
     <!-- DETAIL PLACE STRINGS -->
     <string name="detail_place_open">Abierto</string>

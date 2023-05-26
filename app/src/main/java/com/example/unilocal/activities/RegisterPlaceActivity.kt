@@ -13,7 +13,9 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -32,10 +34,18 @@ import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
 import com.example.unilocal.model.User
 import com.example.unilocal.ui.login.LoginActivity
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import java.sql.Time
 import java.util.*
 
-class RegisterPlaceActivity : AppCompatActivity() {
+class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityRegisterPlaceBinding
     lateinit var viewPager: ViewPager
@@ -84,6 +94,16 @@ class RegisterPlaceActivity : AppCompatActivity() {
     private lateinit var viewPager2: ViewPager
     private lateinit var imagePicker: ImagePicker
 
+    // MAPS
+
+    private lateinit var google_map: GoogleMap
+    private var tienePermiso = false
+    private val defaultLocation = LatLng(4.550923, -75.6557201)
+    private lateinit var permissionsResultCallback:ActivityResultLauncher<String>
+    private var lat: Double? = null
+    private var lng: Double? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterPlaceBinding.inflate(layoutInflater)
@@ -121,6 +141,8 @@ class RegisterPlaceActivity : AppCompatActivity() {
             }
         }
 
+
+
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
 
@@ -147,19 +169,30 @@ class RegisterPlaceActivity : AppCompatActivity() {
                     }
                 }else{
                     btn_next.text = getString(R.string.register_user_next)
+
                 }
+
             }
             override fun onPageScrollStateChanged(state: Int) {
             }
         })
+        permissionsResultCallback = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()){
+            when (it) {
+                true -> { println("Permiso aceptado") }
+                false -> { println("Permiso denegado") }
+            }
+        }
+        getLocationPermission()
     }
 
     private fun register() {
         if(place_name.isNotEmpty() && place_description.isNotEmpty() && open_hour.isNotEmpty() && close_hour.isNotEmpty() && place_phone.isNotEmpty()
-            && place_secundary_phone.isNotEmpty() && place_adress.isNotEmpty() && categorie_string.isNotEmpty() && images.isNotEmpty() && verifyRegexPhone()){
+            && place_secundary_phone.isNotEmpty() && place_adress.isNotEmpty() && categorie_string.isNotEmpty() && images.isNotEmpty() && verifyRegexPhone() && lat != null && lng != null){
 
             if(verifyHours(open_hour, close_hour) && verifyPhones()){
-                val placeRegister = Place(Places.size()+1, place_name, place_description, idUser, PlaceStatus.PENDING, categorie_to_register, place_adress, 45.545454, -23.87867, 1, 1, 1)
+                val placeRegister = Place(Places.size()+1, place_name, place_description, idUser, PlaceStatus.PENDING, categorie_to_register, place_adress,
+                    lat!!, lng!!, 1, 1, 1)
                 placeRegister.phoneNumbers.add(place_phone)
                 placeRegister.phoneNumbers.add(place_secundary_phone)
                 placeRegister.images = images
@@ -167,12 +200,13 @@ class RegisterPlaceActivity : AppCompatActivity() {
                 val only_close_hour = determinHour(close_hour)
                 val schedule1 = Schedule(5, Schedules.getAll(),only_open_hour,only_close_hour)
                 placeRegister.schedules.add(schedule1)
+
                 Places.add(placeRegister)
-                Toast.makeText(this, "Lugar registrado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.register_place_alerts_registered), Toast.LENGTH_SHORT).show()
                 finish()
                 goToMap()
             }else{
-                Toast.makeText(this, "Asegurate de que todos los campos estén diligenciados correctamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.register_place_alerts_fields_filled), Toast.LENGTH_SHORT).show()
             }
         }else{
             verifyForm1Inputs()
@@ -240,7 +274,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
         verifyRegexPass()
         verifyDatesWithDb()*/
         if(place_phone.equals(place_secundary_phone)){
-            input_place_secundary_phone.error = "No pude ser igual al otro número"
+            input_place_secundary_phone.error = getString(R.string.register_place_alerts_same_numbers)
         }
         if(open_hour.isEmpty()){
             input_open_hour.error = getString(R.string.forgot_msg_obligatorie_inputs)
@@ -291,27 +325,27 @@ class RegisterPlaceActivity : AppCompatActivity() {
         }
         btn_hotel_categorie.setOnClickListener{
             changeButton(btn_hotel_categorie)
-            categorie_string = "Hotel"
+            categorie_string = getString(R.string.register_place_categorie_hotel)
             categorie_to_register = 1
         }
         btn_coffe_categorie.setOnClickListener{
             changeButton(btn_coffe_categorie)
-            categorie_string = "Café"
+            categorie_string = getString(R.string.register_place_categorie_cafe)
             categorie_to_register = 2
         }
         btn_restaurant_categorie.setOnClickListener{
             changeButton(btn_restaurant_categorie)
-            categorie_string = "Restaurante"
+            categorie_string = getString(R.string.register_place_categorie_restaurant)
             categorie_to_register = 3
         }
         btn_park_categorie.setOnClickListener{
             changeButton(btn_park_categorie)
-            categorie_string = "Parque"
+            categorie_string = getString(R.string.register_place_categorie_park)
             categorie_to_register = 4
         }
         btn_bar_categorie.setOnClickListener{
             changeButton(btn_bar_categorie)
-            categorie_string = "Bar"
+            categorie_string = getString(R.string.register_place_categorie_bar)
             categorie_to_register = 5
         }
 
@@ -329,6 +363,10 @@ class RegisterPlaceActivity : AppCompatActivity() {
         input_place_adress = viewPager.findViewById(R.id.place_adress)
 
         //FORM 2 VARS
+
+        val mapFragment = supportFragmentManager.findFragmentById( R.id.mapa_lugar) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
 
         //FORM 3 VARS
 
@@ -394,7 +432,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
 
     private fun verifyPhones(): Boolean {
         if(place_phone.equals(place_secundary_phone)){
-            input_place_secundary_phone.error = "No pude ser igual al otro número"
+            input_place_secundary_phone.error = getString(R.string.register_place_alerts_same_numbers)
             return false
         }else{
             return true
@@ -406,7 +444,7 @@ class RegisterPlaceActivity : AppCompatActivity() {
             val only_open_hour = determinHour(hour_open)
             val only_close_hour = determinHour(hour_close)
             if(only_open_hour > only_close_hour){
-                Toast.makeText(this,"La hora de apertura no puede ser mayor a la del cierre",Toast.LENGTH_LONG).show()
+                Toast.makeText(this,getString(R.string.register_place_alerts_opening_larger),Toast.LENGTH_LONG).show()
                 return false
             }
             return true
@@ -429,4 +467,66 @@ class RegisterPlaceActivity : AppCompatActivity() {
             dots.first().setTextColor(ContextCompat.getColor(this, R.color.active))
         }
     }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        google_map = googleMap
+        google_map.uiSettings.isZoomControlsEnabled = true
+        google_map.setOnMapClickListener {
+            if(lat == null || lng == null){
+
+            }
+            lat = it.latitude
+            lng = it.longitude
+            google_map.clear()
+            google_map.addMarker(MarkerOptions().position(it).title(getString(R.string.right_here)))
+
+        }
+
+        try{
+            if(tienePermiso){
+                google_map.isMyLocationEnabled = true
+                google_map.uiSettings.isMyLocationButtonEnabled = true
+            } else {
+                google_map.isMyLocationEnabled = false
+                google_map.uiSettings.isMyLocationButtonEnabled = false
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+        getLocation()
+    }
+
+    private fun getLocationPermission() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            tienePermiso = true
+        } else {
+            permissionsResultCallback.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun getLocation() {
+        try {
+            if (tienePermiso) {
+                val ubicacionActual =
+                    LocationServices.getFusedLocationProviderClient(this).lastLocation
+                ubicacionActual.addOnCompleteListener(this) {
+                    if (it.isSuccessful) {
+                        val ubicacion = it.result
+                        if (ubicacion != null) {
+                            val latlng = LatLng(ubicacion.latitude, ubicacion.longitude)
+                            google_map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15F))
+                            google_map.addMarker(MarkerOptions().position(latlng).title(getString(R.string.right_here)))
+                        }
+                    } else {
+                        google_map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation,
+                            15F))
+                        google_map.uiSettings.isMyLocationButtonEnabled = false
+                    }
+                }
+            }
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message, e)
+        }
+    }
+
 }

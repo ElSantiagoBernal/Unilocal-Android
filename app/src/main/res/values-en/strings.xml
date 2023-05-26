@@ -92,7 +92,7 @@
     <string name="register_place_categorie_hotel">Hotel</string>
     <string name="register_place_categorie_cafe">Café</string>
     <string name="register_place_categorie_restaurant">Restaurant</string>
-    <string name="register_place_categorie_parque">Park</string>
+    <string name="register_place_categorie_park">Park</string>
     <string name="register_place_categorie_bar">Bar</string>
 
     <!-- REGISTER PLACE STRINGS FORM 4-->
@@ -100,9 +100,15 @@
     <string name="register_place_general_text_choose_images">Putting images of your place will also\nhelp to differentiate it from others</string>
     <string name="register_place_choose_images">Click on the \"Choose Pictures\" button \nto add the pictures of the place</string>
 
+    <!-- REGISTER PLACE ALERTS -->
+    <string name="register_place_alerts_registered">Place Registered</string>
+    <string name="register_place_alerts_fields_filled">Make sure that all fields are filled in correctly.</string>
+    <string name="register_place_alerts_same_numbers">Must be a different contact number</string>
+    <string name="register_place_alerts_opening_larger">The Opening time may not be larger than the closing time</string>
 
     <!-- MAP STRINGS -->
     <string name="search_bar">Search here</string>
+    <string name="right_here">Right Aquí</string>
 
     <!-- DETAIL PLACE STRINGS -->
     <string name="detail_place_open">Open</string>

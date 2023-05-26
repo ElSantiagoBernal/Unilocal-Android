@@ -28,6 +28,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -109,9 +110,8 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 showFragment()
             }
         }
-        /*
+
         placeLocation = LatLng(place!!.latitude, place!!.longitude)
-        */
 
         mapView = findViewById(R.id.place_map_location)
         mapView.onCreate(savedInstanceState)
@@ -178,6 +178,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         google_map = googleMap
         google_map.moveCamera( CameraUpdateFactory.newLatLngZoom(placeLocation, 17f))
+        google_map.addMarker(MarkerOptions().position(placeLocation).title("Justo Aquí"))
 
         google_map.uiSettings.isZoomControlsEnabled = true
 

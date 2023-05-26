@@ -24,12 +24,14 @@
         style="@style/informative_text"
         />
 
-    <View
+    <fragment
         android:id="@+id/mapa_lugar"
         android:layout_width="match_parent"
-        android:layout_height="470dp"
+        android:layout_height="500dp"
         android:layout_marginBottom="15dp"
-        android:background="#EFD0F4" />
+        android:background="#EFD0F4"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
 
 
 
