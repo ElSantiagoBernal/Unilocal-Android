@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat
 import com.example.unilocal.R
 import com.example.unilocal.databinding.FragmentInfoPlaceBinding
 import com.example.unilocal.databinding.FragmentMapBinding
+import com.example.unilocal.db.Places
+import com.example.unilocal.model.PlaceStatus
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -71,6 +73,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
         }catch (e:Exception){
             e.printStackTrace()
+        }
+        Places.ListByState(PlaceStatus.ACCEPTED).forEach {
+            google_map.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)).title(it.name).visible(true))
         }
         getLocation()
     }
