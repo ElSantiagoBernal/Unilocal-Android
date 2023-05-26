@@ -96,7 +96,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             val latlng = LatLng(ubicacion.latitude, ubicacion.longitude)
                             google_map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15F))
 
-                            google_map.addMarker(MarkerOptions().position(latlng).title("Marker XD"))
                         }
                     } else {
                         google_map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation,

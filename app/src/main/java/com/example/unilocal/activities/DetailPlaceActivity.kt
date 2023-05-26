@@ -178,7 +178,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         google_map = googleMap
         google_map.moveCamera( CameraUpdateFactory.newLatLngZoom(placeLocation, 17f))
-        google_map.addMarker(MarkerOptions().position(placeLocation).title("Justo Aquí"))
+        google_map.addMarker(MarkerOptions().position(placeLocation).title(getString(R.string.right_here)))
 
         google_map.uiSettings.isZoomControlsEnabled = true
 

@@ -15,22 +15,22 @@ object Places {
         val schedule2 = Schedule(2, Schedules.getWeekDay(),9,20)
         val schedule3 = Schedule(3, Schedules.getWeekend(),14,13)
 
-        val place1 = Place(id, "Maria Licky", "Comidas Rápidas", 1, PlaceStatus.ACCEPTED, 3, "Cll 12B 15-02",45.545454,-23.87867,1,1,1)
+        val place1 = Place(id, "Maria Licky", "Comidas Rápidas", 1, PlaceStatus.ACCEPTED, 3, "Cll 12B 15-02",4.542725, -75.670001,1,1,1)
         place1.schedules.add(schedule1)
         id++
-        val place2 = Place(id, "Hotel San José", "El hotel más exclusivo del santander", 2, PlaceStatus.ACCEPTED, 1, "En el santander xd",45.545454,-23.87867,1,1,1)
+        val place2 = Place(id, "Hotel San José", "El hotel más exclusivo del santander", 2, PlaceStatus.ACCEPTED, 1, "En el santander xd",4.537227, -75.672451,1,1,1)
         place2.schedules.add(schedule2)
         id++
-        val place3 = Place(id, "Unicentro", "Centro Comercial unicentro", 3, PlaceStatus.REJECTED, 4, "San Agustín 22-30",45.545454,-23.87867,1,1,1)
+        val place3 = Place(id, "Unicentro", "Centro Comercial unicentro", 3, PlaceStatus.REJECTED, 4, "San Agustín 22-30",4.543521, -75.685812,1,1,1)
         place3.schedules.add(schedule2)
         id++
-        val place4 = Place(id, "CentralPark", "Parque Recreacional", 1, PlaceStatus.PENDING, 4, "Cra 28A 12-01",45.545454,-23.87867,1,1,1)
+        val place4 = Place(id, "CentralPark", "Parque Recreacional", 1, PlaceStatus.PENDING, 4, "Cra 28A 12-01",4.566316, -75.652585,1,1,1)
         place4.schedules.add(schedule1)
         id++
-        val place5 = Place(id, "Bar HUB", "Barcito", 2, PlaceStatus.ACCEPTED, 5, "Freislo 88879",45.545454,-23.87867,1,1,1)
+        val place5 = Place(id, "Bar HUB", "Barcito", 2, PlaceStatus.ACCEPTED, 5, "Freislo 88879",4.539410, -75.667842,1,1,1)
         place5.schedules.add(schedule2)
         id++
-        val place6 = Place(id, "Licky Liquors", "Licorera", 3, PlaceStatus.ACCEPTED, 5, "Av. Centenario B13-9",45.545454,-23.87867,1,1,1)
+        val place6 = Place(id, "Licky Liquors", "Licorera", 3, PlaceStatus.ACCEPTED, 5, "Av. Centenario B13-9",4.531532, -75.668269,1,1,1)
         place6.schedules.add(schedule3)
         id++
 
