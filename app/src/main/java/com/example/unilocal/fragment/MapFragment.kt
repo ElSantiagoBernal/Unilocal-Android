@@ -3,11 +3,14 @@ package com.example.unilocal.fragment
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -65,6 +69,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         google_map = googleMap
         google_map.uiSettings.isZoomControlsEnabled = true
+
+        Firebase.firestore
+            .collection("places")
+            .get()
+            .addOnSuccessListener {
+                for(doc in it) {
+                    var place = doc.toObject(Place::class.java)
+                    place.key = doc.id
+                    googleMap.addMarker(
+                        MarkerOptions().position(LatLng(place.latitude, place.longitude))
+                            .title(place.name)
+                    )!!.tag = place.key
+                }
+            }
+            .addOnFailureListener {
+            }
 
         try{
             if(tienePermiso){
