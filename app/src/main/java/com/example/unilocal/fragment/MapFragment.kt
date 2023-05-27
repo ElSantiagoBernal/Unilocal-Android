@@ -15,6 +15,8 @@ import com.example.unilocal.R
 import com.example.unilocal.databinding.FragmentInfoPlaceBinding
 import com.example.unilocal.databinding.FragmentMapBinding
 import com.example.unilocal.model.Place
+import com.example.unilocal.db.Places
+import com.example.unilocal.model.PlaceStatus
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -63,25 +65,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         google_map = googleMap
         google_map.uiSettings.isZoomControlsEnabled = true
-
-        Firebase.firestore
-            .collection("places")
-            .get()
-            .addOnSuccessListener {
-                for(doc in it) {
-                    var place = doc.toObject(Place::class.java)
-                    place.key = doc.id
-
-                    googleMap.addMarker(
-                        MarkerOptions().position(LatLng(place.latitude, place.longitude))
-                            .title(place.name)
-                    )!!.tag = place.key
-                }
-            }
-            .addOnFailureListener {
-                Log.e("Lista de lugares", it.message.toString())
-            }
-
 
         try{
             if(tienePermiso){
