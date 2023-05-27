@@ -13,6 +13,8 @@ class User(idUser:Int,
            var imgUrl:String,
            phone: String): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age, phone) {
 
+    var key:String = ""
+
     override fun toString(): String {
         return "Usuario(nickname='$nickname' pass = '$password' email'$email') "
     }

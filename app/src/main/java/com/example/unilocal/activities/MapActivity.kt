@@ -14,11 +14,18 @@ import androidx.fragment.app.replace
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityMapBinding
 import com.example.unilocal.databinding.ActivitySearchResultBinding
+import com.example.unilocal.db.Places
+import com.example.unilocal.db.Schedules
 import com.example.unilocal.fragment.*
+import com.example.unilocal.model.Place
+import com.example.unilocal.model.PlaceStatus
+import com.example.unilocal.model.Schedule
 import com.example.unilocal.ui.login.LoginActivity
 import com.example.unilocal.utils.language
 import kotlin.math.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MapActivity : AppCompatActivity() {
 

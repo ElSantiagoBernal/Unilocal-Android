@@ -68,7 +68,7 @@ class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<Pla
             codePlace= place.id
             val placeToRemove = list.find { it.id == place.id }
 
-            if(place.status.equals(PlaceStatus.PENDING)){
+            if(place.status?.equals(PlaceStatus.PENDING) == true){
                 btnAccept.setOnClickListener {
                     place.status = PlaceStatus.ACCEPTED
                     //list = Places.ListByState(PlaceStatus.ACCEPTED)

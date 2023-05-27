@@ -8,6 +8,8 @@ import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.text.Html
 import android.util.Log
@@ -32,6 +34,9 @@ import com.example.unilocal.databinding.ActivityRegisterFormUser3Binding
 import com.example.unilocal.db.Users
 import com.example.unilocal.model.User
 import com.example.unilocal.ui.login.LoginActivity
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -162,10 +167,22 @@ class RegisterActivity : AppCompatActivity() {
                 if(verifyRegexEmail() && verifyRegexPass() && verifyRegexAge() && verifyRegexPhone()){
                     if(verifyDatesWithDb()){
                         val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), imageUrl, phone)
-                        Users.add(userRegister)
+                        /*Users.add(userRegister)
                         Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
                         finish()
-                        goToLogIn()
+                        goToLogIn()*/
+                        Firebase.firestore
+                            .collection("users")
+                            .add(userRegister)
+                            .addOnSuccessListener {
+                                //Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
+                                Toast.makeText(this, getString(R.string.register_place_alerts_registered), Toast.LENGTH_SHORT).show()
+                                Handler(Looper.getMainLooper()).postDelayed({finish()}, 4000)
+                                goToLogIn()
+                            }
+                            .addOnFailureListener { e ->
+                                Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
+                            }
                     }else{
                         if(terms.isChecked == false){
                             Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()

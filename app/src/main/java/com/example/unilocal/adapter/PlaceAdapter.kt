@@ -79,23 +79,25 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
             val rating = place.getRatingAverage(Comments.listById(place.id))
             val statusPlace = place.isOpen()
             val place_AorR = place.status
-            if(place_AorR.equals(PlaceStatus.ACCEPTED)){
-                if(statusPlace == "Open"){
-                    status.setTextColor(ContextCompat.getColor(itemView.context, R.color.green))
-                    status.text = "Abierto"
-                } else {
+            if (place_AorR != null) {
+                if(place_AorR.equals(PlaceStatus.ACCEPTED)){
+                    if(statusPlace == "Open"){
+                        status.setTextColor(ContextCompat.getColor(itemView.context, R.color.green))
+                        status.text = "Abierto"
+                    } else {
+                        status.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
+                        status.text = "Cerrado"
+                    }
+                    ratingX.text = rating.toString()
+                }else if(place_AorR.equals(PlaceStatus.PENDING)){
+                    status.setTextColor(ContextCompat.getColor(itemView.context, R.color.orange))
+                    status.text = "EN REVISION"
+                    ratingX.text = "Sin calificación"
+                }else{
                     status.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
-                    status.text = "Cerrado"
+                    status.text = "DENEGADO (ADMIN)"
+                    ratingX.text = "Sin calificación"
                 }
-                ratingX.text = rating.toString()
-            }else if(place_AorR.equals(PlaceStatus.PENDING)){
-                status.setTextColor(ContextCompat.getColor(itemView.context, R.color.orange))
-                status.text = "EN REVISION"
-                ratingX.text = "Sin calificación"
-            }else{
-                status.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
-                status.text = "DENEGADO (ADMIN)"
-                ratingX.text = "Sin calificación"
             }
             ratingX.gravity = Gravity.CENTER
             status.gravity = Gravity.CENTER

@@ -4,19 +4,21 @@ import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
 import com.example.unilocal.model.User
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 object Places {
 
     private val places:java.util.ArrayList<Place> = ArrayList()
-    private var id:Int = 1
+    public var id:Int = 1
 
     init {
-        val schedule1 = Schedule(1, Schedules.getAll(),12,20)
+        /*val schedule1 = Schedule(1, Schedules.getAll(),12,20)
         val schedule2 = Schedule(2, Schedules.getWeekDay(),9,20)
         val schedule3 = Schedule(3, Schedules.getWeekend(),14,13)
 
         val place1 = Place(id, "Maria Licky", "Comidas Rápidas", 1, PlaceStatus.ACCEPTED, 3, "Cll 12B 15-02",4.542725, -75.670001,1,1,1)
-        place1.schedules.add(schedule1)
+        place1.schedules.add(schedule3)
         id++
         val place2 = Place(id, "Hotel San José", "El hotel más exclusivo del santander", 2, PlaceStatus.ACCEPTED, 1, "En el santander xd",4.537227, -75.672451,1,1,1)
         place2.schedules.add(schedule2)
@@ -39,7 +41,7 @@ object Places {
         places.add(place3)
         places.add(place4)
         places.add(place5)
-        places.add(place6)
+        places.add(place6)*/
 
     }
 

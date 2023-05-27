@@ -6,25 +6,44 @@ import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Place(var id:Int,
-            var name:String,
-            var description:String,
-            var idOwner:Int,
-            var status:PlaceStatus,
-            var idCategory:Int,
-            var direction:String,
-            var latitude:Double,
-            var longitude:Double,
-            var idCountry:Int,
-            var idDepartment:Int,
-            var idCity:Int) {
+class Place() {
 
-    lateinit var images:MutableList<Uri>
+
+    var id:Int = 0
+    var key:String = ""
+    var name:String = ""
+    var description:String = ""
+    var idOwner:Int = 0
+    var status: PlaceStatus? = null
+    var idCategory:Int = 0
+    var direction:String = ""
+    var latitude:Double = 0.0
+    var longitude:Double = 0.0
+    var idCountry:Int = 0
+    var idDepartment:Int = 0
+    var idCity:Int = 0
+
+    var images: MutableList<String> = mutableListOf()
     var phoneNumbers:ArrayList<String> = ArrayList()
     var date: Date = Date()
     var schedules:ArrayList<Schedule> = ArrayList()
 
-
+    constructor(id:Int, name:String, description:String, idOwner:Int,
+                status: PlaceStatus, idCategory:Int, direction:String, latitude:Double,
+                longitude:Double,idCountry:Int, idDepartment:Int, idCity:Int):this(){
+        this.id = id
+        this.name = name
+        this.description = description
+        this.idOwner = idOwner
+        this.status = status
+        this.idCategory = idCategory
+        this.direction = direction
+        this.latitude = latitude
+        this.longitude = longitude
+        this.idCountry = idCountry
+        this.idDepartment = idDepartment
+        this.idCity = idCity
+    }
 
     fun isOpen():String{
         val date = Calendar.getInstance()

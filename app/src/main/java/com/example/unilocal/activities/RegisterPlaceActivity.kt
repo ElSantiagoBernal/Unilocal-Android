@@ -13,6 +13,8 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -42,6 +44,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.sql.Time
 import java.util.*
 
@@ -195,16 +200,26 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                     lat!!, lng!!, 1, 1, 1)
                 placeRegister.phoneNumbers.add(place_phone)
                 placeRegister.phoneNumbers.add(place_secundary_phone)
-                placeRegister.images = images
+                placeRegister.images = images.map { uri -> uri.toString() } as MutableList<String>
                 val only_open_hour = determinHour(open_hour)
                 val only_close_hour = determinHour(close_hour)
                 val schedule1 = Schedule(5, Schedules.getAll(),only_open_hour,only_close_hour)
                 placeRegister.schedules.add(schedule1)
 
-                Places.add(placeRegister)
-                Toast.makeText(this, getString(R.string.register_place_alerts_registered), Toast.LENGTH_SHORT).show()
-                finish()
-                goToMap()
+                //Places.add(placeRegister)
+                Firebase.firestore
+                    .collection("places")
+                    .add(placeRegister)
+                    .addOnSuccessListener {
+                        //Snackbar.make(binding.root, getString(R.string.register_place_alerts_registered), Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(this, getString(R.string.register_place_alerts_registered), Toast.LENGTH_SHORT).show()
+                        Handler(Looper.getMainLooper()).postDelayed({finish()}, 4000)
+                        goToMap()
+                    }
+                    .addOnFailureListener { e ->
+                        Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
+                    }
+
             }else{
                 Toast.makeText(this, getString(R.string.register_place_alerts_fields_filled), Toast.LENGTH_SHORT).show()
             }
@@ -255,7 +270,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 } else {
                     it.data?.let { uri ->
-                        images.add(uri)
+                        images.add(Uri.parse(uri.toString()))
                     }
                 }
             }

@@ -14,6 +14,8 @@ import com.example.unilocal.databinding.FragmentCommentsPlaceBinding
 import com.example.unilocal.db.Comments
 import com.example.unilocal.model.Comment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class CommentsPlaceFragment : Fragment() {
@@ -61,11 +63,16 @@ class CommentsPlaceFragment : Fragment() {
 
             var id: Int = Comments.getSize()
             id++
-            val comment:Comment = Comment(id, text, idUser, 4, codePlace)
+            val comment = Comment(id, text, idUser, 4, codePlace)
             Comments.new(comment)
             Snackbar.make(binding.root, "Mensaje Enviado", Snackbar.LENGTH_LONG).show()
 
             list.add(comment)
+
+            /*Firebase.firestore
+                .collection("comments")
+                .add(comment)*/
+
             adapter.notifyItemInserted(list.size-1)
             clearInputs()
 
