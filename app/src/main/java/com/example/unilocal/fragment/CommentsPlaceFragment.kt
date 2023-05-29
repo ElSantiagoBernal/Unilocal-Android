@@ -15,14 +15,15 @@ import com.example.unilocal.db.Comments
 import com.example.unilocal.model.Comment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 
 class CommentsPlaceFragment : Fragment() {
 
     lateinit var binding: FragmentCommentsPlaceBinding
-    var list:ArrayList<Comment> = ArrayList()
-    var codePlace:Int = 0
+    lateinit var list:ArrayList<Comment>
+    var codePlace:String = ""
     private lateinit var adapter: CommentsAdapter
 
 
@@ -30,7 +31,7 @@ class CommentsPlaceFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null){
-            codePlace = requireArguments().getInt("id_place")
+            codePlace = requireArguments().getString("id_place", "")
         }
     }
 
@@ -41,11 +42,35 @@ class CommentsPlaceFragment : Fragment() {
     ): View? {
         binding = FragmentCommentsPlaceBinding.inflate(inflater, container, false)
 
-        list = Comments.listById(codePlace)
-
+        list = ArrayList()
         adapter = CommentsAdapter(list)
         binding.listComments.adapter = adapter
         binding.listComments.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
+        Firebase.firestore
+            .collection("places")
+            .document(codePlace)
+            .collection("comments")
+            .get()
+            .addOnSuccessListener {
+                if(it.isEmpty){
+                    //AQUI MOSTRAR MENSAJE DE QUE NO HAY COMMENTS
+                }else{
+                    for(doc in it){
+                        val comment = doc.toObject(Comment::class.java)
+                        if(comment != null){
+                            comment.key = doc.id
+                            list.add(comment)
+                            adapter.notifyItemInserted(list.size-1)
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener{
+                Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG).show()
+            }
+
+
 
         binding.sendButton.setOnClickListener { createComment() }
 
@@ -60,20 +85,35 @@ class CommentsPlaceFragment : Fragment() {
 
             val sp = requireActivity().getSharedPreferences("sesion", Context.MODE_PRIVATE)
             val idUser = sp.getInt("id_user", -1)
+            val comment = Comment(text, idUser, 1)
 
-            var id: Int = Comments.getSize()
-            id++
-            val comment = Comment(id, text, idUser, 4, codePlace)
-            Comments.new(comment)
-            Snackbar.make(binding.root, "Mensaje Enviado", Snackbar.LENGTH_LONG).show()
+            Firebase.firestore
+                .collection("places")
+                .document(codePlace)
+                .collection("comments")
+                .add(comment)
+                .addOnSuccessListener {
+                    list.add(comment)
+                    adapter.notifyItemInserted(list.size-1)
+                    Snackbar.make(binding.root, "Mensaje Enviado", Snackbar.LENGTH_LONG).show()
+                }
+                .addOnFailureListener(){
+                    Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG).show()
+                }
 
-            list.add(comment)
+            //var id: Int = Comments.getSize()
+            //id++
+            //val comment = Comment(id, text, idUser, 4, 1)//AQUI EL ID DEL LUGAR ESTA QUEMADO MIENTRAS
+            //Comments.new(comment)
+
+
+
 
             /*Firebase.firestore
                 .collection("comments")
                 .add(comment)*/
 
-            adapter.notifyItemInserted(list.size-1)
+
             clearInputs()
 
         } else {
@@ -86,9 +126,9 @@ class CommentsPlaceFragment : Fragment() {
     }
 
     companion object{
-        fun newInstance(codePlace: Int):CommentsPlaceFragment{
+        fun newInstance(codePlace: String):CommentsPlaceFragment{
             val args = Bundle()
-            args.putInt("id_place", codePlace)
+            args.putString("id_place", codePlace)
             val fragment = CommentsPlaceFragment()
             fragment.arguments = args
             return fragment

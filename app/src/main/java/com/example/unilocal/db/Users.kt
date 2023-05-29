@@ -3,7 +3,7 @@ package com.example.unilocal.db
 import com.example.unilocal.model.User
 
 object Users {
-
+/*
     private var id:Int = 1
     private val users:java.util.ArrayList<User> = ArrayList()
 
@@ -68,5 +68,9 @@ object Users {
     /*fun login(email:String, pass:String):User{
         val answer = users.first { u -> u.password == pass && u.email == email }
         return answer
-    }*/
+    }
+
+
+ */
+ */
 }

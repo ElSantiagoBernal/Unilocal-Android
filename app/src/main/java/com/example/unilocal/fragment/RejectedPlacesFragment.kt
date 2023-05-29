@@ -15,11 +15,13 @@ import com.example.unilocal.databinding.FragmentRejectedPlacesBinding
 import com.example.unilocal.db.Places
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class RejectedPlacesFragment : Fragment() {
 
     lateinit var binding: FragmentRejectedPlacesBinding
-    private var listRejectedPlaces:ArrayList<Place> = ArrayList()
+    lateinit var listRejectedPlaces:ArrayList<Place>
     lateinit var adapter:PlaceModeratorAdapter
 
     override fun onCreateView(
@@ -29,11 +31,29 @@ class RejectedPlacesFragment : Fragment() {
     ): View? {
         binding = FragmentRejectedPlacesBinding.inflate(inflater, container, false)
 
-        listRejectedPlaces = Places.ListByState(PlaceStatus.REJECTED)
+        listRejectedPlaces = ArrayList()//Places.ListByState(PlaceStatus.REJECTED)
 
         adapter = PlaceModeratorAdapter(listRejectedPlaces)
         binding.listPlaces.adapter = adapter
         binding.listPlaces.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
+        Firebase.firestore
+            .collection("places")
+            .whereEqualTo("status", PlaceStatus.REJECTED)
+            .get()
+            .addOnSuccessListener {
+                if(it.isEmpty){
+                    //AQUI MOSTRAR MENSAJE DE QUE NO HAY LUGARES CREADOS
+                }else{
+                    for(doc in it){
+                        val place = doc.toObject(Place::class.java)
+                        if(place != null){
+                            listRejectedPlaces.add(place)
+                            adapter.notifyItemInserted(listRejectedPlaces.size-1)
+                        }
+                    }
+                }
+            }
 
         return binding.root
     }

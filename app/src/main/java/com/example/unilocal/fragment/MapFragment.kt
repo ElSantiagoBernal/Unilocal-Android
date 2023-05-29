@@ -1,6 +1,7 @@
 package com.example.unilocal.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -15,24 +16,27 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.unilocal.R
+import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.databinding.FragmentInfoPlaceBinding
 import com.example.unilocal.databinding.FragmentMapBinding
+import com.example.unilocal.db.*
 import com.example.unilocal.model.Place
-import com.example.unilocal.db.Places
 import com.example.unilocal.model.PlaceStatus
+import com.example.unilocal.ui.login.LoginActivity
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
 
     lateinit var binding:FragmentMapBinding
     private lateinit var google_map: GoogleMap
@@ -70,13 +74,42 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         google_map = googleMap
         google_map.uiSettings.isZoomControlsEnabled = true
 
+        /*AQUI SE HACE PARA METER DATOS QUEMADOS
+
+        Administrators.list().forEach {
+            Firebase.firestore
+                .collection("admins")
+                .add(it)
+                .addOnSuccessListener {
+                }
+        }
+
+        Countries.list().forEach {
+            Firebase.firestore
+                .collection("countries")
+                .add(it)
+                .addOnSuccessListener {
+                }
+        }
+
+        Departments.list().forEach {
+            Firebase.firestore
+                .collection("departments")
+                .add(it)
+                .addOnSuccessListener {
+                }
+        }*/
+
+
         Firebase.firestore
             .collection("places")
+            .whereEqualTo("status", PlaceStatus.ACCEPTED)
             .get()
             .addOnSuccessListener {
                 for(doc in it) {
                     var place = doc.toObject(Place::class.java)
                     place.key = doc.id
+
                     googleMap.addMarker(
                         MarkerOptions().position(LatLng(place.latitude, place.longitude))
                             .title(place.name)
@@ -98,6 +131,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             e.printStackTrace()
         }
         getLocation()
+        google_map.setOnInfoWindowClickListener(this)
     }
 
     private fun getLocationPermission() {
@@ -132,6 +166,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message, e)
         }
+    }
+
+    override fun onInfoWindowClick(marker: Marker) {
+        var key:String = marker.tag as String
+        Firebase.firestore
+            .collection("places")
+            .document(key)
+            .get()
+            .addOnSuccessListener {
+                val intent = Intent(context, DetailPlaceActivity::class.java)
+                intent.putExtra("code", key)
+                startActivity(intent)
+            }
     }
 
 }

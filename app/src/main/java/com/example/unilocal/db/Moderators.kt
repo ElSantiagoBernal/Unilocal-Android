@@ -1,9 +1,9 @@
 package com.example.unilocal.db
 
-import com.example.unilocal.model.Moderator
+import com.example.unilocal.model.dontUse.Moderator
 
 object Moderators {
-
+/*
     private val moderators:ArrayList<Moderator> = ArrayList()
 
     init {
@@ -17,5 +17,5 @@ object Moderators {
 
     fun get(id:Int): Moderator?{
         return moderators.firstOrNull { a -> a.id == id }
-    }
+    }*/
 }

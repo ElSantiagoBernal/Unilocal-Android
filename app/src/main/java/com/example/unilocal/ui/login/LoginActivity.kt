@@ -2,8 +2,6 @@ package com.example.unilocal.ui.login
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -11,20 +9,20 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import com.example.unilocal.databinding.ActivityLoginBinding
 
 import com.example.unilocal.R
 import com.example.unilocal.activities.*
+import com.example.unilocal.db.Countries
+import com.example.unilocal.db.Departments
 import com.example.unilocal.db.People
-import com.example.unilocal.db.Users
-import com.example.unilocal.model.Administrator
-import com.example.unilocal.model.City
-import com.example.unilocal.model.Moderator
+import com.example.unilocal.model.dontUse.Administrator
+import com.example.unilocal.model.dontUse.Moderator
 import com.example.unilocal.model.User
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class LoginActivity : AppCompatActivity() {
@@ -47,8 +45,7 @@ class LoginActivity : AppCompatActivity() {
                 "moderator" -> startActivity(Intent((this), ModeratorActivity::class.java))
             }
             finish()
-        } else
-        {
+        } else {
             binding = ActivityLoginBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
@@ -63,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
             binding.registerNow.setOnClickListener{
                 val intent = Intent(this, RegisterActivity::class.java)
-                intent.putExtra("object", "(Aqui el objeto que se pasará)")
+                //intent.putExtra("object", "(Aqui el objeto que se pasará)")
                 startActivity(intent)
             }
         }
@@ -82,7 +79,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(){
-        var input_email = binding.email
+
+        /*var input_email = binding.email
         var input_pass = binding.password
 
         var email = input_email.text.toString()
@@ -90,30 +88,32 @@ class LoginActivity : AppCompatActivity() {
 
         if(email.isNotEmpty() && password.isNotEmpty()){
 
-            val person = People.login(email.toString(), password.toString())
-
-            val user = Users.findByEmail(email.toString())
+            val person = People.login(email)
 
             if(person != null){
-                val type = if(person is User) "user" else if (person is Moderator) "moderator" else "admin"
-                val sharedPreferences = this.getSharedPreferences("sesion", Context.MODE_PRIVATE).edit()
+                if(person.password == password){
+                    val type = if(person is User) "user" else if (person is Moderator) "moderator" else "admin"
+                    val sharedPreferences = this.getSharedPreferences("sesion", Context.MODE_PRIVATE).edit()
 
-                sharedPreferences.putInt("id_user", person.id)
-                sharedPreferences.putString("email_user", person.email)
-                sharedPreferences.putString("type_user", type)
+                    sharedPreferences.putInt("id_user", person.id)
+                    sharedPreferences.putString("email_user", person.email)
+                    sharedPreferences.putString("type_user", type)
 
-                sharedPreferences.commit()
-                when(person){
-                    is User -> goToMap()
-                    is Moderator -> startActivity(Intent(this, ModeratorActivity::class.java))
-                    is Administrator -> startActivity(Intent(this, AdminActivity::class.java))
+                    sharedPreferences.commit()
+
+                    when(person){
+                        is User -> goToMap()
+                        is Moderator -> startActivity(Intent(this, ModeratorActivity::class.java))
+                        is Administrator -> startActivity(Intent(this, AdminActivity::class.java))
+                    }
+                    finish()
+                }else{
+                    Toast.makeText(this,getString(R.string.login_msg_pass_do_not_match),Toast.LENGTH_LONG).show()
                 }
-                finish()
 
-            }else if(person == null) {
+
+            }else  {
                 input_email.error = getString(R.string.login_msg_user_do_not_exist)
-            }else{
-                Toast.makeText(this,getString(R.string.login_msg_pass_do_not_match),Toast.LENGTH_LONG).show()
             }
 
         }else{
@@ -121,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 input_email.error = getString(R.string.forgot_invalid_email)
             }
             Toast.makeText(this,getString(R.string.register_user_msg_all_inpts_obligatories),Toast.LENGTH_LONG).show()
-        }
+        }*/
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {

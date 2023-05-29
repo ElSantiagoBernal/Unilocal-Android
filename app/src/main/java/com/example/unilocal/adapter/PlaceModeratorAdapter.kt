@@ -50,7 +50,7 @@ class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<Pla
         val closingTime:TextView = itemView.findViewById(R.id.closing_time)
         val image:ImageView = itemView.findViewById(R.id.place_image)
         val icon:TextView = itemView.findViewById(R.id.place_icon)
-        var codePlace:Int = 0
+        var codePlace:String = ""
         var btnAccept = itemView.findViewById<FloatingActionButton>(R.id.button_accept_place)
         var btnReject = itemView.findViewById<FloatingActionButton >(R.id.button_reject_place)
 
@@ -65,7 +65,7 @@ class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<Pla
             startTime.text = place.schedules[0].startTime.toString() + ":00"
             closingTime.text = place.schedules[0].closingTime.toString() + ":00"
 
-            codePlace= place.id
+            codePlace= place.key
             val placeToRemove = list.find { it.id == place.id }
 
             if(place.status?.equals(PlaceStatus.PENDING) == true){

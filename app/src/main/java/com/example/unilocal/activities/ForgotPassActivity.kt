@@ -86,9 +86,9 @@ class ForgotPassActivity : AppCompatActivity() {
         if(email.isNotEmpty() && pass.isNotEmpty() && confirm_pass.isNotEmpty()) {
             if(pass.matches(passwordRegex)){
                 if(pass.equals(confirm_pass)){
-                    var user = Users.findByEmail(email)
+                    var user: User? = null//Users.findByEmail(email)
                     if (user != null) {
-                        user.password = pass
+                        //user.password = pass
                         Toast.makeText(this, getString(R.string.forgot_msg_pass_changed), Toast.LENGTH_SHORT).show()
                         finish()
                         goToLogin()
@@ -121,7 +121,7 @@ class ForgotPassActivity : AppCompatActivity() {
         var email = viewPager.findViewById<EditText>(R.id.user_email).text.toString()
         if(email.isNotEmpty()){
             if(email.matches(emailRegex)){
-                var user = Users.findByEmail(email)
+                var user: User? = null//Users.findByEmail(email)
                 if(user == null){
                     viewPager.findViewById<EditText>(R.id.user_email).error = getString(R.string.login_msg_user_do_not_exist)
                 }else{

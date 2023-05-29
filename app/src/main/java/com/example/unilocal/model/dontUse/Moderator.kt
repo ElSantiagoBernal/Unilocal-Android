@@ -1,4 +1,6 @@
-package com.example.unilocal.model
+package com.example.unilocal.model.dontUse
+
+import com.example.unilocal.model.dontUse.Person
 
 class Moderator(idUser:Int,
                 name:String,
@@ -10,7 +12,7 @@ class Moderator(idUser:Int,
                 idDepartment:Int,
                 idCity:Int,
                 age:Int,
-                phone: String): Person(idUser, name, last_name, email, password, idCountry, idDepartment, idCity, age, phone) {
+                phone: String){
 
     override fun toString(): String {
         return super.toString()

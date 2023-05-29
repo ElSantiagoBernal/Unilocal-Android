@@ -4,7 +4,7 @@ import com.example.unilocal.model.Category
 
 
 object Categories {
-
+/*
     private var id:Int = 1
     private val categories:java.util.ArrayList<Category> = ArrayList()
 
@@ -31,4 +31,6 @@ object Categories {
     fun get(id:Int):Category?{
         return categories.firstOrNull { c -> c.id == id }
     }
+
+ */
 }

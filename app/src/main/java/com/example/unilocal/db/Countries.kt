@@ -8,7 +8,7 @@ object Countries {
     private val countries:java.util.ArrayList<Country> = ArrayList()
 
     init {
-        countries.add(Country(id, "Colombia"))
+        countries.add(Country(1, "Colombia"))
     }
 
     fun list():ArrayList<Country>{

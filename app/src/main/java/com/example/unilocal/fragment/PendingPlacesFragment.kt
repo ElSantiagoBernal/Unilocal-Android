@@ -14,12 +14,14 @@ import com.example.unilocal.databinding.FragmentPendingPlacesBinding
 import com.example.unilocal.db.Places
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class PendingPlacesFragment : Fragment() {
 
     lateinit var binding:FragmentPendingPlacesBinding
-    private var listPendingPlaces:ArrayList<Place> = ArrayList()
+    lateinit var listPendingPlaces:ArrayList<Place>
     lateinit var adapter:PlaceModeratorAdapter
 
     override fun onCreateView(
@@ -29,11 +31,29 @@ class PendingPlacesFragment : Fragment() {
     ): View? {
         binding = FragmentPendingPlacesBinding.inflate(inflater, container, false)
 
-        listPendingPlaces = Places.ListByState(PlaceStatus.PENDING)
+        listPendingPlaces = ArrayList()//Places.ListByState(PlaceStatus.PENDING)
 
         adapter = PlaceModeratorAdapter(listPendingPlaces)
         binding.listPlaces.adapter = adapter
         binding.listPlaces.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
+        Firebase.firestore
+            .collection("places")
+            .whereEqualTo("status", PlaceStatus.PENDING)
+            .get()
+            .addOnSuccessListener {
+                if(it.isEmpty){
+                    //AQUI MOSTRAR MENSAJE DE QUE NO HAY LUGARES CREADOS
+                }else{
+                    for(doc in it){
+                        val place = doc.toObject(Place::class.java)
+                        if(place != null){
+                            listPendingPlaces.add(place)
+                            adapter.notifyItemInserted(listPendingPlaces.size-1)
+                        }
+                    }
+                }
+            }
 
         return binding.root
     }

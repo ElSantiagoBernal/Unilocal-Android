@@ -32,9 +32,15 @@ import com.example.unilocal.databinding.ActivityRegisterFormUser1Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser2Binding
 import com.example.unilocal.databinding.ActivityRegisterFormUser3Binding
 import com.example.unilocal.db.Users
+import com.example.unilocal.model.Place
+import com.example.unilocal.model.PlaceStatus
+import com.example.unilocal.model.Rol
 import com.example.unilocal.model.User
 import com.example.unilocal.ui.login.LoginActivity
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -166,23 +172,48 @@ class RegisterActivity : AppCompatActivity() {
             && imageUrl != ""){
                 if(verifyRegexEmail() && verifyRegexPass() && verifyRegexAge() && verifyRegexPhone()){
                     if(verifyDatesWithDb()){
-                        val userRegister = User(Users.size()+1, names, last_names, email, user, pass, 1, 1, 1, age.toInt(), imageUrl, phone)
-                        /*Users.add(userRegister)
-                        Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
-                        finish()
-                        goToLogIn()*/
+
+                        FirebaseAuth.getInstance()
+                            .createUserWithEmailAndPassword(email,pass)
+                            .addOnCompleteListener {
+                                if(it.isSuccessful){
+                                    val userF = FirebaseAuth.getInstance().currentUser
+                                    if(userF != null){
+                                        val userRegister = User(names, last_names, user, email,  1, 1, 1, age.toInt(), imageUrl, phone, Rol.USER)
+                                        Firebase.firestore
+                                            .collection("users")
+                                            .add(userRegister)
+                                            .addOnSuccessListener {
+                                                //Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
+                                                Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                                                Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
+                                                finish()
+                                                goToLogIn()
+                                            }
+                                            .addOnFailureListener {
+                                                Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_LONG).show()
+                                            }
+                                    }
+                                }
+                            }
+                            .addOnFailureListener{
+
+                            }
+                        /*val userRegister = User(names, last_names, email, user, pass, 1, 1, 1, age.toInt(), imageUrl, phone)
+
                         Firebase.firestore
                             .collection("users")
                             .add(userRegister)
                             .addOnSuccessListener {
-                                //Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
-                                Toast.makeText(this, getString(R.string.register_place_alerts_registered), Toast.LENGTH_SHORT).show()
+                                Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
                                 Handler(Looper.getMainLooper()).postDelayed({finish()}, 4000)
+                                finish()
                                 goToLogIn()
                             }
                             .addOnFailureListener { e ->
                                 Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
-                            }
+                            }*/
+
                     }else{
                         if(terms.isChecked == false){
                             Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
@@ -241,7 +272,47 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun verifyDatesWithDb(): Boolean {
-        if(Users.findByEmail(email) != null){
+        var retorno = true
+        //VERIFY BY EMAIL
+        Firebase.firestore
+            .collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener {
+                input_email.error = getString(R.string.register_user_msg_email_exists)
+                retorno = false
+            }
+            .addOnFailureListener {
+            }
+
+        //VERIFY BY USERNAME
+        Firebase.firestore
+            .collection("users")
+            .whereEqualTo("nickname", user)
+            .get()
+            .addOnSuccessListener {
+                input_user.error = getString(R.string.register_user_msg_username_exists)
+                retorno = false
+            }
+            .addOnFailureListener {
+            }
+
+        //VERIFY BY PHONE
+        Firebase.firestore
+            .collection("users")
+            .whereEqualTo("phone", phone)
+            .get()
+            .addOnSuccessListener {
+                input_phone.error = getString(R.string.register_user_msg_phone_exists)
+                retorno = false
+            }
+            .addOnFailureListener {
+            }
+
+        if(terms.isChecked == false){
+            return false
+        }
+        /*if(Users.findByEmail(email) != null){
             input_email.error = getString(R.string.register_user_msg_email_exists)
             return false
         }else if(Users.findByUsername(user) != null){
@@ -252,8 +323,8 @@ class RegisterActivity : AppCompatActivity() {
             return false
         }else if(terms.isChecked == false){
             return false
-        }
-        return true
+        }*/
+        return retorno
     }
 
     private fun verifyForm1Inputs() {

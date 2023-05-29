@@ -4,8 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.PersistableBundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +23,8 @@ import com.example.unilocal.databinding.ActivityDetailPlaceBinding
 import com.example.unilocal.db.*
 import com.example.unilocal.fragment.CommentsPlaceFragment
 import com.example.unilocal.model.City
+import com.example.unilocal.model.Country
+import com.example.unilocal.model.Department
 import com.example.unilocal.model.Place
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -29,11 +34,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var binding:ActivityDetailPlaceBinding
-    var codePlace:Int = 0
+    var codePlace:String = ""
     var place:Place? = null
     lateinit var fragment:Fragment
 
@@ -50,72 +58,124 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityDetailPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val placeName = findViewById<TextView>(R.id.place_name)
+        codePlace = intent.extras!!.getString("code").toString()
+        Toast.makeText(this, "Lo que llega: ${codePlace}", Toast.LENGTH_SHORT).show()
+        Firebase.firestore
+            .collection("places")
+            .document(codePlace)
+            .get()
+            .addOnSuccessListener {
+                var placeF = it.toObject(Place::class.java)
+                if (placeF != null) {
+                    placeF!!.key = it.id
 
-        codePlace = intent.extras!!.getInt("code")
+                    val ownerName = "ejemplo"//Users.findNameByID(placeF!!.idOwner)
 
-        place = Places.get(codePlace)
+                    binding.ownerName.text = ownerName
+                    binding.placeName.text = placeF!!.name
+                    binding.placeDescription.text = placeF!!.description
+                    binding.placeDirection.text = placeF!!.direction
 
-        if(place != null){
-            val ownerName = Users.findNameByID(place!!.idOwner)
-            binding.ownerName.text = ownerName
-            binding.placeName.text = place!!.name
-            binding.placeDescription.text = place!!.description
-            binding.placeDirection.text = place!!.direction
+                    var city = ""//Cities.findByID(placeF!!.idCity)
+                    Firebase.firestore
+                        .collection("cities")
+                        .get()
+                        .addOnSuccessListener {
+                            for(doc in it){
+                                val cityF = doc.toObject(City::class.java)
+                                if(cityF.id == placeF.idCity){
+                                    city = cityF.name
+                                }
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
+                        }
+                    var department = ""
+                    Firebase.firestore
+                        .collection("departments")
+                        .get()
+                        .addOnSuccessListener {
+                            for(doc in it){
+                                val depF = doc.toObject(Department::class.java)
+                                if(depF.id == placeF.idDepartment){
+                                    department = depF.name
+                                }
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
+                        }
+                    var country = ""
+                    Firebase.firestore
+                        .collection("countries")
+                        .get()
+                        .addOnSuccessListener {
+                            for(doc in it){
+                                val couF = doc.toObject(Country::class.java)
+                                if(couF.id == placeF.idCountry){
+                                    country = couF.name
+                                }
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
+                        }
 
-            val city = Cities.findByID(place!!.idCity)
-            val department = Departments.findByID(place!!.idDepartment)
-            val country = Countries.findByID(place!!.idCountry)
+                    binding.placeLocation.text = "$city, $department - $country"
 
-            binding.placeLocation.text = "$city, $department - $country"
+                    val statusPlace = placeF!!.isOpen()
+                    if(statusPlace == "Open"){
+                        binding.placeSchedule.setTextColor(Color.GREEN)
+                        binding.placeSchedule.text = getString(R.string.detail_place_open)
+                    } else {
+                        binding.placeSchedule.setTextColor(Color.RED)
+                        binding.placeSchedule.text = getString(R.string.detail_place_closed)
+                    }
 
-            val statusPlace = place!!.isOpen()
-            if(statusPlace == "Open"){
-                binding.placeSchedule.setTextColor(Color.GREEN)
-                binding.placeSchedule.text = getString(R.string.detail_place_open)
-            } else {
-                binding.placeSchedule.setTextColor(Color.RED)
-                binding.placeSchedule.text = getString(R.string.detail_place_closed)
-            }
+                    var phoneNumbers = ""
 
-            var phoneNumbers = ""
+                    if(placeF!!.phoneNumbers.isNotEmpty()){
+                        for (tel in placeF!!.phoneNumbers) {
+                            phoneNumbers += "$tel, "
+                        }
+                        phoneNumbers = phoneNumbers.substring(0, phoneNumbers.length - 2)
+                    }
 
-            if(place!!.phoneNumbers.isNotEmpty()){
-                for (tel in place!!.phoneNumbers) {
-                    phoneNumbers += "$tel, "
+                    binding.placePhoneNumbers.text = phoneNumbers
+
+                    var schedules = ""
+
+                    for (schedule in placeF!!.schedules){
+                        for (day in schedule.weekDay){
+                            schedules += "$day: ${schedule.startTime}:00 - ${schedule.closingTime}:00\n"
+                        }
+                    }
+                    binding.placeSchedules.text = schedules
+                    //binding.placeRating.text = placeF!!.getRatingAverage(Comments.listById(placeF!!.id)).toString()
+
+                    fragment= CommentsPlaceFragment.newInstance(codePlace)
+
+                    binding.comments.setOnClickListener {
+                        if(fragment.isVisible){
+                            hideFragment()
+                        } else {
+                            showFragment()
+                        }
+                    }
+
+                    placeLocation = LatLng(placeF!!.latitude, placeF!!.longitude)
+
+
                 }
-                phoneNumbers = phoneNumbers.substring(0, phoneNumbers.length - 2)
             }
-
-            binding.placePhoneNumbers.text = phoneNumbers
-
-            var schedules = ""
-
-            for (schedule in place!!.schedules){
-                for (day in schedule.weekDay){
-                    schedules += "$day: ${schedule.startTime}:00 - ${schedule.closingTime}:00\n"
-                }
+            .addOnFailureListener {
+                Log.e("PLACE DETAIL", "${it.message}")
             }
-            binding.placeSchedules.text = schedules
-            binding.placeRating.text = place!!.getRatingAverage(Comments.listById(place!!.id)).toString()
-
-        }
-
-        fragment= CommentsPlaceFragment.newInstance(codePlace)
-
-        binding.comments.setOnClickListener {
-            if(fragment.isVisible){
-                hideFragment()
-            } else {
-                showFragment()
-            }
-        }
-
-        placeLocation = LatLng(place!!.latitude, place!!.longitude)
-
         mapView = findViewById(R.id.place_map_location)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
 
     }
 

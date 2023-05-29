@@ -34,8 +34,8 @@ class CommentsAdapter(var list:ArrayList<Comment>): RecyclerView.Adapter<Comment
         }
 
         fun bind(comment: Comment) {
-            owner.text = Users.findNameByID(comment.idUser)
-            date.text = "00/00/00"
+            owner.text = "Mientras se cambia"//Users.findNameByID(comment.idUser)
+            date.text = comment.date.toString()
             commentX.text = comment.text
         }
 

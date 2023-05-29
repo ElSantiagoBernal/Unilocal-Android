@@ -17,11 +17,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_comments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600sp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="80dp" />
+        android:layout_marginEnd="15dp" />
+
+    <TextView
+        android:id="@+id/no_comments"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="No comments"
+        android:gravity="center"
+        android:layout_below="@+id/list_comments"
+        />
 
     <RelativeLayout
         android:layout_margin="10dp"
@@ -29,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+
 
         <EditText
             android:id="@+id/message_input"

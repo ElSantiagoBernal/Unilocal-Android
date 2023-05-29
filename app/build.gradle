@@ -61,4 +61,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     //GSON
     implementation 'com.google.code.gson:gson:2.8.9'
+    //FIRE AUTH
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+
 }

@@ -2,6 +2,7 @@ package com.example.unilocal.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.activities.SearchResultActivity
 import com.example.unilocal.db.Categories
 import com.example.unilocal.db.Comments
+import com.example.unilocal.model.Category
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
@@ -29,6 +31,8 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter.ViewHolder>(),
     OnMapReadyCallback {
@@ -64,7 +68,7 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
         val image:ImageView = itemView.findViewById(R.id.place_image)
         val icon:TextView = itemView.findViewById(R.id.place_icon)
         val ratingX:TextView = itemView.findViewById(R.id.place_rating)
-        var codePlace:Int = 0
+        var codePlace:String = ""
 
         init{
             itemView.setOnClickListener(this)
@@ -76,7 +80,7 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
             startTime.text = place.schedules[0].startTime.toString() + ":00"
             closingTime.text = place.schedules[0].closingTime.toString() + ":00"
 
-            val rating = place.getRatingAverage(Comments.listById(place.id))
+            val rating = 0//place.getRatingAverage(Comments.listById(place.id))
             val statusPlace = place.isOpen()
             val place_AorR = place.status
             if (place_AorR != null) {
@@ -101,20 +105,28 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
             }
             ratingX.gravity = Gravity.CENTER
             status.gravity = Gravity.CENTER
-            codePlace= place.id
+            codePlace = place.key
+
+            //icon.text = Categories.get(place.id)!!.icon
+
+            Firebase.firestore
+                .collection("categories")
+                .whereEqualTo("id", place.id)
+                .get()
+                .addOnSuccessListener {
+                    for(doc in it){
+                        icon.text = doc.toObject(Category::class.java).icon
+                    }
 
 
-
-
-/*
-            icon.text = Categories.get(place.id)!!.icon
-
-
- */
+                }
+                .addOnFailureListener {
+                }
         }
 
         override fun onClick(p0: View?) {
             val intent = Intent(name.context, DetailPlaceActivity::class.java)
+            Log.e("Place Adapder", "Código enviado: ${codePlace}")
             intent.putExtra("code", codePlace)
             name.context.startActivity(intent)
         }
