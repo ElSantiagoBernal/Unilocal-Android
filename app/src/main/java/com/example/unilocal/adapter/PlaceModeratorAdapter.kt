@@ -25,6 +25,8 @@ import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceModeratorAdapter.ViewHolder>() {
 
@@ -66,15 +68,29 @@ class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<Pla
             closingTime.text = place.schedules[0].closingTime.toString() + ":00"
 
             codePlace= place.key
-            val placeToRemove = list.find { it.id == place.id }
+            //val placeToRemove = list.find { it.id == place.key }
 
             if(place.status?.equals(PlaceStatus.PENDING) == true){
                 btnAccept.setOnClickListener {
-                    place.status = PlaceStatus.ACCEPTED
+                    //place.status = PlaceStatus.ACCEPTED
+                    Firebase.firestore
+                        .collection("places")
+                        .document(place.key)
+                        .update("status",PlaceStatus.ACCEPTED)
+                        .addOnSuccessListener {
+
+                        }
                     //list = Places.ListByState(PlaceStatus.ACCEPTED)
                 }
                 btnReject.setOnClickListener {
-                    place.status = PlaceStatus.REJECTED
+                    Firebase.firestore
+                        .collection("places")
+                        .document(place.key)
+                        .update("status",PlaceStatus.REJECTED)
+                        .addOnSuccessListener {
+
+                        }
+                    //place.status = PlaceStatus.REJECTED
                     //list = Places.ListByState(PlaceStatus.REJECTED)
                 }
             }else{

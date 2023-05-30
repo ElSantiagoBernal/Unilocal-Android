@@ -8,12 +8,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 object Places {
-
+    /*
     private val places:java.util.ArrayList<Place> = ArrayList()
     public var id:Int = 1
 
     init {
-        /*val schedule1 = Schedule(1, Schedules.getAll(),12,20)
+        val schedule1 = Schedule(1, Schedules.getAll(),12,20)
         val schedule2 = Schedule(2, Schedules.getWeekDay(),9,20)
         val schedule3 = Schedule(3, Schedules.getWeekend(),14,13)
 
@@ -41,7 +41,7 @@ object Places {
         places.add(place3)
         places.add(place4)
         places.add(place5)
-        places.add(place6)*/
+        places.add(place6)
 
     }
 
@@ -91,5 +91,5 @@ object Places {
         }
 
     }
-
+*/
 }

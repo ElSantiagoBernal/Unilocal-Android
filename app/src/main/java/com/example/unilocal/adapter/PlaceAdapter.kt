@@ -111,7 +111,7 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
 
             Firebase.firestore
                 .collection("categories")
-                .whereEqualTo("id", place.id)
+                .whereEqualTo("id", place.key)
                 .get()
                 .addOnSuccessListener {
                     for(doc in it){

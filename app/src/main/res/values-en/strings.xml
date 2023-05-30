@@ -81,6 +81,7 @@
     <string name="register_place_phone">Contact phone number</string>
     <string name="register_place_secundary_phone">Secondary phone number</string>
     <string name="register_place_adress">Direction</string>
+    <string name="register_place_take_photo">Take photo</string>
 
     <!-- REGISTER PLACE STRINGS FORM 2-->
     <string name="register_place_title_choose_place_map">Determine location</string>

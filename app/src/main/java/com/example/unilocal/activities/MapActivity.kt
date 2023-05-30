@@ -101,13 +101,6 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
-    fun logOut(){
-        val sh = getSharedPreferences("sesion", Context.MODE_PRIVATE).edit()
-        sh.clear()
-        sh.commit()
-        finish()
-    }
-
     override fun attachBaseContext(newBase: Context?) {
         val localeUpdatedContext: ContextWrapper? = language.changeLanguage(newBase!!)
         super.attachBaseContext(localeUpdatedContext)

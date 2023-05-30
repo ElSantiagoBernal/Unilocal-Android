@@ -80,6 +80,8 @@
     <string name="register_place_phone">Número de contacto</string>
     <string name="register_place_secundary_phone">Número secundario</string>
     <string name="register_place_adress">Dirección</string>
+    <string name="register_place_take_photo">Tomar foto</string>
+
 
     <!-- REGISTER PLACE STRINGS FORM 2-->
     <string name="register_place_title_choose_place_map">Determinar ubicación</string>

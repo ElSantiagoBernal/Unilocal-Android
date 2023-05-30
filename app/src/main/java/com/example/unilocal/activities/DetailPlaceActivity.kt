@@ -22,10 +22,7 @@ import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityDetailPlaceBinding
 import com.example.unilocal.db.*
 import com.example.unilocal.fragment.CommentsPlaceFragment
-import com.example.unilocal.model.City
-import com.example.unilocal.model.Country
-import com.example.unilocal.model.Department
-import com.example.unilocal.model.Place
+import com.example.unilocal.model.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnCameraMoveStartedListener
@@ -59,7 +56,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         codePlace = intent.extras!!.getString("code").toString()
-        Toast.makeText(this, "Lo que llega: ${codePlace}", Toast.LENGTH_SHORT).show()
+
         Firebase.firestore
             .collection("places")
             .document(codePlace)
@@ -67,14 +64,25 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             .addOnSuccessListener {
                 var placeF = it.toObject(Place::class.java)
                 if (placeF != null) {
+
                     placeF!!.key = it.id
+                    var ownerName = ""
 
-                    val ownerName = "ejemplo"//Users.findNameByID(placeF!!.idOwner)
+                    Firebase.firestore
+                        .collection("users")
+                        .document(placeF.idOwner)
+                        .get()
+                        .addOnSuccessListener {u->
+                            var userF = u.toObject(User::class.java)
+                            if (userF != null) {
+                                binding.ownerName.text = userF.name
+                                binding.placeName.text = placeF!!.name
+                                binding.placeDescription.text = placeF!!.description
+                                binding.placeDirection.text = placeF!!.direction
+                            }
+                        }
 
-                    binding.ownerName.text = ownerName
-                    binding.placeName.text = placeF!!.name
-                    binding.placeDescription.text = placeF!!.description
-                    binding.placeDirection.text = placeF!!.direction
+
 
                     var city = ""//Cities.findByID(placeF!!.idCity)
                     Firebase.firestore

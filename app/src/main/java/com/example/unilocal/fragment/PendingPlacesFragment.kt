@@ -48,6 +48,7 @@ class PendingPlacesFragment : Fragment() {
                     for(doc in it){
                         val place = doc.toObject(Place::class.java)
                         if(place != null){
+                            place.key = doc.id
                             listPendingPlaces.add(place)
                             adapter.notifyItemInserted(listPendingPlaces.size-1)
                         }
@@ -60,7 +61,21 @@ class PendingPlacesFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        listPendingPlaces = Places.ListByState(PlaceStatus.PENDING)
+        //listPendingPlaces = Places.ListByState(PlaceStatus.PENDING)
+        Firebase.firestore
+            .collection("places")
+            .whereEqualTo("status", PlaceStatus.PENDING)
+            .get()
+            .addOnSuccessListener {
+                for(doc in it){
+                    val place = doc.toObject(Place::class.java)
+                    if(place != null){
+                        /*listPendingPlaces.clear()
+                        listPendingPlaces.add(place)
+                        adapter.notifyItemInserted(listPendingPlaces.size-1)*/
+                    }
+                }
+            }
         adapter = PlaceModeratorAdapter(listPendingPlaces)
         binding.listPlaces.adapter = adapter
         binding.listPlaces.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)

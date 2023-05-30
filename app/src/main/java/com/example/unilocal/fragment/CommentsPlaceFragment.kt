@@ -14,6 +14,7 @@ import com.example.unilocal.databinding.FragmentCommentsPlaceBinding
 import com.example.unilocal.db.Comments
 import com.example.unilocal.model.Comment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -83,38 +84,25 @@ class CommentsPlaceFragment : Fragment() {
 
         if(text.isNotEmpty()){
 
-            val sp = requireActivity().getSharedPreferences("sesion", Context.MODE_PRIVATE)
-            val idUser = sp.getInt("id_user", -1)
-            val comment = Comment(text, idUser, 1)
+            val user = FirebaseAuth.getInstance()
+            if(user!=null){
+                val comment = Comment(text, user.uid!!, 1)
 
-            Firebase.firestore
-                .collection("places")
-                .document(codePlace)
-                .collection("comments")
-                .add(comment)
-                .addOnSuccessListener {
-                    list.add(comment)
-                    adapter.notifyItemInserted(list.size-1)
-                    Snackbar.make(binding.root, "Mensaje Enviado", Snackbar.LENGTH_LONG).show()
-                }
-                .addOnFailureListener(){
-                    Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG).show()
-                }
-
-            //var id: Int = Comments.getSize()
-            //id++
-            //val comment = Comment(id, text, idUser, 4, 1)//AQUI EL ID DEL LUGAR ESTA QUEMADO MIENTRAS
-            //Comments.new(comment)
-
-
-
-
-            /*Firebase.firestore
-                .collection("comments")
-                .add(comment)*/
-
-
-            clearInputs()
+                Firebase.firestore
+                    .collection("places")
+                    .document(codePlace)
+                    .collection("comments")
+                    .add(comment)
+                    .addOnSuccessListener {
+                        list.add(comment)
+                        adapter.notifyItemInserted(list.size-1)
+                        Snackbar.make(binding.root, "Mensaje Enviado", Snackbar.LENGTH_LONG).show()
+                    }
+                    .addOnFailureListener(){
+                        Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG).show()
+                    }
+                clearInputs()
+            }
 
         } else {
             Snackbar.make(binding.root, "Hay q escribir el mensaje", Snackbar.LENGTH_LONG).show()

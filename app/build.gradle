@@ -62,7 +62,17 @@ dependencies {
     //GSON
     implementation 'com.google.code.gson:gson:2.8.9'
     //FIRE AUTH
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    //implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    //FIRE STOR
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    //implementation 'com.google.firebase:firebase-storage'
+    //implementation 'com.firebaseui:firebase-ui-database:6.0.2' //QUITAR SI NO FUNCIONA
+    //implementation 'com.google.firebase:firebase-storage:20.2.0'
+    //implementation 'com.google.firebase:firebase-appcheck'//
+
+
+
 
 }

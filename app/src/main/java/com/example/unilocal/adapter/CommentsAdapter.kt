@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unilocal.R
 import com.example.unilocal.db.Users
 import com.example.unilocal.model.Comment
+import com.example.unilocal.model.User
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
 
 class CommentsAdapter(var list:ArrayList<Comment>): RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
@@ -34,9 +38,21 @@ class CommentsAdapter(var list:ArrayList<Comment>): RecyclerView.Adapter<Comment
         }
 
         fun bind(comment: Comment) {
-            owner.text = "Mientras se cambia"//Users.findNameByID(comment.idUser)
-            date.text = comment.date.toString()
-            commentX.text = comment.text
+            val formatoFecha = SimpleDateFormat("dd/MM/yyyy")
+            Firebase.firestore
+                .collection("users")
+                .document(comment.idUser)
+                .get()
+                .addOnSuccessListener {
+                    owner.text = it.toObject(User::class.java)?.name
+                    commentX.text = comment.text
+                    date.text = formatoFecha.format(comment.date)
+                }
+                .addOnFailureListener{
+
+                }
+            //Users.findNameByID(comment.idUser)
+
         }
 
         override fun onClick(p0: View?) {

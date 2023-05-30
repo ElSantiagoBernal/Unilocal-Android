@@ -1,6 +1,8 @@
 package com.example.unilocal.activities
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -41,8 +43,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -59,6 +64,8 @@ class RegisterActivity : AppCompatActivity() {
     val dots = mutableListOf<TextView>()
     lateinit var btn_next:Button
     var init:Boolean = true
+    lateinit var dialog: Dialog
+
 
     //FORM REGISTER 1
     lateinit var input_names:EditText
@@ -164,9 +171,15 @@ class RegisterActivity : AppCompatActivity() {
             }
             override fun onPageScrollStateChanged(state: Int) {}
         })
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setView(R.layout.progress_dialog_layout)
+        dialog = builder.create()
+
     }
 
     private fun register() {
+        setDialog(true)
         if(names.isNotEmpty() && last_names.isNotEmpty() && email.isNotEmpty() && user.isNotEmpty() && pass.isNotEmpty()
             && phone.isNotEmpty() && country.isNotEmpty() && department.isNotEmpty() && city.isNotEmpty() && verifyRegexAge()
             && imageUrl != ""){
@@ -179,18 +192,25 @@ class RegisterActivity : AppCompatActivity() {
                                 if(it.isSuccessful){
                                     val userF = FirebaseAuth.getInstance().currentUser
                                     if(userF != null){
+
+                                        verifyEmail(userF)
+
                                         val userRegister = User(names, last_names, user, email,  1, 1, 1, age.toInt(), imageUrl, phone, Rol.USER)
+
                                         Firebase.firestore
                                             .collection("users")
-                                            .add(userRegister)
+                                            .document(userF.uid)
+                                            .set(userRegister)
                                             .addOnSuccessListener {
-                                                //Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
-                                                Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
+                                                setDialog(false)
+                                                Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
+                                                //Toast.makeText(this, getString(R.string.register_user_msg_user_registered), Toast.LENGTH_SHORT).show()
                                                 Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
                                                 finish()
                                                 goToLogIn()
                                             }
                                             .addOnFailureListener {
+                                                setDialog(false)
                                                 Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_LONG).show()
                                             }
                                     }
@@ -199,22 +219,9 @@ class RegisterActivity : AppCompatActivity() {
                             .addOnFailureListener{
 
                             }
-                        /*val userRegister = User(names, last_names, email, user, pass, 1, 1, 1, age.toInt(), imageUrl, phone)
-
-                        Firebase.firestore
-                            .collection("users")
-                            .add(userRegister)
-                            .addOnSuccessListener {
-                                Snackbar.make(binding.root, getString(R.string.register_user_msg_user_registered), Snackbar.LENGTH_LONG).show()
-                                Handler(Looper.getMainLooper()).postDelayed({finish()}, 4000)
-                                finish()
-                                goToLogIn()
-                            }
-                            .addOnFailureListener { e ->
-                                Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
-                            }*/
 
                     }else{
+                        setDialog(false)
                         if(terms.isChecked == false){
                             Toast.makeText(this, getString(R.string.register_user_msg_terms_not_checked), Toast.LENGTH_SHORT).show()
                         }else{
@@ -222,12 +229,26 @@ class RegisterActivity : AppCompatActivity() {
                         }
 
                     }
+                }else{
+                    setDialog(false)
                 }
         }else{
+            setDialog(false)
             verifyForm1Inputs()
             verifyForm2Inputs()
             Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun verifyEmail(user:FirebaseUser) {
+        user.sendEmailVerification().addOnCompleteListener(this){
+            if(it.isSuccessful){
+                Toast.makeText(baseContext, "Email enviado", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(baseContext, "Error", Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     private fun verifyRegexPhone(): Boolean {
@@ -279,8 +300,13 @@ class RegisterActivity : AppCompatActivity() {
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener {
-                input_email.error = getString(R.string.register_user_msg_email_exists)
-                retorno = false
+                for(doc in it){
+                    var user = doc.toObject(User::class.java)
+                    if(user.email == email){
+                        input_email.error = getString(R.string.register_user_msg_email_exists)
+                        retorno = false
+                    }
+                }
             }
             .addOnFailureListener {
             }
@@ -291,8 +317,14 @@ class RegisterActivity : AppCompatActivity() {
             .whereEqualTo("nickname", user)
             .get()
             .addOnSuccessListener {
-                input_user.error = getString(R.string.register_user_msg_username_exists)
-                retorno = false
+                for(doc in it){
+                    var user = doc.toObject(User::class.java)
+                    if(user.nickname.equals(user)){
+                        input_user.error = getString(R.string.register_user_msg_username_exists)
+                        retorno = false
+                    }
+                }
+
             }
             .addOnFailureListener {
             }
@@ -303,27 +335,22 @@ class RegisterActivity : AppCompatActivity() {
             .whereEqualTo("phone", phone)
             .get()
             .addOnSuccessListener {
-                input_phone.error = getString(R.string.register_user_msg_phone_exists)
-                retorno = false
+                for(doc in it){
+                    var user = doc.toObject(User::class.java)
+                    if(user.phone.equals(phone)){
+                        input_phone.error = getString(R.string.register_user_msg_phone_exists)
+                        retorno = false
+                    }
+                }
+
             }
             .addOnFailureListener {
+
             }
 
         if(terms.isChecked == false){
             return false
         }
-        /*if(Users.findByEmail(email) != null){
-            input_email.error = getString(R.string.register_user_msg_email_exists)
-            return false
-        }else if(Users.findByUsername(user) != null){
-            input_user.error = getString(R.string.register_user_msg_username_exists)
-            return false
-        }else if(Users.findByPhone(phone) != null){
-            input_phone.error = getString(R.string.register_user_msg_phone_exists)
-            return false
-        }else if(terms.isChecked == false){
-            return false
-        }*/
         return retorno
     }
 
@@ -422,6 +449,7 @@ class RegisterActivity : AppCompatActivity() {
     fun goToLogIn(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     fun nextListener (){
@@ -433,6 +461,10 @@ class RegisterActivity : AppCompatActivity() {
     fun askImages (){
         requestPermission()
     }
+    private fun setDialog(show: Boolean) {
+        if (show) dialog.show() else dialog.dismiss()
+    }
+
 
     private fun requestPermission() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

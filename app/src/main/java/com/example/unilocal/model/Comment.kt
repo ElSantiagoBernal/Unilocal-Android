@@ -6,11 +6,11 @@ import java.util.Date
 class Comment() {
 
     var text:String = ""
-    var idUser:Int = 0
+    var idUser:String = ""
     var rating:Int = 0
     var key:String = ""
     var date:Date = Date()
-    constructor(text:String, idUser:Int, rating:Int):this(){
+    constructor(text:String, idUser:String, rating:Int):this(){
         this.text = text
         this.idUser = idUser
         this.rating = rating

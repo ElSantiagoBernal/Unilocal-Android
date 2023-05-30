@@ -15,6 +15,7 @@ import com.example.unilocal.databinding.FragmentProfileBinding
 import com.example.unilocal.db.Places
 import com.example.unilocal.model.Comment
 import com.example.unilocal.model.Place
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -36,12 +37,12 @@ class ProfileFragment : Fragment() {
         binding.listPlaces.adapter = adapter
         binding.listPlaces.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
-        val sp = requireActivity().getSharedPreferences("sesion", Context.MODE_PRIVATE)
-        val idUser = sp.getInt("id_user", -1)
-        if( idUser != -1 ) {
+        var user = FirebaseAuth.getInstance().currentUser
+
+        if( user != null) {
             Firebase.firestore
                 .collection("places")
-                .whereEqualTo("idOwner", idUser)
+                .whereEqualTo("idOwner", user.uid)
                 .get()
                 .addOnSuccessListener {
                     if(it.isEmpty){
@@ -50,6 +51,7 @@ class ProfileFragment : Fragment() {
                         for(doc in it){
                             val place = doc.toObject(Place::class.java)
                             if(place != null){
+                                place.key = doc.id
                                 listPlacesByOwner.add(place)
                                 adapter.notifyItemInserted(listPlacesByOwner.size-1)
                             }

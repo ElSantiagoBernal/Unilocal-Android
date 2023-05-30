@@ -15,8 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -45,8 +48,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+//import com.google.firebase.storage.FirebaseStorage
 import java.sql.Time
 import java.util.*
 
@@ -65,8 +70,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     val dots = mutableListOf<TextView>()
     lateinit var position_layout:LinearLayout
     var condition = false
-    var idUser = 0
-
+    var codigoArchivo = 0
 
 
     //FORM 1 VARS
@@ -98,6 +102,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     var images = mutableListOf<Uri>()
     private lateinit var viewPager2: ViewPager
     private lateinit var imagePicker: ImagePicker
+    private lateinit var resultLauncher:ActivityResultLauncher<Intent>
 
     // MAPS
 
@@ -130,20 +135,30 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         btn_next = binding.Next
 
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult() ) {
+            //onActivityResult(it.resultCode, it)
+
+        }
+
+
         imagePicker = ImagePicker(this)
 
-        val sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
-        idUser = sp.getInt("id_user", -1)
+        binding.takePhoto.visibility = View.GONE
 
         btn_next.setOnClickListener{
             if( btn_next.text == getString(R.string.register_user_finish)){
                 register()
             }else if (btn_next.text == getString(R.string.register_place_choose_photos)){
-
-                imagePicker.pickImages()
+                selectMedia()
+                //imagePicker.pickImages()
             }else{
                 nextListener()
             }
+        }
+
+        binding.takePhoto.setOnClickListener{
+            takePhoto()
         }
 
 
@@ -169,12 +184,14 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if(position==3) {
                     if(images.isEmpty()){
                         btn_next.text = getString(R.string.register_place_choose_photos)
+                        binding.takePhoto.visibility = View.VISIBLE
                     }else{
                         btn_next.text = getString(R.string.register_user_finish)
+                        binding.takePhoto.visibility = View.GONE
                     }
                 }else{
                     btn_next.text = getString(R.string.register_user_next)
-
+                    binding.takePhoto.visibility = View.GONE
                 }
 
             }
@@ -188,7 +205,25 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 false -> { println("Permiso denegado") }
             }
         }
+
         getLocationPermission()
+    }
+
+    private fun selectMedia() {
+        val i = Intent()
+        i.type = "image/*"
+        i.action = Intent.ACTION_GET_CONTENT
+        codigoArchivo = 2
+        resultLauncher.launch(i)
+    }
+
+    private fun takePhoto() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                resultLauncher.launch(takePictureIntent)
+                codigoArchivo = 1
+            }
+        }
     }
 
     private fun register() {
@@ -196,7 +231,12 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             && place_secundary_phone.isNotEmpty() && place_adress.isNotEmpty() && categorie_string.isNotEmpty() && images.isNotEmpty() && verifyRegexPhone() && lat != null && lng != null){
 
             if(verifyHours(open_hour, close_hour) && verifyPhones()){
-                val placeRegister = Place(Places.size()+1, place_name, place_description, idUser, PlaceStatus.PENDING, categorie_to_register, place_adress,
+
+                val user = FirebaseAuth.getInstance()
+
+                if(user != null){
+
+                val placeRegister = Place( place_name, place_description, user.uid!!, PlaceStatus.PENDING, categorie_to_register, place_adress,
                     lat!!, lng!!, 1, 1, 1)
                 placeRegister.phoneNumbers.add(place_phone)
                 placeRegister.phoneNumbers.add(place_secundary_phone)
@@ -219,6 +259,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                     .addOnFailureListener { e ->
                         Snackbar.make(binding.root, "$e.message", Snackbar.LENGTH_LONG).show()
                     }
+                }
 
             }else{
                 Toast.makeText(this, getString(R.string.register_place_alerts_fields_filled), Toast.LENGTH_SHORT).show()
@@ -240,23 +281,22 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         return open_hours
     }
 
-    /*private fun verifyDatesWithDb(): Boolean {
-        if(Users.findByEmail(email) != null){
-            input_email.error = getString(R.string.register_user_msg_email_exists)
-            return false
-        }else if(Users.findByUsername(user) != null){
-            input_user.error = getString(R.string.register_user_msg_username_exists)
-            return false
-        }else if(Users.findByPhone(phone) != null){
-            input_phone.error = getString(R.string.register_user_msg_phone_exists)
-            return false
-        }else if(terms.isChecked == false){
-            return false
+    /*private fun onActivityResult(resultCode:Int, result: ActivityResult){
+        if( resultCode == Activity.RESULT_OK ){
+            val fecha = Date()
+            val storageRef = FirebaseStorage.getInstance()
+                .reference
+                .child("/p-${fecha.time}.jpg")
+            if( codigoArchivo == 1 ){
+            //Imagen capturada desde la cámara del celular
+            }else if( codigoArchivo == 2 ){
+            //Archivo seleccionado desde el almacenamiento
+            }
         }
-        return true
     }*/
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ImagePicker.PICK_IMAGES_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -279,7 +319,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             btn_next.text = getString(R.string.register_user_finish)
             initDots()
         }
-    }
+    }*/
 
 
     private fun verifyForm1Inputs(){

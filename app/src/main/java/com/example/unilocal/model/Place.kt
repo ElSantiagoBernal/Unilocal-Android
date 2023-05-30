@@ -9,11 +9,10 @@ import kotlin.collections.ArrayList
 class Place() {
 
 
-    var id:Int = 0
     var key:String = ""
     var name:String = ""
     var description:String = ""
-    var idOwner:Int = 0
+    var idOwner:String = ""
     var status: PlaceStatus? = null
     var idCategory:Int = 0
     var direction:String = ""
@@ -28,10 +27,10 @@ class Place() {
     var date: Date = Date()
     var schedules:ArrayList<Schedule> = ArrayList()
 
-    constructor(id:Int, name:String, description:String, idOwner:Int,
+    constructor(name:String, description:String, idOwner:String,
                 status: PlaceStatus, idCategory:Int, direction:String, latitude:Double,
                 longitude:Double,idCountry:Int, idDepartment:Int, idCity:Int):this(){
-        this.id = id
+
         this.name = name
         this.description = description
         this.idOwner = idOwner
@@ -90,7 +89,7 @@ class Place() {
     }
 
     override fun toString(): String {
-        return "Place(id=$id, name='$name', description='$description', idOwner=$idOwner, status=$status, idCategory=$idCategory, direction=${direction}, latitude=$latitude, longitude=$longitude, idCountry=$idCountry, idDepartment=$idDepartment, idCity=$idCity, images=$images, phoneNumbers=$phoneNumbers, date=$date, schedules=$schedules)"
+        return "Place(name='$name', description='$description', idOwner=$idOwner, status=$status, idCategory=$idCategory, direction=${direction}, latitude=$latitude, longitude=$longitude, idCountry=$idCountry, idDepartment=$idDepartment, idCity=$idCity, images=$images, phoneNumbers=$phoneNumbers, date=$date, schedules=$schedules)"
     }
 
 }

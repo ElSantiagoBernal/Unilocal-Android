@@ -22,6 +22,9 @@ import com.example.unilocal.databinding.FragmentMapBinding
 import com.example.unilocal.db.*
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
+import com.example.unilocal.model.Rol
+import com.example.unilocal.model.User
+import com.example.unilocal.model.dontUse.Administrator
 import com.example.unilocal.ui.login.LoginActivity
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -74,6 +77,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         google_map = googleMap
         google_map.uiSettings.isZoomControlsEnabled = true
 
+        var user = User("Joselito", "Gonzales", "eljoselito", "joselito@gmail.com",
+            1, 1, 1, 22, "", "4375987564", Rol.MODERATOR)
+        Firebase.firestore
+            .collection("users")
+            .add(user)
+            .addOnSuccessListener {
+            }
+
         /*AQUI SE HACE PARA METER DATOS QUEMADOS
 
         Administrators.list().forEach {
@@ -83,22 +94,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                 .addOnSuccessListener {
                 }
         }
-
-        Countries.list().forEach {
-            Firebase.firestore
-                .collection("countries")
-                .add(it)
-                .addOnSuccessListener {
-                }
-        }
-
-        Departments.list().forEach {
-            Firebase.firestore
-                .collection("departments")
-                .add(it)
-                .addOnSuccessListener {
-                }
         }*/
+
 
 
         Firebase.firestore

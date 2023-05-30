@@ -48,6 +48,7 @@ class RejectedPlacesFragment : Fragment() {
                     for(doc in it){
                         val place = doc.toObject(Place::class.java)
                         if(place != null){
+                            place.key = doc.id
                             listRejectedPlaces.add(place)
                             adapter.notifyItemInserted(listRejectedPlaces.size-1)
                         }
@@ -60,7 +61,22 @@ class RejectedPlacesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        listRejectedPlaces = Places.ListByState(PlaceStatus.REJECTED)
+        //listRejectedPlaces = Places.ListByState(PlaceStatus.REJECTED)
+
+        Firebase.firestore
+            .collection("places")
+            .whereEqualTo("status", PlaceStatus.REJECTED)
+            .get()
+            .addOnSuccessListener {
+                for(doc in it){
+                    val place = doc.toObject(Place::class.java)
+                    if(place != null){
+                        /*listRejectedPlaces.clear()
+                        listRejectedPlaces.add(place)
+                        adapter.notifyItemInserted(listRejectedPlaces.size-1)*/
+                    }
+                }
+            }
         adapter = PlaceModeratorAdapter(listRejectedPlaces)
         binding.listPlaces.adapter = adapter
         binding.listPlaces.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)

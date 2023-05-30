@@ -18,10 +18,15 @@ import com.example.unilocal.activities.*
 import com.example.unilocal.db.Countries
 import com.example.unilocal.db.Departments
 import com.example.unilocal.db.People
+import com.example.unilocal.model.Rol
 import com.example.unilocal.model.dontUse.Administrator
 import com.example.unilocal.model.dontUse.Moderator
 import com.example.unilocal.model.User
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 
@@ -33,19 +38,16 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
+        /*val sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
 
         val email = sp.getString("email_user", "")
-        val type = sp.getString("type_user", "")
+        val type = sp.getString("type_user", "")*/
 
-        if(email!!.isNotEmpty() && type!!.isNotEmpty()){
-            Log.e("LoginActivity", "entro $type")
-            when(type){
-                "user" -> startActivity(Intent(this, MapActivity::class.java))
-                "moderator" -> startActivity(Intent((this), ModeratorActivity::class.java))
-            }
-            finish()
-        } else {
+        var user = FirebaseAuth.getInstance().currentUser
+        if(user!=null){
+            Log.e("Login", "Hay user logueado")
+            redirect(user)
+        }else {
             binding = ActivityLoginBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
@@ -80,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(){
 
-        /*var input_email = binding.email
+        var input_email = binding.email
         var input_pass = binding.password
 
         var email = input_email.text.toString()
@@ -88,7 +90,24 @@ class LoginActivity : AppCompatActivity() {
 
         if(email.isNotEmpty() && password.isNotEmpty()){
 
-            val person = People.login(email)
+            FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener {
+                    if(it.isSuccessful){
+                        var user = FirebaseAuth.getInstance().currentUser
+                        if(user!=null){
+                            redirect(user)
+                        }
+
+                    }else{
+                        Snackbar.make(binding.root, "Problemas al loguear", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                .addOnFailureListener{
+                    Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_LONG).show()
+                }
+
+            /*val person = People.login(email)
 
             if(person != null){
                 if(person.password == password){
@@ -114,14 +133,36 @@ class LoginActivity : AppCompatActivity() {
 
             }else  {
                 input_email.error = getString(R.string.login_msg_user_do_not_exist)
-            }
+            }*/
 
         }else{
             if(email.isEmpty()){
                 input_email.error = getString(R.string.forgot_invalid_email)
             }
             Toast.makeText(this,getString(R.string.register_user_msg_all_inpts_obligatories),Toast.LENGTH_LONG).show()
-        }*/
+        }
+
+    }
+
+    fun redirect(user:FirebaseUser){
+        Firebase.firestore
+            .collection("users")
+            .document(user.uid)
+            .get()
+            .addOnSuccessListener {
+                    val rol = it.toObject(User::class.java)?.rol
+                    var intent:Intent
+
+                    if(rol== Rol.USER){
+                        intent = Intent(this, MapActivity::class.java)
+                    }else if(rol == Rol.ADMIN){
+                        intent = Intent(this, AdminActivity::class.java)
+                    }else{
+                        intent = Intent(this, ModeratorActivity::class.java)
+                    }
+                    startActivity(intent)
+                    finish()
+            }
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {

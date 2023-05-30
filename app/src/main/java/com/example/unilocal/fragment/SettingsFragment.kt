@@ -1,19 +1,16 @@
 package com.example.unilocal.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.unilocal.R
 import com.example.unilocal.activities.ForgotPassActivity
-import com.example.unilocal.activities.MapActivity
 import com.example.unilocal.databinding.FragmentSettingsBinding
 import com.example.unilocal.ui.login.LoginActivity
 import com.example.unilocal.utils.language
-import org.intellij.lang.annotations.Language
+import com.google.firebase.auth.FirebaseAuth
 
 
 class SettingsFragment : Fragment() {
@@ -28,11 +25,11 @@ class SettingsFragment : Fragment() {
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         binding.buttonLogOut.setOnClickListener {
-            val sp = requireActivity().getSharedPreferences("sesion", Context.MODE_PRIVATE)
-            sp.edit().clear().apply()
-
-            goToLogin()
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            requireActivity().startActivity( intent )
             requireActivity().finish()
+
         }
         binding.buttonChangePass.setOnClickListener {
             goToChangePass()
