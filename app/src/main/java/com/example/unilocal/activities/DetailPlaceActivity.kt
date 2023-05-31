@@ -46,7 +46,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var google_map: GoogleMap
     private var tienePermiso = false
-    private var placeLocation = LatLng(4.550923, -75.6557201)
+    private lateinit var placeLocation: LatLng
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -174,6 +174,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
 
+
                     placeLocation = LatLng(placeF!!.latitude, placeF!!.longitude)
 
                     Firebase.firestore
@@ -261,11 +262,27 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        google_map = googleMap
-        google_map.moveCamera( CameraUpdateFactory.newLatLngZoom(placeLocation, 17f))
-        google_map.addMarker(MarkerOptions().position(placeLocation).title(getString(R.string.right_here)))
+        codePlace = intent.extras!!.getString("code").toString()
+        Firebase.firestore
+            .collection("places")
+            .document(codePlace)
+            .get()
+            .addOnSuccessListener {
+                var placeF = it.toObject(Place::class.java)
+                if (placeF != null) {
 
-        google_map.uiSettings.isZoomControlsEnabled = true
+                    placeF!!.key = it.id
+                    var ownerName = ""
+
+                    placeLocation = LatLng(placeF!!.latitude, placeF!!.longitude)
+                    google_map = googleMap
+                    google_map.moveCamera( CameraUpdateFactory.newLatLngZoom(placeLocation, 17f))
+                    google_map.addMarker(MarkerOptions().position(placeLocation).title(getString(R.string.right_here)))
+
+                    google_map.uiSettings.isZoomControlsEnabled = true
+                }
+            }
+
 
     }
 }
