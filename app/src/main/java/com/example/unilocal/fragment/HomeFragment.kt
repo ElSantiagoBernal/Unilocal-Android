@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
                     for(doc in it){
                         val place = doc.toObject(Place::class.java)
                         if(place != null){
+                            place.key = doc.id
                             listAcceptedPlaces.add(place)
                             adapter.notifyItemInserted(listAcceptedPlaces.size-1)
                         }

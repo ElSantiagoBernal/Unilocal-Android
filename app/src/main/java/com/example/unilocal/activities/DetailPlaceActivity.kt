@@ -57,7 +57,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         codePlace = intent.extras!!.getString("code").toString()
-
+        Log.e("DetailPlace", "code: ${codePlace}")
         Firebase.firestore
             .collection("places")
             .document(codePlace)
