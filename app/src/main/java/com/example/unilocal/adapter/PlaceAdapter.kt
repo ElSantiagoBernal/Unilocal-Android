@@ -16,11 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.activities.SearchResultActivity
 import com.example.unilocal.db.Categories
 import com.example.unilocal.db.Comments
+import com.example.unilocal.fragment.binding
 import com.example.unilocal.model.Category
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
@@ -41,6 +43,7 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
     private lateinit var google_map: GoogleMap
     private var tienePermiso = false
     private val defaultLocation = LatLng(4.550923, -75.6557201)
+    lateinit var context:Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_place, parent, false)
@@ -48,7 +51,7 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
         mapView = v.findViewById(R.id.place_point)
         mapView.onCreate(null)
         mapView.getMapAsync(this)
-
+        context = parent.context
         return ViewHolder(v)
     }
 
@@ -79,6 +82,11 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
             direction.text = place.direction
             startTime.text = place.schedules[0].startTime.toString() + ":00"
             closingTime.text = place.schedules[0].closingTime.toString() + ":00"
+
+            Glide.with(context)
+                .load(place.images[0])
+                .into(image )
+
 
             val rating = 0//place.getRatingAverage(Comments.listById(place.id))
             val statusPlace = place.isOpen()

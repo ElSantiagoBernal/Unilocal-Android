@@ -24,7 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:backgroundTint="#6A6A6A"
-            android:background="@drawable/shape_detail_image"/>
+            android:background="@drawable/shape_detail_image"
+            android:src="@drawable/shape_detail_image"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,16 +45,19 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:background="@drawable/transparent_background"/>
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/user_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:padding="5dp"
                 app:strokeWidth="5dp"
                 app:shapeAppearanceOverlay="@style/circular"
                 app:strokeColor="@color/white"
-                android:src="@mipmap/ic_launcher_round"/>
+                android:src="@mipmap/ic_launcher_round"
+                android:background="@drawable/transparent_background"/>
 
 
         </LinearLayout>
@@ -68,13 +74,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="40sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:background="@drawable/transparent_background"/>
 
             <LinearLayout
                 android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/transparent_background">
 
                 <ImageView
                     android:layout_width="wrap_content"

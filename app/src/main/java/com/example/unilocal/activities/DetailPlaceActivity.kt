@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityDetailPlaceBinding
 import com.example.unilocal.db.*
@@ -159,6 +160,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                             schedules += "$day: ${schedule.startTime}:00 - ${schedule.closingTime}:00\n"
                         }
                     }
+
                     binding.placeSchedules.text = schedules
                     //binding.placeRating.text = placeF!!.getRatingAverage(Comments.listById(placeF!!.id)).toString()
 
@@ -174,8 +176,21 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     placeLocation = LatLng(placeF!!.latitude, placeF!!.longitude)
 
+                    Firebase.firestore
+                        .collection("places")
+                        .document(placeF.key)
+                        .get()
+                        .addOnSuccessListener {
+                            Glide.with( this )
+                                .load(placeF.images[0])
+                                .into(binding.placeImage )
+                        }
+
+
 
                 }
+
+
             }
             .addOnFailureListener {
                 Log.e("PLACE DETAIL", "${it.message}")
@@ -183,6 +198,8 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView = findViewById(R.id.place_map_location)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+
 
 
     }
