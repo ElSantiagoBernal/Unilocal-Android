@@ -1,14 +1,13 @@
 package com.example.unilocal.adapter
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 
-class ImagePagerAdapter(private val context: Context, private val images: List<Uri>) : PagerAdapter() {
+class ImagePagerAdapter(private val context: Context, private val images: ArrayList<Uri>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(context)

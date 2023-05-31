@@ -1,5 +1,7 @@
 package com.example.unilocal.ui.login
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -34,6 +36,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    lateinit var dialog: Dialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,9 @@ class LoginActivity : AppCompatActivity() {
 
         val email = sp.getString("email_user", "")
         val type = sp.getString("type_user", "")*/
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setView(R.layout.progress_dialog_layout)
+        dialog = builder.create()
 
         var user = FirebaseAuth.getInstance().currentUser
         if(user!=null){
@@ -89,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
         var password = input_pass.text.toString()
 
         if(email.isNotEmpty() && password.isNotEmpty()){
-
+            setDialog(true)
             FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
@@ -106,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
                 .addOnFailureListener{
                     Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_LONG).show()
                 }
-
+            setDialog(false)
             /*val person = People.login(email)
 
             if(person != null){
@@ -144,6 +151,11 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun setDialog(show: Boolean) {
+        if (show) dialog.show() else dialog.dismiss()
+    }
+
+
     fun redirect(user:FirebaseUser){
         Firebase.firestore
             .collection("users")
@@ -160,6 +172,7 @@ class LoginActivity : AppCompatActivity() {
                     }else{
                         intent = Intent(this, ModeratorActivity::class.java)
                     }
+                    setDialog(false)
                     startActivity(intent)
                     finish()
             }

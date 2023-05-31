@@ -67,6 +67,7 @@ dependencies {
     //implementation platform('com.google.firebase:firebase-bom:28.4.1')
     //FIRE STOR
     implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
     //implementation 'com.google.firebase:firebase-storage'
     //implementation 'com.firebaseui:firebase-ui-database:6.0.2' //QUITAR SI NO FUNCIONA
     //implementation 'com.google.firebase:firebase-storage:20.2.0'

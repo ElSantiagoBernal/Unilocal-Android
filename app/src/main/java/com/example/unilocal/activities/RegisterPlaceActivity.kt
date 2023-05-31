@@ -1,16 +1,13 @@
 package com.example.unilocal.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -22,27 +19,24 @@ import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.unilocal.Adapter
 import com.example.unilocal.ImagePicker
 import com.example.unilocal.R
 import com.example.unilocal.adapter.ImagePagerAdapter
 import com.example.unilocal.databinding.ActivityRegisterPlaceBinding
-import com.example.unilocal.db.Places
 import com.example.unilocal.db.Schedules
-import com.example.unilocal.db.Users
 import com.example.unilocal.fragment.TimePickerFragment
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
 import com.example.unilocal.model.User
-import com.example.unilocal.ui.login.LoginActivity
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -51,9 +45,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 //import com.google.firebase.storage.FirebaseStorage
-import java.sql.Time
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -71,6 +67,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var position_layout:LinearLayout
     var condition = false
     var codigoArchivo = 0
+    lateinit var dialog: Dialog
 
 
     //FORM 1 VARS
@@ -99,8 +96,10 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var btn_bar_categorie:Button
 
     //FORM 4 VARS
-    var images = mutableListOf<Uri>()
-    private lateinit var viewPager2: ViewPager
+    var images:ArrayList<String> = ArrayList()//mutableListOf<Uri>()
+    //private lateinit var viewPager2: ViewPager
+    private lateinit var images_sel: LinearLayout
+    private lateinit var images_sel2: LinearLayout
     private lateinit var imagePicker: ImagePicker
     private lateinit var resultLauncher:ActivityResultLauncher<Intent>
 
@@ -118,6 +117,10 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setView(R.layout.progress_dialog_layout)
+        dialog = builder.create()
 
         viewPager = binding.formPager
 
@@ -137,7 +140,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         resultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult() ) {
-            //onActivityResult(it.resultCode, it)
+            onActivityResult(it.resultCode, it)
 
         }
 
@@ -151,7 +154,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 register()
             }else if (btn_next.text == getString(R.string.register_place_choose_photos)){
                 selectMedia()
-                //imagePicker.pickImages()
+                imagePicker.pickImages()
             }else{
                 nextListener()
             }
@@ -231,7 +234,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             && place_secundary_phone.isNotEmpty() && place_adress.isNotEmpty() && categorie_string.isNotEmpty() && images.isNotEmpty() && verifyRegexPhone() && lat != null && lng != null){
 
             if(verifyHours(open_hour, close_hour) && verifyPhones()){
-
+                setDialog(true)
                 val user = FirebaseAuth.getInstance()
 
                 if(user != null){
@@ -240,7 +243,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                     lat!!, lng!!, 1, 1, 1)
                 placeRegister.phoneNumbers.add(place_phone)
                 placeRegister.phoneNumbers.add(place_secundary_phone)
-                placeRegister.images = images.map { uri -> uri.toString() } as MutableList<String>
+                placeRegister.images = images
                 val only_open_hour = determinHour(open_hour)
                 val only_close_hour = determinHour(close_hour)
                 val schedule1 = Schedule(5, Schedules.getAll(),only_open_hour,only_close_hour)
@@ -261,6 +264,8 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
 
+                setDialog(false)
+
             }else{
                 Toast.makeText(this, getString(R.string.register_place_alerts_fields_filled), Toast.LENGTH_SHORT).show()
             }
@@ -269,6 +274,11 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(this, getString(R.string.register_user_msg_all_inpts_obligatories), Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun setDialog(show: Boolean) {
+        if (show) dialog.show() else dialog.dismiss()
+    }
+
 
     private fun goToMap() {
         val intent = Intent(this, MapActivity::class.java)
@@ -281,19 +291,87 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         return open_hours
     }
 
-    /*private fun onActivityResult(resultCode:Int, result: ActivityResult){
-        if( resultCode == Activity.RESULT_OK ){
-            val fecha = Date()
-            val storageRef = FirebaseStorage.getInstance()
-                .reference
-                .child("/p-${fecha.time}.jpg")
-            if( codigoArchivo == 1 ){
-            //Imagen capturada desde la cámara del celular
-            }else if( codigoArchivo == 2 ){
-            //Archivo seleccionado desde el almacenamiento
+    private fun onActivityResult(resultCode:Int, result: ActivityResult){
+        if(images.size == 6){
+            btn_next.text = getString(R.string.register_user_finish)
+            binding.takePhoto.visibility = View.GONE
+        }else {
+            if (resultCode == Activity.RESULT_OK) {
+                setDialog(true)
+                val fecha = Date()
+                val storageRef = FirebaseStorage.getInstance()
+                    .reference
+                    .child("/p-${fecha.time}.jpg")
+                if (codigoArchivo == 1) {
+                    val data = result.data?.extras
+                    if (data?.get("data") is Bitmap) {
+                        val imageBitmap = data?.get("data") as Bitmap
+                        val baos = ByteArrayOutputStream()
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                        val data = baos.toByteArray()
+                        storageRef.putBytes(data).addOnSuccessListener {
+                            storageRef.downloadUrl.addOnSuccessListener {
+                                dibujarImagen(it)
+                            }
+                        }.addOnFailureListener {
+                            Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+
+                    //Imagen capturada desde la cámara del celular
+                } else if (codigoArchivo == 2) {
+                    val data = result.data
+                    if (data != null) {
+                        val selectedImageUri: Uri? = data.data
+                        if (selectedImageUri != null) {
+                            storageRef.putFile(selectedImageUri).addOnSuccessListener {
+                                storageRef.downloadUrl.addOnSuccessListener {
+                                    dibujarImagen(it)
+                                }
+                            }.addOnFailureListener {
+                                Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
+                    }
+
+                    //Archivo seleccionado desde el almacenamiento
+                }
             }
         }
-    }*/
+
+    }
+
+    private fun dibujarImagen(url: Uri?) {
+        images.add(url.toString())
+
+        var imagen = ImageView(applicationContext)
+        imagen.layoutParams = LinearLayout.LayoutParams(300, 310)
+        if(images.size <= 3){
+            Log.e("RegisterPlace", "Es menor a 3: ${images.size}")
+            images_sel.addView(imagen)
+        }else{
+            Log.e("RegisterPlace", "Es mayor a 3: ${images.size}")
+            images_sel2.addView(imagen)
+        }
+
+        Glide.with( applicationContext )
+            .load(url.toString())
+            .into(imagen)
+
+        if(images.size == 6){
+            btn_next.text = getString(R.string.register_user_finish)
+            binding.takePhoto.visibility = View.GONE
+        }
+        setDialog(false)
+            //val adapter = ImagePagerAdapter(this, images)
+        //viewPager2.adapter = adapter
+        /*Glide.with( applicationContext )1.
+            .load(url.toString())
+            .into(images)*/
+        //initDots()
+    }
 
 
     /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -433,9 +511,10 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //FORM 4 VARS
 
-        viewPager2 = viewPager.findViewById(R.id.form_pager_photos)
-        position_layout = viewPager.findViewById(R.id.position_layout_place)
-        initDots()
+        images_sel = viewPager.findViewById(R.id.images_sel)
+        images_sel2 = viewPager.findViewById(R.id.images_sel2)
+        //position_layout = viewPager.findViewById(R.id.position_layout_place)
+        //initDots()
     }
 
 
@@ -507,7 +586,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         return false
     }
 
-    private fun initDots() {
+    /*private fun initDots() {
             for (i in 0 until (viewPager2.adapter?.count ?: 0)) {1
                 val dot = TextView(this)
                 dot.text = "•"
@@ -521,7 +600,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         if(dots.isNotEmpty()){
             dots.first().setTextColor(ContextCompat.getColor(this, R.color.active))
         }
-    }
+    }*/
 
     override fun onMapReady(googleMap: GoogleMap) {
         google_map = googleMap
