@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
+import com.example.unilocal.adapter.ImagePagerAdapter
 import com.example.unilocal.adapter.PlaceAdapter
 import com.example.unilocal.databinding.FragmentProfileBinding
+import com.example.unilocal.databinding.ItemPlaceBinding
 import com.example.unilocal.db.Places
 import com.example.unilocal.model.Comment
 import com.example.unilocal.model.Place
@@ -22,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 class ProfileFragment : Fragment() {
 
     lateinit var binding: FragmentProfileBinding
+    lateinit var binding_item: ItemPlaceBinding
     lateinit var listPlacesByOwner:ArrayList<Place>
 
     override fun onCreateView(
@@ -29,6 +32,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        binding_item = ItemPlaceBinding.inflate(inflater,container,false)
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         listPlacesByOwner = ArrayList()
@@ -54,6 +58,10 @@ class ProfileFragment : Fragment() {
                                 place.key = doc.id
                                 listPlacesByOwner.add(place)
                                 adapter.notifyItemInserted(listPlacesByOwner.size-1)
+
+                               // binding_item.imagesList.adapter = ImagePagerAdapter(this, place.images as ArrayList<String>
+
+
                             }
                         }
                     }

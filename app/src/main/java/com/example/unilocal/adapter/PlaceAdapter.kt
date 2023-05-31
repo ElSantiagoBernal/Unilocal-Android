@@ -16,10 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.activities.SearchResultActivity
+import com.example.unilocal.databinding.FragmentImageBinding
+import com.example.unilocal.databinding.ItemPlaceBinding
 import com.example.unilocal.db.Categories
 import com.example.unilocal.db.Comments
 import com.example.unilocal.fragment.binding
@@ -44,9 +47,11 @@ class PlaceAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceAdapter
     private var tienePermiso = false
     private val defaultLocation = LatLng(4.550923, -75.6557201)
     lateinit var context:Context
+    lateinit var viewPager: ViewPager2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_place, parent, false)
+
 
         mapView = v.findViewById(R.id.place_point)
         mapView.onCreate(null)

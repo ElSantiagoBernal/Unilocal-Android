@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.unilocal.R
-import com.example.unilocal.adapter.PlaceAdapter
+import com.bumptech.glide.Glide
+import com.example.unilocal.adapter.ImagePagerAdapter
 import com.example.unilocal.adapter.PlaceModeratorAdapter
 import com.example.unilocal.databinding.FragmentAcceptedPlacesBinding
-import com.example.unilocal.db.Places
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.google.firebase.firestore.ktx.firestore
@@ -69,9 +68,7 @@ class AcceptedPlacesFragment : Fragment() {
                     for(doc in it){
                         val place = doc.toObject(Place::class.java)
                         if(place != null){
-                            /*listAcceptedPlaces.clear()
-                            listAcceptedPlaces.add(place)
-                            adapter.notifyItemInserted(listAcceptedPlaces.size-1)*/
+
                         }
                     }
             }

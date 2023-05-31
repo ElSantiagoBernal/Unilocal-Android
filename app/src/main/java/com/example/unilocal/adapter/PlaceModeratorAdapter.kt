@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.unilocal.R
 import com.example.unilocal.activities.DetailPlaceActivity
 import com.example.unilocal.activities.SearchResultActivity
@@ -24,14 +25,18 @@ import com.example.unilocal.db.Places
 import com.example.unilocal.model.Place
 import com.example.unilocal.model.PlaceStatus
 import com.example.unilocal.model.Schedule
+import com.example.unilocal.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<PlaceModeratorAdapter.ViewHolder>() {
 
+    lateinit var context:Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_place_moderators, parent, false)
+        context = parent.context
         return ViewHolder(v)
     }
 
@@ -66,6 +71,10 @@ class PlaceModeratorAdapter(var list:ArrayList<Place>): RecyclerView.Adapter<Pla
             direction.text = place.direction
             startTime.text = place.schedules[0].startTime.toString() + ":00"
             closingTime.text = place.schedules[0].closingTime.toString() + ":00"
+
+            Glide.with(context)
+                .load(place.images[0])
+                .into(image)
 
             codePlace= place.key
             //val placeToRemove = list.find { it.id == place.key }
