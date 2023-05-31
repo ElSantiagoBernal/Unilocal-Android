@@ -77,7 +77,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         google_map = googleMap
         google_map.uiSettings.isZoomControlsEnabled = true
 
-        var user = User("Joselito", "Gonzales", "eljoselito", "joselito@gmail.com",
+        /*var user = User("Joselito", "Gonzales", "eljoselito", "joselito@gmail.com",
             1, 1, 1, 22, "", "4375987564", Rol.MODERATOR)
         Firebase.firestore
             .collection("users")
@@ -85,7 +85,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             .addOnSuccessListener {
             }
 
-        /*AQUI SE HACE PARA METER DATOS QUEMADOS
+        AQUI SE HACE PARA METER DATOS QUEMADOS
 
         Administrators.list().forEach {
             Firebase.firestore

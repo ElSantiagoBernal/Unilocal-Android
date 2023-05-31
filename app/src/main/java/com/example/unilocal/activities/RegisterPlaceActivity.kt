@@ -154,7 +154,7 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 register()
             }else if (btn_next.text == getString(R.string.register_place_choose_photos)){
                 selectMedia()
-                imagePicker.pickImages()
+                //imagePicker.pickImages()
             }else{
                 nextListener()
             }
@@ -365,12 +365,6 @@ class RegisterPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.takePhoto.visibility = View.GONE
         }
         setDialog(false)
-            //val adapter = ImagePagerAdapter(this, images)
-        //viewPager2.adapter = adapter
-        /*Glide.with( applicationContext )1.
-            .load(url.toString())
-            .into(images)*/
-        //initDots()
     }
 
 

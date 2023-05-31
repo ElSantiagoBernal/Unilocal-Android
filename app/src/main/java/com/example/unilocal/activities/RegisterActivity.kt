@@ -6,7 +6,9 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.media.Image
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.text.Html
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -23,10 +26,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.unilocal.Adapter
 import com.example.unilocal.R
 import com.example.unilocal.databinding.ActivityRegisterBinding
@@ -47,6 +53,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import java.util.*
 import kotlin.math.log
 
 class RegisterActivity : AppCompatActivity() {
@@ -65,6 +74,9 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var btn_next:Button
     var init:Boolean = true
     lateinit var dialog: Dialog
+    var codigoArchivo = 0
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
 
 
     //FORM REGISTER 1
@@ -130,10 +142,22 @@ class RegisterActivity : AppCompatActivity() {
             if( btn_next.text == getString(R.string.register_user_finish)){
                 register()
             }else if (btn_next.text == getString(R.string.register_user_choose_photo)){
-                askImages()
+                selectMedia()
+                //askImages()
             }else{
                 nextListener()
             }
+        }
+
+        binding.takePhoto.visibility = View.GONE
+
+        binding.takePhoto.setOnClickListener{
+            takePhoto()
+        }
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult() ) {
+            onActivityResult(it.resultCode, it)
+
         }
 
 
@@ -161,11 +185,14 @@ class RegisterActivity : AppCompatActivity() {
                 if(position==2) {
                     verifyForm2Inputs()
                     if(imageUrl == ""){
+                        binding.takePhoto.visibility = View.VISIBLE
                         btn_next.text = getString(R.string.register_user_choose_photo)
                     }else{
+                        binding.takePhoto.visibility = View.GONE
                         btn_next.text = getString(R.string.register_user_finish)
                     }
                 }else{
+                    binding.takePhoto.visibility = View.GONE
                     btn_next.text = getString(R.string.register_user_next)
                 }
             }
@@ -458,15 +485,15 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun askImages (){
-        requestPermission()
-    }
+    /*fun askImages (){
+        //requestPermission()
+    }*/
     private fun setDialog(show: Boolean) {
         if (show) dialog.show() else dialog.dismiss()
     }
 
 
-    private fun requestPermission() {
+    /*private fun requestPermission() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             when {
                 ContextCompat.checkSelfPermission(
@@ -481,9 +508,9 @@ class RegisterActivity : AppCompatActivity() {
         }else{
             pickPhotoFromGallery()
         }
-    }
+    }*/
 
-    private val requestPermissionLauncher = registerForActivityResult(
+    /*private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ){isGranted ->
 
@@ -493,17 +520,99 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.register_user_msg_allow_permissions), Toast.LENGTH_SHORT).show()
         }
 
-    }
+    }*/
 
 
-    private fun pickPhotoFromGallery() {
+    /*private fun pickPhotoFromGallery() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "image/*"
+        intent.type = "image"
         startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER)
+    }*/
+
+    private fun selectMedia() {
+        val i = Intent()
+        i.type = "image/*"
+        i.action = Intent.ACTION_GET_CONTENT
+        codigoArchivo = 2
+        resultLauncher.launch(i)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    private fun takePhoto() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                resultLauncher.launch(takePictureIntent)
+                codigoArchivo = 1
+            }
+        }
+    }
+    private fun onActivityResult(resultCode:Int, result: ActivityResult){
+        if(imageUrl.isNotEmpty()){
+            btn_next.text = getString(R.string.register_user_finish)
+            binding.takePhoto.visibility = View.GONE
+        }else {
+            if (resultCode == Activity.RESULT_OK) {
+                setDialog(true)
+                val fecha = Date()
+                val storageRef = FirebaseStorage.getInstance()
+                    .reference
+                    .child("/p-${fecha.time}.jpg")
+                if (codigoArchivo == 1) {
+                    val data = result.data?.extras
+                    if (data?.get("data") is Bitmap) {
+                        val imageBitmap = data?.get("data") as Bitmap
+                        val baos = ByteArrayOutputStream()
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                        val data = baos.toByteArray()
+                        storageRef.putBytes(data).addOnSuccessListener {
+                            storageRef.downloadUrl.addOnSuccessListener {
+                                dibujarImagen(it)
+                            }
+                        }.addOnFailureListener {
+                            Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+
+                    //Imagen capturada desde la cámara del celular
+                } else if (codigoArchivo == 2) {
+                    val data = result.data
+                    if (data != null) {
+                        val selectedImageUri: Uri? = data.data
+                        if (selectedImageUri != null) {
+                            storageRef.putFile(selectedImageUri).addOnSuccessListener {
+                                storageRef.downloadUrl.addOnSuccessListener {
+                                    dibujarImagen(it)
+                                }
+                            }.addOnFailureListener {
+                                Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
+                    }
+
+                    //Archivo seleccionado desde el almacenamiento
+                }
+            }
+        }
+
+    }
+
+    private fun dibujarImagen(url: Uri?) {
+        imageUrl = url.toString()
+
+        Glide.with( applicationContext )
+            .load(url.toString())
+            .into(img)
+
+        if(imageUrl.isNotEmpty()){
+            btn_next.text = getString(R.string.register_user_finish)
+            binding.takePhoto.visibility = View.GONE
+        }
+        setDialog(false)
+    }
+
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == Activity.RESULT_OK) {
             btn_next.text = getString(R.string.register_user_finish)
@@ -513,7 +622,7 @@ class RegisterActivity : AppCompatActivity() {
             img.scaleType = ImageView.ScaleType.FIT_CENTER
             img.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
         }
-    }
+    }*/
 
     private fun initDots() {
         for (i in 0 until (viewPager.adapter?.count ?: 0)) {

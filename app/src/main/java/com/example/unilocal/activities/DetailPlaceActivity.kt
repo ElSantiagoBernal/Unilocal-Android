@@ -57,7 +57,7 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         codePlace = intent.extras!!.getString("code").toString()
-        Log.e("DetailPlace", "code: ${codePlace}")
+
         Firebase.firestore
             .collection("places")
             .document(codePlace)
@@ -67,7 +67,6 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (placeF != null) {
 
                     placeF!!.key = it.id
-                    var ownerName = ""
 
                     Firebase.firestore
                         .collection("users")
@@ -80,6 +79,10 @@ class DetailPlaceActivity : AppCompatActivity(), OnMapReadyCallback {
                                 binding.placeName.text = placeF!!.name
                                 binding.placeDescription.text = placeF!!.description
                                 binding.placeDirection.text = placeF!!.direction
+                                Glide.with(this)
+                                    .load(userF.imgUrl)
+                                    .into(binding.userImage  )
+
                             }
                         }
 
